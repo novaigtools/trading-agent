@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python *)",
+      "Bash(pip *)",
+      "Read(C:\\Users\\amalr\\trading-agent\\*)",
+      "Write(C:\\Users\\amalr\\trading-agent\\*)",
+      "Edit(C:\\Users\\amalr\\trading-agent\\*)",
+      "WebFetch(https://api.alternative.me/*)",
+      "WebFetch(https://min-api.cryptocompare.com/*)",
+      "WebFetch(https://api.coingecko.com/*)",
+      "WebFetch(https://api.binance.com/*)"
+    ],
+    "defaultMode": "acceptEdits"
+  }
+}

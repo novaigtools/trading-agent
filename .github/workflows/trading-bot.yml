@@ -1,0 +1,46 @@
+name: Crypto Trading Bot
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'   # Every 30 minutes
+  workflow_dispatch:           # Allow manual trigger from GitHub UI
+
+jobs:
+  trade:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write          # Needed to commit state files back
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run trading bot scan
+        env:
+          CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+          BINANCE_API_KEY: ${{ secrets.BINANCE_API_KEY }}
+          BINANCE_SECRET_KEY: ${{ secrets.BINANCE_SECRET_KEY }}
+          PAPER_TRADING: ${{ secrets.PAPER_TRADING }}
+          WEEKLY_BUDGET: ${{ secrets.WEEKLY_BUDGET }}
+          GMAIL_SENDER: ${{ secrets.GMAIL_SENDER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          NOTIFY_EMAIL: ${{ secrets.NOTIFY_EMAIL }}
+          SCAN_INTERVAL_MINUTES: '30'
+        run: python run_once.py
+
+      - name: Save state back to repo
+        run: |
+          git config user.name "Trading Bot"
+          git config user.email "bot@trading-agent.com"
+          git add risk_state.json trades.csv || true
+          git diff --staged --quiet || git commit -m "Bot state update $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push

@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Trading Bot",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["main.py"],
+      "description": "Autonomous trading agent — scans every 15 min, Claude AI decisions, auto SL/TP"
+    },
+    {
+      "name": "Live Dashboard",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["dashboard.py"],
+      "description": "Rich terminal UI — P&L, open positions, charts, sentiment. Refreshes every 30s"
+    },
+    {
+      "name": "Run Once",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["run_once.py"],
+      "description": "Single scan then exits — sentiment → market → SL/TP → Claude decisions"
+    }
+  ]
+}
