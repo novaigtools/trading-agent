@@ -32,7 +32,7 @@ COIN TIERS (ranked by expected return potential):
 - TIER 1 — SOL, NEAR, SUI, DOGE: highest volume, most reliable setups, core positions
 - TIER 2 — TAO, FET, RENDER: AI narrative coins, 5-15% moves common, prioritise on dips
 - TIER 3 — INJ, AVAX: solid mid-caps, secondary picks when tier 1/2 not set up
-- TIER 4 — PEPE: meme play, only enter on extreme oversold + volume spike
+- TIER 5 — PEPE, WIF, FLOKI: penny/meme coins — position size is 9% of budget (NOT 15%). Stop-loss 3%, take-profit 9%. These move 10-30% in a day. ONLY enter on: RSI < 30 + volume spike 2x, OR breakout above BB upper with volume. Max 2 penny positions open at once. These are HIGH RISK, HIGH REWARD — be selective, not frequent.
 
 TECHNICAL RULES (altcoins):
 - DOGE and PEPE move in explosive bursts — catch early momentum, volume spike 2x avg = strong signal
@@ -75,7 +75,9 @@ def get_trading_decision(market_data: dict, sentiment: dict = None, regime: dict
     sym = market_data['symbol']
     if sym in ("BTCUSDT", "ETHUSDT"):
         coin_type = "LARGE CAP — treat as swing trade, be conservative"
-    elif sym in ("DOGEUSDT", "PEPEUSDT", "SHIBUSDT", "FLOKIUSDT"):
+    elif sym in ("PEPEUSDT", "WIFUSDT", "FLOKIUSDT"):
+        coin_type = "TIER 5 PENNY MEME — position size is 9% of budget. Stop-loss 3%, take-profit 9%. Only buy on RSI<30 + volume spike 2x, or BB upper breakout with volume. These move 10-30%/day — be very selective."
+    elif sym in ("DOGEUSDT",):
         coin_type = "MEME COIN — high volatility, hunt momentum and volume breakouts aggressively"
     else:
         coin_type = "MID-CAP ALTCOIN — high volatility, amplified BTC moves, look for momentum setups"

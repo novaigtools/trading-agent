@@ -54,7 +54,7 @@ def execute_decision(decision: dict) -> bool:
             print(f"  {Fore.YELLOW}{symbol}: Already holding — skipping BUY{Style.RESET_ALL}")
             return False
 
-        quantity = risk_manager.get_position_size(price)
+        quantity = risk_manager.get_position_size(price, symbol)
         if quantity == 0:
             print(f"  {Fore.RED}{symbol}: Insufficient weekly budget remaining{Style.RESET_ALL}")
             return False

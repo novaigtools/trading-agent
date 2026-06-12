@@ -30,14 +30,22 @@ TRADING_PAIRS = [
     # Tier 3 — Solid mid-caps with volume
     "INJUSDT",    # $25M daily vol  — DeFi/derivatives
     "AVAXUSDT",   # $21M daily vol  — reliable alt
-
-    # Tier 4 — Best meme play
-    "PEPEUSDT",   # $20M daily vol  — highest-volume pure meme
 ]
 LONG_TERM_PAIRS = []  # No slow large-caps — all positions are swing/intraday
 
-MAX_POSITION_PCT = 0.15   # 15% of budget = $75 per position max
-STOP_LOSS_PCT    = 0.02   # 2% stop loss
-TAKE_PROFIT_PCT  = 0.06   # raised from 4% → 6% to let winners run longer
+# Tier 5 — Penny/meme coins (18% of weekly budget split across max 2 positions)
+PENNY_PAIRS = [
+    "PEPEUSDT",   # $20M daily vol  — highest-volume pure meme
+    "WIFUSDT",    # $1.3M daily vol  — dogwifhat, SOL meme, 10-30% daily swings
+    "FLOKIUSDT",  # $1.2M daily vol  — classic meme coin
+]
+
+MAX_POSITION_PCT      = 0.15   # 15% of budget = $75 per standard position
+PENNY_MAX_PCT         = 0.09   # 9% per penny position — 2 positions = 18% of budget
+STOP_LOSS_PCT         = 0.02   # 2% stop loss (standard coins)
+TAKE_PROFIT_PCT       = 0.06   # 6% take profit (standard coins)
+PENNY_STOP_LOSS_PCT   = 0.03   # 3% SL for memes — wider to avoid noise whipsaws
+PENNY_TAKE_PROFIT_PCT = 0.09   # 9% TP for memes — aim for bigger explosive moves
+MAX_PENNY_POSITIONS   = 2      # Max 2 penny positions open at once = 18% exposure
 
 BINANCE_BASE_URL = "https://api.binance.com"

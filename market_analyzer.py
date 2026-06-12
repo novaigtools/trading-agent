@@ -1,7 +1,7 @@
 import requests
 import pandas as pd
 import ta
-from config import BINANCE_BASE_URL, TRADING_PAIRS
+from config import BINANCE_BASE_URL, TRADING_PAIRS, PENNY_PAIRS
 
 
 def fetch_ohlcv(symbol: str, interval: str = "15m", limit: int = 100) -> pd.DataFrame:
@@ -148,7 +148,8 @@ def get_btc_market_regime() -> dict:
 
 def analyze_all_pairs() -> list[dict]:
     results = []
-    for pair in TRADING_PAIRS:
+    all_pairs = TRADING_PAIRS + PENNY_PAIRS
+    for pair in all_pairs:
         print(f"  Analyzing {pair}...")
         results.append(analyze_pair(pair))
     return results

@@ -1,7 +1,11 @@
 import json
 import os
 from datetime import datetime, timedelta
-from config import WEEKLY_BUDGET, MAX_POSITION_PCT, STOP_LOSS_PCT, TAKE_PROFIT_PCT
+from config import (
+    WEEKLY_BUDGET, MAX_POSITION_PCT, STOP_LOSS_PCT, TAKE_PROFIT_PCT,
+    PENNY_PAIRS, PENNY_MAX_PCT, PENNY_STOP_LOSS_PCT, PENNY_TAKE_PROFIT_PCT,
+    MAX_PENNY_POSITIONS,
+)
 
 RISK_STATE_FILE = "risk_state.json"
 
@@ -32,11 +36,26 @@ def _reset_if_new_week(state: dict) -> dict:
     return state
 
 
-def get_position_size(price: float) -> float:
+def _is_penny(symbol: str) -> bool:
+    return symbol in PENNY_PAIRS
+
+
+def _penny_positions_open(state: dict) -> int:
+    return sum(1 for s in state.get("open_positions", {}) if s in PENNY_PAIRS)
+
+
+def get_position_size(price: float, symbol: str = "") -> float:
     state = _load_state()
     state = _reset_if_new_week(state)
     remaining = WEEKLY_BUDGET - state["spent_this_week"]
-    max_trade = WEEKLY_BUDGET * MAX_POSITION_PCT
+
+    if _is_penny(symbol):
+        if _penny_positions_open(state) >= MAX_PENNY_POSITIONS:
+            return 0.0  # Already at max penny exposure
+        max_trade = WEEKLY_BUDGET * PENNY_MAX_PCT
+    else:
+        max_trade = WEEKLY_BUDGET * MAX_POSITION_PCT
+
     amount_usd = min(remaining, max_trade)
     if amount_usd < 5:
         return 0.0
@@ -55,12 +74,15 @@ def record_trade(symbol: str, side: str, price: float, quantity: float):
     cost = price * quantity
     if side == "BUY":
         state["spent_this_week"] += cost
+        sl_pct = PENNY_STOP_LOSS_PCT if _is_penny(symbol) else STOP_LOSS_PCT
+        tp_pct = PENNY_TAKE_PROFIT_PCT if _is_penny(symbol) else TAKE_PROFIT_PCT
         state["open_positions"][symbol] = {
             "entry_price": price,
             "quantity": quantity,
-            "stop_loss": round(price * (1 - STOP_LOSS_PCT), 4),
-            "take_profit": round(price * (1 + TAKE_PROFIT_PCT), 4),
+            "stop_loss": round(price * (1 - sl_pct), 8),
+            "take_profit": round(price * (1 + tp_pct), 8),
             "opened_at": datetime.utcnow().isoformat(),
+            "is_penny": _is_penny(symbol),
         }
     elif side == "SELL" and symbol in state["open_positions"]:
         # Recycle the original capital back into available budget
