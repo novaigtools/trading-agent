@@ -43,18 +43,32 @@ def main():
         print(f"  Sentiment fetch failed: {e}")
         sentiment = {}
 
-    # Step 2 — Market data
-    print(f"\n{Fore.CYAN}[2/4] Fetching market data...{Style.RESET_ALL}")
+    # Step 2 — Market regime
+    print(f"\n{Fore.CYAN}[2/5] Checking BTC market regime...{Style.RESET_ALL}")
+    regime = market_analyzer.get_btc_market_regime()
+    regime_str = regime.get("regime", "UNKNOWN")
+    regime_color = Fore.GREEN if regime_str == "BULL" else (Fore.RED if regime_str == "BEAR" else Fore.YELLOW)
+    print(f"  Regime: {regime_color}{regime_str}{Style.RESET_ALL} "
+          f"({regime.get('bull_signals',0)} bull / {regime.get('bear_signals',0)} bear signals)")
+    print(f"  BTC: ${regime.get('price','?')} | EMA20(4H): ${regime.get('ema20_4h','?')} | EMA50(4H): ${regime.get('ema50_4h','?')}")
+    print(f"  Structure: {regime.get('ema_structure','?')} | RSI(4H): {regime.get('rsi_4h','?')}")
+
+    # Step 3 — Market data
+    print(f"\n{Fore.CYAN}[3/5] Fetching market data...{Style.RESET_ALL}")
     market_data_list = market_analyzer.analyze_all_pairs()
     current_prices = {d["symbol"]: d["price"] for d in market_data_list if "price" in d}
 
-    # Step 3 — Stop loss / take profit
-    print(f"\n{Fore.CYAN}[3/4] Checking stop-loss / take-profit...{Style.RESET_ALL}")
+    # Step 4 — Stop loss / take profit
+    print(f"\n{Fore.CYAN}[4/5] Checking stop-loss / take-profit...{Style.RESET_ALL}")
     trader.check_and_execute_stops(current_prices)
 
-    # Step 4 — Claude decisions
-    print(f"\n{Fore.CYAN}[4/4] Getting Claude decisions...{Style.RESET_ALL}")
-    decisions = claude_brain.get_decisions_for_all(market_data_list, sentiment)
+    # Step 5 — Claude decisions (hard block on BEAR)
+    print(f"\n{Fore.CYAN}[5/5] Getting Claude decisions...{Style.RESET_ALL}")
+    if regime_str == "BEAR":
+        print(f"  {Fore.RED}MARKET REGIME: BEAR — skipping new trades to protect capital{Style.RESET_ALL}")
+        decisions = []
+    else:
+        decisions = claude_brain.get_decisions_for_all(market_data_list, sentiment, regime)
 
     any_trade = False
     for decision in decisions:
@@ -74,7 +88,7 @@ def main():
         print(f"  {symbol}: entry=${pos['entry_price']} | now=${current} | P&L=${pnl:+.4f}")
 
     print(f"\n{'=' * 60}")
-    print(f"  Scan complete. Next run in ~30 minutes.")
+    print(f"  Scan complete. Regime: {regime_str}. Next run in ~30 minutes.")
     print(f"{'=' * 60}\n")
 
 
