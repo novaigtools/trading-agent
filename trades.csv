@@ -61,3 +61,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-06-06 08:49:40,AVAXUSDT,SELL,6.87,5.663786,38.91,Bot offline — emergency close at market price,10,intraday,PAPER
 2026-06-06 08:49:40,SOLUSDT,SELL,64.48,0.924328,59.6,Bot offline — emergency close at market price,10,intraday,PAPER
 2026-06-06 08:49:40,DOGEUSDT,SELL,0.08235,761.42132,62.7,Bot offline — emergency close at market price,10,intraday,PAPER
+2026-06-14 06:56:50,WIFUSDT,BUY,0.1586,31.525851,5.0,FORCE TEST TRADE — verifying bot pipeline,10,intraday,PAPER

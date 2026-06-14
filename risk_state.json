@@ -1,5 +1,14 @@
 {
   "week_start": "2026-06-02",
-  "spent_this_week": 0.0,
-  "open_positions": {}
+  "spent_this_week": 10.0,
+  "open_positions": {
+    "WIFUSDT": {
+      "entry_price": 0.1586,
+      "quantity": 31.525851,
+      "stop_loss": 0.153842,
+      "take_profit": 0.172874,
+      "opened_at": "2026-06-14T06:56:50.606316",
+      "is_penny": true
+    }
+  }
 }
