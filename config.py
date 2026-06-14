@@ -23,7 +23,8 @@ TRADING_PAIRS = [
     "DOGEUSDT",   # $69M daily vol  — highest-volume meme, liquid
 
     # Tier 2 — AI narrative coins (strong theme, real moves)
-    "TAOUSDT",    # $37M daily vol  — AI/ML leader, 5-15% swings common
+    "TAOUSDT",    # $103M daily vol — AI/ML leader, decouples from BTC on AI news
+    "WLDUSDT",    # $150M daily vol — Worldcoin (Sam Altman), AI identity narrative
     "FETUSDT",    # $25M daily vol  — AI agents narrative
     "RENDERUSDT", # $19M daily vol  — GPU/AI rendering, volatile
 

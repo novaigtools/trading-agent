@@ -30,9 +30,12 @@ SENTIMENT RULES:
 
 COIN TIERS (ranked by expected return potential):
 - TIER 1 — SOL, NEAR, SUI, DOGE: highest volume, most reliable setups, core positions
-- TIER 2 — TAO, FET, RENDER: AI narrative coins, 5-15% moves common, prioritise on dips
+- TIER 2 — TAO, WLD, FET, RENDER: AI narrative coins — these DECOUPLE from BTC on AI news. A 10-25% single-day move is normal. When an AI coin is up 10%+ on the day with volume, that is a MOMENTUM signal, not a signal to avoid. Buy the pullback within the uptrend, not the top.
 - TIER 3 — INJ, AVAX: solid mid-caps, secondary picks when tier 1/2 not set up
 - TIER 5 — PEPE, WIF, FLOKI: penny/meme coins — position size is 9% of budget (NOT 15%). Stop-loss 3%, take-profit 9%. These move 10-30% in a day. ONLY enter on: RSI < 30 + volume spike 2x, OR breakout above BB upper with volume. Max 2 penny positions open at once. These are HIGH RISK, HIGH REWARD — be selective, not frequent.
+
+MOMENTUM OVERRIDE RULE (important):
+If a coin is up 8%+ in the last 24 hours AND volume is 2x+ average AND BTC regime is NEUTRAL (not BEAR), you MAY buy even if BTC trend is not perfect. Individual coin momentum driven by narrative (AI, meme, news catalyst) can override the BTC trend filter. In this case confidence 7+ is acceptable. This is how you catch TAO +24%, WLD +8%, NEAR +4% moves that happen independently of BTC.
 
 TECHNICAL RULES (altcoins):
 - DOGE and PEPE move in explosive bursts — catch early momentum, volume spike 2x avg = strong signal
@@ -79,6 +82,8 @@ def get_trading_decision(market_data: dict, sentiment: dict = None, regime: dict
         coin_type = "TIER 5 PENNY MEME — position size is 9% of budget. Stop-loss 3%, take-profit 9%. Only buy on RSI<30 + volume spike 2x, or BB upper breakout with volume. These move 10-30%/day — be very selective."
     elif sym in ("DOGEUSDT",):
         coin_type = "MEME COIN — high volatility, hunt momentum and volume breakouts aggressively"
+    elif sym in ("TAOUSDT", "WLDUSDT", "FETUSDT", "RENDERUSDT"):
+        coin_type = "TIER 2 AI NARRATIVE COIN — these decouple from BTC on AI news/catalysts. 10-25% single-day moves are normal. Use the MOMENTUM OVERRIDE RULE when 24h change is 8%+ with volume. Buy pullbacks within uptrends."
     else:
         coin_type = "MID-CAP ALTCOIN — high volatility, amplified BTC moves, look for momentum setups"
 
