@@ -33,6 +33,7 @@ def _reset_if_new_week(state: dict) -> dict:
         state["week_start"] = _week_start()
         state["spent_this_week"] = 0.0
         print(f"  New week — budget reset to ${WEEKLY_BUDGET:.2f}")
+        _save_state(state)  # persist immediately so GitHub Actions commits the reset
     return state
 
 
