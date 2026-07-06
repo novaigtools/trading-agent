@@ -1,4 +1,5 @@
 import requests
+import xml.etree.ElementTree as ET
 from datetime import datetime
 
 
@@ -20,26 +21,38 @@ def get_fear_and_greed() -> dict:
         return {"error": str(e)}
 
 
+NEWS_FEEDS = [
+    ("CoinDesk", "https://www.coindesk.com/arc/outboundfeeds/rss/"),
+    ("Cointelegraph", "https://cointelegraph.com/rss"),
+]
+
+
 def get_crypto_news(limit: int = 10) -> list[dict]:
-    """Fetch latest crypto news from CryptoCompare (free, no key needed)"""
-    try:
-        r = requests.get(
-            "https://min-api.cryptocompare.com/data/v2/news/?lang=EN&sortOrder=latest",
-            timeout=10
-        )
-        articles = r.json().get("Data", [])[:limit]
-        return [
-            {
-                "title": a["title"],
-                "source": a["source"],
-                "published": datetime.utcfromtimestamp(a["published_on"]).strftime("%H:%M UTC"),
-                "tags": a.get("categories", ""),
-                "sentiment": _score_headline(a["title"]),
-            }
-            for a in articles
-        ]
-    except Exception as e:
-        return [{"error": str(e)}]
+    """Fetch latest crypto headlines from free RSS feeds (no API key needed)"""
+    articles = []
+    per_feed = max(1, limit // len(NEWS_FEEDS))
+    for source, url in NEWS_FEEDS:
+        try:
+            r = requests.get(url, timeout=10, headers={"User-Agent": "Mozilla/5.0"})
+            root = ET.fromstring(r.content)
+            for item in root.iter("item"):
+                title = (item.findtext("title") or "").strip()
+                if not title:
+                    continue
+                articles.append({
+                    "title": title,
+                    "source": source,
+                    "published": (item.findtext("pubDate") or "")[:25],
+                    "tags": "",
+                    "sentiment": _score_headline(title),
+                })
+                if sum(1 for a in articles if a["source"] == source) >= per_feed:
+                    break
+        except Exception as e:
+            print(f"  {source} feed failed: {e}")
+    if not articles:
+        return [{"error": "all news feeds failed"}]
+    return articles[:limit]
 
 
 def get_trending_coins() -> list[dict]:

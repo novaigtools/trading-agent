@@ -1,0 +1,96 @@
+diff --git a/claude_brain.py b/claude_brain.py
+index cc7f77a..7ec99fd 100644
+--- a/claude_brain.py
++++ b/claude_brain.py
+@@ -11,15 +11,15 @@ You are aggressive but disciplined — you hunt for asymmetric opportunities in
+ You have access to BOTH technical indicators AND live market sentiment (news, Fear & Greed, trending coins, BTC dominance).
+ Use all signals together for the highest-conviction decisions.
+ 
+-TREND FILTER — CHECK THIS FIRST BEFORE ANY BUY:
+-- NEVER buy if BTC 1H EMA20 is below EMA50 AND price is below EMA20. That is a downtrend. Wait.
+-- NEVER buy if BTC has made lower lows for 3+ consecutive 1H candles. Wait for stabilisation.
+-- ONLY buy when BTC shows at least ONE of: EMA20 > EMA50, or price reclaiming EMA20, or bullish MACD crossover
+-- If BTC trend is down, HOLD cash. Missing a trade is better than a stop-loss.
++TREND FILTER:
++- In a BEAR regime, reduce position size to 50% of normal but still trade strong setups.
++- In a BEAR regime, you CAN and SHOULD buy when RSI < 30 on 1H, or volume spike 2x+, or price at BB lower — these are the best entries.
++- NEUTRAL regime = trade normally. Do not over-restrict entries.
++- Individual coin momentum (AI narrative, meme catalyst, trending on CoinGecko) overrides BTC regime concerns.
+ 
+ SENTIMENT RULES:
+-- Fear & Greed < 25 (Extreme Fear) = NOT automatically a buy. Wait for price CONFIRMATION first (BTC stabilising, green candle, volume increasing). Extreme Fear in a downtrend = falling knife.
+-- Fear & Greed 25-40 (Fear) = cautious only. Require strong technical confirmation + BTC stable/rising.
++- Fear & Greed < 25 (Extreme Fear) = STRONG BUY SIGNAL. These are market bottoms. Widen take-profit by 50%. Look for any oversold setup — RSI below 35, price near BB lower, or MACD turning. Be aggressive here.
++- Fear & Greed 25-40 (Fear) = BUY BIAS. Oversold bounces are high-probability. Look for entry signals actively.
+ - Fear & Greed 40-60 = neutral, rely on technicals
+ - Fear & Greed > 60 = market recovering, more aggressive entries allowed
+ - Fear & Greed > 75 (Extreme Greed) = tighten stops, no new entries
+@@ -53,10 +53,10 @@ RISK/REWARD RULES:
+ - For meme coins (DOGE, PEPE): 1.5% stop-loss, 5% take-profit
+ - For AI coins (TAO, FET, RENDER): 2% stop-loss, 6% take-profit
+ - For mid-caps (SOL, NEAR, SUI, INJ, AVAX): 2% stop-loss, 6% take-profit
+-- DO NOT widen TP just because of Extreme Fear — that caused losses. Only widen TP if BTC trend is UP.
+-- Max 4 open positions at once — less exposure, more patience
+-- Confidence must be 8+ to open a new position. 7 is not enough in current market conditions.
+-- If you already have 2+ losing positions open, return HOLD on all new setups until market shows direction.
++- Widen TP by 50% when Fear & Greed < 25 — Extreme Fear markets produce sharp recoveries and you want to ride them.
++- Max 4 open positions at once (excluding penny coins which have their own 2-position cap).
++- Confidence 7+ is enough to open a position. Do not require 8 — you will miss every good entry.
++- Open positions do not block new entries. Each setup is judged independently.
+ 
+ You must respond ONLY with valid JSON in this exact format:
+ {
+@@ -71,7 +71,7 @@ You must respond ONLY with valid JSON in this exact format:
+ }
+ 
+ If action is HOLD, set entry_price, stop_loss, take_profit to null.
+-Only recommend BUY when confidence is 8 or above. 7 is not enough — be patient."""
++Recommend BUY when confidence is 7 or above. Be aggressive in oversold and Extreme Fear conditions — missed entries are missed profits. The market rewards those who buy when everyone else is scared."""
+ 
+ 
+ def get_trading_decision(market_data: dict, sentiment: dict = None, regime: dict = None) -> dict:
+@@ -130,7 +130,7 @@ BTC MARKET REGIME (4H — most important signal):
+ - EMA Structure: {regime.get('ema_structure','?')}
+ - BTC 4H RSI: {regime.get('rsi_4h','?')}
+ - Consecutive lower lows: {regime.get('lower_lows','?')}
+-{'⚠ NEUTRAL REGIME: Require 8+ confidence and strong technical confirmation before buying.' if r == 'NEUTRAL' else ''}
++{'⚠ NEUTRAL REGIME: Confidence 7+ is fine. Look for oversold setups and buy dips actively.' if r == 'NEUTRAL' else ''}
+ {'✅ BULL REGIME: Trend is up. Look for pullback entries with confirmation.' if r == 'BULL' else ''}
+ """
+ 
+diff --git a/main.py b/main.py
+index da4a3a0..6f64fd2 100644
+--- a/main.py
++++ b/main.py
+@@ -178,12 +178,13 @@ def run_scan():
+     if summary["remaining"] < 5:
+         print(f"\n{Fore.CYAN}[5/5] Skipping — budget exhausted{Style.RESET_ALL}")
+         print(f"  Budget resets next Monday.")
+-    elif regime_str == "BEAR":
+-        print(f"\n{Fore.RED}[5/5] MARKET REGIME: BEAR — No new trades{Style.RESET_ALL}")
+-        print(f"  BTC 4H trend is down. Holding cash to protect capital.")
+-        print(f"  Bot will resume buying when BTC 4H structure turns NEUTRAL or BULL.")
+     else:
+-        regime_note = f"⚠ NEUTRAL market — higher confidence required" if regime_str == "NEUTRAL" else "✅ BULL market"
++        if regime_str == "BEAR":
++            regime_note = f"{Fore.RED}⚠ BEAR market — targeting oversold entries only{Style.RESET_ALL}"
++        elif regime_str == "NEUTRAL":
++            regime_note = f"{Fore.YELLOW}⚠ NEUTRAL market — buying dips actively{Style.RESET_ALL}"
++        else:
++            regime_note = f"{Fore.GREEN}✅ BULL market — full aggression{Style.RESET_ALL}"
+         print(f"\n{Fore.CYAN}[5/5] Getting Claude decisions... ({regime_note}){Style.RESET_ALL}")
+         decisions = claude_brain.get_decisions_for_all(market_data_list, sentiment, regime)
+         any_trade = False
+diff --git a/market_analyzer.py b/market_analyzer.py
+index 32ccb42..4400549 100644
+--- a/market_analyzer.py
++++ b/market_analyzer.py
+@@ -125,7 +125,7 @@ def get_btc_market_regime() -> dict:
+         elif lower_lows <= 1: bull_signals += 1
+ 
+         if bull_signals >= 5:    regime = "BULL"
+-        elif bear_signals >= 5:  regime = "BEAR"
++        elif bear_signals >= 6:  regime = "BEAR"
+         else:                    regime = "NEUTRAL"
+ 
+         return {

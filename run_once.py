@@ -11,21 +11,22 @@ import claude_brain
 import trader
 import risk_manager
 import news_analyzer
-from config import PAPER_TRADING, WEEKLY_BUDGET
+from config import PAPER_TRADING, STARTING_BALANCE
 
 init(autoreset=True)
 
 
 def main():
     print(f"\n{'=' * 60}")
-    print(f"  CRYPTO TRADING BOT — GitHub Actions Run")
+    print(f"  CRYPTO TRADING BOT — Scheduled Scan")
     print(f"  {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
-    print(f"  Mode: {'PAPER' if PAPER_TRADING else 'LIVE'} | Budget: ${WEEKLY_BUDGET}")
+    print(f"  Mode: {'PAPER' if PAPER_TRADING else 'LIVE'} | Account: ${STARTING_BALANCE}")
     print(f"{'=' * 60}\n")
 
-    # Weekly summary
-    summary = risk_manager.weekly_summary()
-    print(f"  Budget: ${summary['budget']} | Spent: ${summary['spent']} | Remaining: ${summary['remaining']}")
+    # Account summary
+    summary = risk_manager.account_summary()
+    print(f"  Equity: ${summary['equity']} | Cash: ${summary['cash']} | "
+          f"P&L since {summary['experiment_start']}: ${summary['total_pnl']:+.2f} ({summary['total_pnl_pct']:+.2f}%)")
     print(f"  Open Positions: {summary['open_positions']}\n")
 
     # Step 1 — Sentiment
@@ -79,13 +80,17 @@ def main():
     if not any_trade:
         print(f"\n  {Fore.YELLOW}No trades this scan — waiting for better setups{Style.RESET_ALL}")
 
-    # Final positions
+    # Final positions + account snapshot (mark-to-market)
     positions = risk_manager.get_open_positions()
     print(f"\n  Open Positions: {len(positions)}")
     for symbol, pos in positions.items():
         current = current_prices.get(symbol, pos["entry_price"])
         pnl = (current - pos["entry_price"]) * pos["quantity"]
         print(f"  {symbol}: entry=${pos['entry_price']} | now=${current} | P&L=${pnl:+.4f}")
+
+    summary = risk_manager.account_summary(current_prices)
+    print(f"\n  ACCOUNT: equity=${summary['equity']} | cash=${summary['cash']} | "
+          f"total P&L=${summary['total_pnl']:+.2f} ({summary['total_pnl_pct']:+.2f}%)")
 
     print(f"\n{'=' * 60}")
     print(f"  Scan complete. Regime: {regime_str}. Next run in ~30 minutes.")

@@ -1,9 +1,13 @@
-name: Crypto Trading Bot
+name: Crypto Trading Bot (manual only — bot now runs locally)
 
+# The trading scan runs on the laptop via Windows Task Scheduler.
+# This workflow is kept only as a manual fallback (Actions tab → Run workflow).
 on:
-  schedule:
-    - cron: '*/30 * * * *'   # Every 30 minutes
-  workflow_dispatch:           # Allow manual trigger from GitHub UI
+  workflow_dispatch:
+
+concurrency:
+  group: bot-state
+  cancel-in-progress: false
 
 jobs:
   trade:
@@ -30,7 +34,7 @@ jobs:
           BINANCE_API_KEY: ${{ secrets.BINANCE_API_KEY }}
           BINANCE_SECRET_KEY: ${{ secrets.BINANCE_SECRET_KEY }}
           PAPER_TRADING: ${{ secrets.PAPER_TRADING }}
-          WEEKLY_BUDGET: ${{ secrets.WEEKLY_BUDGET }}
+          STARTING_BALANCE: '500'
           GMAIL_SENDER: ${{ secrets.GMAIL_SENDER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           NOTIFY_EMAIL: ${{ secrets.NOTIFY_EMAIL }}
@@ -41,6 +45,15 @@ jobs:
         run: |
           git config user.name "Trading Bot"
           git config user.email "bot@trading-agent.com"
-          git add risk_state.json trades.csv || true
-          git diff --staged --quiet || git commit -m "Bot state update $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git add risk_state.json trades.csv
+          if git diff --staged --quiet; then
+            echo "No state changes."
+            exit 0
+          fi
+          git commit -m "Bot state update $(date -u '+%Y-%m-%d %H:%M UTC')"
+          for i in 1 2 3; do
+            git push && exit 0
+            echo "Push failed, rebasing and retrying ($i/3)..."
+            git pull --rebase
+          done
           git push

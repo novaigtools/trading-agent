@@ -1,8 +1,8 @@
 import json
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 from config import (
-    WEEKLY_BUDGET, MAX_POSITION_PCT, STOP_LOSS_PCT, TAKE_PROFIT_PCT,
+    STARTING_BALANCE, MAX_POSITION_PCT, STOP_LOSS_PCT, TAKE_PROFIT_PCT,
     PENNY_PAIRS, PENNY_MAX_PCT, PENNY_STOP_LOSS_PCT, PENNY_TAKE_PROFIT_PCT,
     MAX_PENNY_POSITIONS,
 )
@@ -10,31 +10,34 @@ from config import (
 RISK_STATE_FILE = "risk_state.json"
 
 
+def _default_state() -> dict:
+    return {
+        "experiment_start": datetime.utcnow().strftime("%Y-%m-%d"),
+        "starting_balance": STARTING_BALANCE,
+        "cash": STARTING_BALANCE,
+        "open_positions": {},
+    }
+
+
 def _load_state() -> dict:
     if os.path.exists(RISK_STATE_FILE):
         with open(RISK_STATE_FILE) as f:
-            return json.load(f)
-    return {"week_start": _week_start(), "spent_this_week": 0.0, "open_positions": {}}
+            state = json.load(f)
+        if "cash" in state:
+            return state
+        # Migrate legacy weekly-budget schema
+        migrated = _default_state()
+        migrated["open_positions"] = state.get("open_positions", {})
+        held = sum(p["entry_price"] * p["quantity"] for p in migrated["open_positions"].values())
+        migrated["cash"] = round(STARTING_BALANCE - held, 2)
+        _save_state(migrated)
+        return migrated
+    return _default_state()
 
 
 def _save_state(state: dict):
     with open(RISK_STATE_FILE, "w") as f:
         json.dump(state, f, indent=2)
-
-
-def _week_start() -> str:
-    today = datetime.utcnow()
-    monday = today - timedelta(days=today.weekday())
-    return monday.strftime("%Y-%m-%d")
-
-
-def _reset_if_new_week(state: dict) -> dict:
-    if state["week_start"] != _week_start():
-        state["week_start"] = _week_start()
-        state["spent_this_week"] = 0.0
-        print(f"  New week — budget reset to ${WEEKLY_BUDGET:.2f}")
-        _save_state(state)  # persist immediately so GitHub Actions commits the reset
-    return state
 
 
 def _is_penny(symbol: str) -> bool:
@@ -45,36 +48,38 @@ def _penny_positions_open(state: dict) -> int:
     return sum(1 for s in state.get("open_positions", {}) if s in PENNY_PAIRS)
 
 
+def _book_equity(state: dict) -> float:
+    """Cash + entry cost of open positions (book value, no live prices needed)."""
+    held = sum(p["entry_price"] * p["quantity"] for p in state["open_positions"].values())
+    return state["cash"] + held
+
+
 def get_position_size(price: float, symbol: str = "") -> float:
     state = _load_state()
-    state = _reset_if_new_week(state)
-    remaining = WEEKLY_BUDGET - state["spent_this_week"]
+    equity = _book_equity(state)
 
     if _is_penny(symbol):
         if _penny_positions_open(state) >= MAX_PENNY_POSITIONS:
             return 0.0  # Already at max penny exposure
-        max_trade = WEEKLY_BUDGET * PENNY_MAX_PCT
+        max_trade = equity * PENNY_MAX_PCT
     else:
-        max_trade = WEEKLY_BUDGET * MAX_POSITION_PCT
+        max_trade = equity * MAX_POSITION_PCT
 
-    amount_usd = min(remaining, max_trade)
+    amount_usd = min(state["cash"], max_trade)
     if amount_usd < 5:
         return 0.0
     return round(amount_usd / price, 6)
 
 
-def budget_remaining() -> float:
-    state = _load_state()
-    state = _reset_if_new_week(state)
-    return round(WEEKLY_BUDGET - state["spent_this_week"], 2)
+def cash_available() -> float:
+    return round(_load_state()["cash"], 2)
 
 
 def record_trade(symbol: str, side: str, price: float, quantity: float):
     state = _load_state()
-    state = _reset_if_new_week(state)
-    cost = price * quantity
     if side == "BUY":
-        state["spent_this_week"] += cost
+        cost = price * quantity
+        state["cash"] = round(state["cash"] - cost, 4)
         sl_pct = PENNY_STOP_LOSS_PCT if _is_penny(symbol) else STOP_LOSS_PCT
         tp_pct = PENNY_TAKE_PROFIT_PCT if _is_penny(symbol) else TAKE_PROFIT_PCT
         state["open_positions"][symbol] = {
@@ -86,9 +91,8 @@ def record_trade(symbol: str, side: str, price: float, quantity: float):
             "is_penny": _is_penny(symbol),
         }
     elif side == "SELL" and symbol in state["open_positions"]:
-        # Recycle the original capital back into available budget
-        original_cost = state["open_positions"][symbol]["entry_price"] * state["open_positions"][symbol]["quantity"]
-        state["spent_this_week"] = max(0, state["spent_this_week"] - original_cost)
+        # Proceeds go back to cash — realized P&L is captured automatically
+        state["cash"] = round(state["cash"] + price * quantity, 4)
         del state["open_positions"][symbol]
     _save_state(state)
 
@@ -111,12 +115,28 @@ def get_open_positions() -> dict:
     return _load_state().get("open_positions", {})
 
 
-def weekly_summary() -> dict:
+def account_summary(current_prices: dict = None) -> dict:
+    """Snapshot of the paper account. Pass live prices for mark-to-market equity."""
     state = _load_state()
+    positions = state["open_positions"]
+    held_book = sum(p["entry_price"] * p["quantity"] for p in positions.values())
+
+    if current_prices:
+        held_market = sum(
+            current_prices.get(s, p["entry_price"]) * p["quantity"]
+            for s, p in positions.items()
+        )
+    else:
+        held_market = held_book
+
+    equity = round(state["cash"] + held_market, 2)
     return {
-        "week_start": state["week_start"],
-        "budget": WEEKLY_BUDGET,
-        "spent": round(state["spent_this_week"], 2),
-        "remaining": round(WEEKLY_BUDGET - state["spent_this_week"], 2),
-        "open_positions": len(state.get("open_positions", {})),
+        "experiment_start": state["experiment_start"],
+        "starting_balance": state["starting_balance"],
+        "cash": round(state["cash"], 2),
+        "positions_value": round(held_market, 2),
+        "equity": equity,
+        "total_pnl": round(equity - state["starting_balance"], 2),
+        "total_pnl_pct": round((equity - state["starting_balance"]) / state["starting_balance"] * 100, 2),
+        "open_positions": len(positions),
     }

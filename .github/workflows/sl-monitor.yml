@@ -1,9 +1,17 @@
-name: SL/TP Monitor (Every 5 Min)
+name: SL/TP Monitor (cloud backstop)
 
+# The primary SL/TP monitor runs on the laptop every 5 minutes.
+# This is an emergency backstop for when the laptop is off/asleep.
+# GitHub cron is heavily throttled (fires every few hours in practice) —
+# that is fine for a backstop, but do NOT rely on it as the primary monitor.
 on:
   schedule:
-    - cron: '*/5 * * * *'    # Every 5 minutes — fast stop-loss protection
-  workflow_dispatch:           # Manual trigger
+    - cron: '*/30 * * * *'   # requested every 30 min; GitHub throttles to ~hours
+  workflow_dispatch:
+
+concurrency:
+  group: bot-state
+  cancel-in-progress: false
 
 jobs:
   monitor:
@@ -16,12 +24,25 @@ jobs:
         uses: actions/checkout@v4.2.2
 
       - name: Check SL/TP (no pip install needed)
+        env:
+          GMAIL_SENDER: ${{ secrets.GMAIL_SENDER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          NOTIFY_EMAIL: ${{ secrets.NOTIFY_EMAIL }}
         run: python3 sl_monitor.py
 
       - name: Save state if changed
         run: |
           git config user.name "Trading Bot"
           git config user.email "bot@trading-agent.com"
-          git add risk_state.json trades.csv || true
-          git diff --staged --quiet || git commit -m "SL/TP triggered $(date -u '+%Y-%m-%d %H:%M UTC')"
-          git push || true
+          git add risk_state.json trades.csv
+          if git diff --staged --quiet; then
+            echo "No triggers fired."
+            exit 0
+          fi
+          git commit -m "SL/TP triggered $(date -u '+%Y-%m-%d %H:%M UTC')"
+          for i in 1 2 3; do
+            git push && exit 0
+            echo "Push failed, rebasing and retrying ($i/3)..."
+            git pull --rebase
+          done
+          git push

@@ -120,9 +120,9 @@
       <div class="sub" id="k-pos-count">Live positions</div>
     </div>
     <div class="kpi">
-      <div class="label">Budget Remaining</div>
+      <div class="label">Account Equity</div>
       <div class="value" id="k-budget">—</div>
-      <div class="sub" id="k-week">Week of —</div>
+      <div class="sub" id="k-week">Cash available: —</div>
     </div>
   </div>
 
@@ -159,13 +159,13 @@
           <div class="fng-ends"><span>0 Fear</span><span>Greed 100</span></div>
         </div>
         <div>
-          <div class="stat-row"><span style="color:var(--muted)">Week start</span><span id="s-week">—</span></div>
-          <div class="stat-row"><span style="color:var(--muted)">Budget</span><span>$500.00</span></div>
-          <div class="stat-row"><span style="color:var(--muted)">Spent</span><span id="s-spent">—</span></div>
+          <div class="stat-row"><span style="color:var(--muted)">Experiment start</span><span id="s-week">—</span></div>
+          <div class="stat-row"><span style="color:var(--muted)">Starting balance</span><span>$500.00</span></div>
+          <div class="stat-row"><span style="color:var(--muted)">Cash</span><span id="s-spent">—</span></div>
           <div class="stat-row"><span style="color:var(--muted)">Win rate</span><span id="s-wr">—</span></div>
           <div class="stat-row"><span style="color:var(--muted)">Total trades</span><span id="s-trades">—</span></div>
           <div class="stat-row"><span style="color:var(--muted)">Bot status</span>
-            <span class="green" style="font-size:11px">✅ GitHub Actions</span></div>
+            <span class="green" style="font-size:11px">✅ Local (laptop)</span></div>
         </div>
       </div>
     </div>
@@ -335,7 +335,8 @@ async function update(){
     const positions = state.open_positions||{};
     const unreal    = await renderPositions(positions, trades);
     const total     = realised + unreal;
-    const remaining = BUDGET - (state.spent_this_week||0);
+    const cash   = state.cash != null ? state.cash : (BUDGET - (state.spent_this_week||0));
+    const equity = cash + Object.values(positions).reduce((s,p)=>s+p.entry_price*p.quantity,0) + unreal;
 
     // KPIs
     const setKpi=(id,val,cls)=>{ const el=document.getElementById(id); el.textContent=val; if(cls)el.className=`value ${cls}`; };
@@ -344,12 +345,12 @@ async function update(){
     setKpi("k-real",  `${sgn(realised)}$${Math.abs(realised).toFixed(2)}`, col(realised));
     setKpi("k-unreal",`${sgn(unreal)}$${Math.abs(unreal).toFixed(2)}`, col(unreal));
     document.getElementById("k-pos-count").textContent=`${Object.keys(positions).length} position(s)`;
-    setKpi("k-budget",`$${remaining.toFixed(2)}`, remaining>50?"green":"red");
-    document.getElementById("k-week").textContent=`Week of ${state.week_start||"—"}`;
+    setKpi("k-budget",`$${equity.toFixed(2)}`, equity>=BUDGET?"green":"red");
+    document.getElementById("k-week").textContent=`Cash available: $${cash.toFixed(2)}`;
 
     // Stats
-    document.getElementById("s-week").textContent   = state.week_start||"—";
-    document.getElementById("s-spent").textContent  = `$${(state.spent_this_week||0).toFixed(2)}`;
+    document.getElementById("s-week").textContent   = state.experiment_start||state.week_start||"—";
+    document.getElementById("s-spent").textContent  = `$${cash.toFixed(2)}`;
     const tot=wins+losses;
     document.getElementById("s-wr").textContent     = tot>0?`${wins}/${tot} (${(wins/tot*100).toFixed(0)}%)`:"—";
     document.getElementById("s-trades").textContent = trades.filter(t=>t.action==="SELL").length;

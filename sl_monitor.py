@@ -1,17 +1,32 @@
 """
 Lightweight Stop-Loss / Take-Profit monitor.
 Uses ONLY Python built-ins (no pip install needed) — runs in ~5 seconds.
-Designed to run every 5 minutes on GitHub Actions within the free tier.
+Runs locally every 5 minutes via Task Scheduler, and on GitHub Actions as a backstop.
 """
 import json
 import csv
 import os
+import smtplib
 import urllib.request
-import urllib.parse
+from email.mime.text import MIMEText
 from datetime import datetime
 
-RISK_FILE  = "risk_state.json"
+RISK_FILE   = "risk_state.json"
 TRADES_FILE = "trades.csv"
+
+
+def _load_env():
+    """Minimal .env parser (stdlib only). Real env vars take precedence."""
+    env = {}
+    if os.path.exists(".env"):
+        with open(".env") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    env[k.strip()] = v.strip()
+    env.update(os.environ)
+    return env
 
 
 def fetch_price(symbol: str) -> float:
@@ -22,7 +37,7 @@ def fetch_price(symbol: str) -> float:
 
 def load_state() -> dict:
     if not os.path.exists(RISK_FILE):
-        return {"week_start": "", "spent_this_week": 0, "open_positions": {}}
+        return {"cash": 0, "open_positions": {}}
     with open(RISK_FILE) as f:
         return json.load(f)
 
@@ -42,6 +57,28 @@ def log_trade(symbol, price, quantity, reason):
             f.write("timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mode\n")
         f.write(row + "\n")
     print(f"  [{reason}] {symbol} SELL @ ${price}  |  value: ${value}")
+
+
+def send_alert_email(triggered: list):
+    """Best-effort email alert — never blocks the sell logic."""
+    env = _load_env()
+    sender   = env.get("GMAIL_SENDER", "")
+    password = env.get("GMAIL_APP_PASSWORD", "")
+    to_addr  = env.get("NOTIFY_EMAIL", "") or sender
+    if not sender or not password:
+        return
+    try:
+        body = "SL/TP monitor executed the following paper trades:\n\n" + "\n".join(triggered)
+        msg = MIMEText(body)
+        msg["Subject"] = f"[Trading Bot] {len(triggered)} SL/TP trigger(s) fired"
+        msg["From"] = sender
+        msg["To"] = to_addr
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=15) as server:
+            server.login(sender, password)
+            server.send_message(msg)
+        print(f"  Alert email sent to {to_addr}")
+    except Exception as e:
+        print(f"  Email alert failed (non-fatal): {e}")
 
 
 def run():
@@ -65,20 +102,17 @@ def run():
 
             if price <= sl:
                 reason = "Automated STOP LOSS triggered"
-                log_trade(symbol, price, pos["quantity"], reason)
-                # Recycle capital
-                original_cost = pos["entry_price"] * pos["quantity"]
-                state["spent_this_week"] = max(0, state["spent_this_week"] - original_cost)
-                del state["open_positions"][symbol]
-                triggered.append(f"SL {symbol} @ ${price}  P&L=${pnl:+.2f}")
-
             elif price >= tp:
                 reason = "Automated TAKE PROFIT triggered"
-                log_trade(symbol, price, pos["quantity"], reason)
-                original_cost = pos["entry_price"] * pos["quantity"]
-                state["spent_this_week"] = max(0, state["spent_this_week"] - original_cost)
-                del state["open_positions"][symbol]
-                triggered.append(f"TP {symbol} @ ${price}  P&L=${pnl:+.2f}")
+            else:
+                continue
+
+            log_trade(symbol, price, pos["quantity"], reason)
+            # Sale proceeds return to cash — realized P&L captured automatically
+            state["cash"] = round(state.get("cash", 0) + price * pos["quantity"], 4)
+            del state["open_positions"][symbol]
+            label = "SL" if "STOP" in reason else "TP"
+            triggered.append(f"{label} {symbol} @ ${price}  P&L=${pnl:+.2f}")
 
         except Exception as e:
             print(f"  Could not check {symbol}: {e}")
@@ -88,11 +122,12 @@ def run():
         print(f"\n  EXECUTED: {len(triggered)} trade(s):")
         for t in triggered:
             print(f"    {t}")
+        send_alert_email(triggered)
     else:
         print(f"\n  All {len(positions)} position(s) within range — no action needed.")
 
 
 if __name__ == "__main__":
-    print(f"\n  SL/TP Monitor  —  {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
-    print(f"  {'─'*50}")
+    print(f"\n  SL/TP Monitor  --  {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
+    print(f"  {'-'*50}")
     run()

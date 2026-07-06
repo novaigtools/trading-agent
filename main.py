@@ -8,7 +8,7 @@ import claude_brain
 import trader
 import risk_manager
 import news_analyzer
-from config import PAPER_TRADING, SCAN_INTERVAL_MINUTES, WEEKLY_BUDGET
+from config import PAPER_TRADING, SCAN_INTERVAL_MINUTES, STARTING_BALANCE
 
 init(autoreset=True)
 
@@ -131,15 +131,14 @@ def print_sentiment_bar(sentiment: dict):
 def run_scan():
     print_header()
 
-    # Budget status
-    summary = risk_manager.weekly_summary()
-    budget_color = Fore.RED if summary["remaining"] < 10 else Fore.GREEN
-    print(f"\n  Budget: ${summary['budget']:.2f} | "
-          f"Spent: ${summary['spent']:.2f} | "
-          f"{budget_color}Remaining: ${summary['remaining']:.2f}{Style.RESET_ALL}")
+    # Account status
+    summary = risk_manager.account_summary()
+    pnl_color = Fore.GREEN if summary["total_pnl"] >= 0 else Fore.RED
+    print(f"\n  Equity: ${summary['equity']:.2f} | Cash: ${summary['cash']:.2f} | "
+          f"{pnl_color}P&L since {summary['experiment_start']}: ${summary['total_pnl']:+.2f} ({summary['total_pnl_pct']:+.2f}%){Style.RESET_ALL}")
 
-    if summary["remaining"] < 5:
-        print(f"  {Fore.YELLOW}⚠ Budget exhausted — monitoring open positions only, no new trades this week{Style.RESET_ALL}")
+    if summary["cash"] < 5:
+        print(f"  {Fore.YELLOW}⚠ Cash fully deployed — monitoring open positions only{Style.RESET_ALL}")
 
     # Live positions with P&L
     print(f"\n  {Fore.CYAN}OPEN POSITIONS:{Style.RESET_ALL}")
@@ -175,9 +174,9 @@ def run_scan():
     trader.check_and_execute_stops(current_prices)
 
     # Claude decisions — hard block in BEAR regime
-    if summary["remaining"] < 5:
-        print(f"\n{Fore.CYAN}[5/5] Skipping — budget exhausted{Style.RESET_ALL}")
-        print(f"  Budget resets next Monday.")
+    if summary["cash"] < 5:
+        print(f"\n{Fore.CYAN}[5/5] Skipping — cash fully deployed{Style.RESET_ALL}")
+        print(f"  New buys resume when a position closes and frees up cash.")
     elif regime_str == "BEAR":
         print(f"\n{Fore.RED}[5/5] MARKET REGIME: BEAR — No new trades{Style.RESET_ALL}")
         print(f"  BTC 4H trend is down. Holding cash to protect capital.")
@@ -200,7 +199,7 @@ def run_scan():
 def main():
     print(f"\n{Fore.GREEN}Starting Crypto Trading Agent...{Style.RESET_ALL}")
     print(f"  Mode: {'PAPER TRADING' if PAPER_TRADING else 'LIVE TRADING'}")
-    print(f"  Weekly budget: ${WEEKLY_BUDGET:.2f}")
+    print(f"  Paper account: ${STARTING_BALANCE:.2f}")
     print(f"  Scan interval: every {SCAN_INTERVAL_MINUTES} minutes")
     print(f"  Sentiment feeds: Fear & Greed + News + Trending + Dominance")
 
