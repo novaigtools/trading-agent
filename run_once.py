@@ -1,9 +1,10 @@
 """
-Single-scan version of the trading bot — used by GitHub Actions.
-Runs one full scan, saves state, then exits.
+Single-scan version of the trading bot — runs one full scan, saves state, exits.
+Called every 30 min by Windows Task Scheduler (and manually via GitHub Actions).
 """
 import os
 import sys
+import time
 from datetime import datetime
 from colorama import Fore, Style, init
 import market_analyzer
@@ -14,6 +15,18 @@ import news_analyzer
 from config import PAPER_TRADING, STARTING_BALANCE
 
 init(autoreset=True)
+
+# If the laptop sleeps mid-scan, the process resumes hours later holding
+# stale market data. Never act on data older than these limits.
+MAX_FETCH_AGE_MIN = 10   # abort scan if data fetch phase took longer than this
+MAX_SCAN_AGE_MIN  = 20   # skip trade execution if whole scan took longer than this
+
+# Wall clock, not monotonic: sleep/hibernate time must count as staleness.
+_SCAN_START = time.time()
+
+
+def _elapsed_min() -> float:
+    return (time.time() - _SCAN_START) / 60
 
 
 def main():
@@ -59,6 +72,14 @@ def main():
     market_data_list = market_analyzer.analyze_all_pairs()
     current_prices = {d["symbol"]: d["price"] for d in market_data_list if "price" in d}
 
+    # Staleness guard: if the laptop slept during the fetch phase, the prices
+    # above are hours old — acting on them would trade at phantom prices.
+    if _elapsed_min() > MAX_FETCH_AGE_MIN:
+        print(f"\n{Fore.RED}ABORTING SCAN: data fetch took {_elapsed_min():.0f} min "
+              f"(laptop slept mid-scan?). Prices are stale — no action taken. "
+              f"Next scheduled scan will start fresh.{Style.RESET_ALL}")
+        return
+
     # Step 4 — Stop loss / take profit
     print(f"\n{Fore.CYAN}[4/5] Checking stop-loss / take-profit...{Style.RESET_ALL}")
     trader.check_and_execute_stops(current_prices)
@@ -70,6 +91,13 @@ def main():
         decisions = []
     else:
         decisions = claude_brain.get_decisions_for_all(market_data_list, sentiment, regime)
+
+    # Second staleness checkpoint: Claude consultations can also straddle a sleep.
+    if _elapsed_min() > MAX_SCAN_AGE_MIN and decisions:
+        print(f"\n{Fore.RED}SKIPPING TRADE EXECUTION: scan has been running "
+              f"{_elapsed_min():.0f} min — decisions are based on stale data. "
+              f"Next scheduled scan will start fresh.{Style.RESET_ALL}")
+        decisions = []
 
     any_trade = False
     for decision in decisions:
