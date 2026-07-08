@@ -12,7 +12,10 @@ import claude_brain
 import trader
 import risk_manager
 import news_analyzer
-from config import PAPER_TRADING, STARTING_BALANCE
+from config import (
+    PAPER_TRADING, STARTING_BALANCE, TRADING_PAIRS, PENNY_PAIRS,
+    INCLUDE_TRENDING, MAX_TRENDING_COINS, MIN_TRENDING_VOLUME_USD,
+)
 
 init(autoreset=True)
 
@@ -43,7 +46,7 @@ def main():
     print(f"  Open Positions: {summary['open_positions']}\n")
 
     # Step 1 — Sentiment
-    print(f"{Fore.CYAN}[1/4] Fetching sentiment & news...{Style.RESET_ALL}")
+    print(f"{Fore.CYAN}[1/6] Fetching sentiment & news...{Style.RESET_ALL}")
     try:
         sentiment = news_analyzer.get_full_sentiment_report()
         fng = sentiment.get("fear_and_greed", {})
@@ -57,8 +60,25 @@ def main():
         print(f"  Sentiment fetch failed: {e}")
         sentiment = {}
 
-    # Step 2 — Market regime
-    print(f"\n{Fore.CYAN}[2/5] Checking BTC market regime...{Style.RESET_ALL}")
+    # Step 2 — Live trending coins (Binance-tradeable only)
+    trending_pairs = []
+    if INCLUDE_TRENDING:
+        print(f"\n{Fore.CYAN}[2/6] Scanning live trending coins...{Style.RESET_ALL}")
+        try:
+            raw_trending = news_analyzer.get_tradeable_trending(
+                MAX_TRENDING_COINS, MIN_TRENDING_VOLUME_USD)
+            # Coins already in our static tiers keep their own tier — trending
+            # tier is only for genuinely new names not otherwise tracked.
+            known = set(TRADING_PAIRS + PENNY_PAIRS)
+            trending_pairs = [p for p in raw_trending if p not in known]
+            print(f"  Trending & tradeable this scan: "
+                  f"{', '.join(trending_pairs) if trending_pairs else 'none new passed the liquidity filter'}")
+        except Exception as e:
+            print(f"  Trending scan failed: {e}")
+    risk_manager.set_trending(trending_pairs)
+
+    # Step 3 — Market regime
+    print(f"\n{Fore.CYAN}[3/6] Checking BTC market regime...{Style.RESET_ALL}")
     regime = market_analyzer.get_btc_market_regime()
     regime_str = regime.get("regime", "UNKNOWN")
     regime_color = Fore.GREEN if regime_str == "BULL" else (Fore.RED if regime_str == "BEAR" else Fore.YELLOW)
@@ -67,9 +87,9 @@ def main():
     print(f"  BTC: ${regime.get('price','?')} | EMA20(4H): ${regime.get('ema20_4h','?')} | EMA50(4H): ${regime.get('ema50_4h','?')}")
     print(f"  Structure: {regime.get('ema_structure','?')} | RSI(4H): {regime.get('rsi_4h','?')}")
 
-    # Step 3 — Market data
-    print(f"\n{Fore.CYAN}[3/5] Fetching market data...{Style.RESET_ALL}")
-    market_data_list = market_analyzer.analyze_all_pairs()
+    # Step 4 — Market data (static tiers + this scan's trending picks)
+    print(f"\n{Fore.CYAN}[4/6] Fetching market data...{Style.RESET_ALL}")
+    market_data_list = market_analyzer.analyze_all_pairs(extra_pairs=trending_pairs)
     current_prices = {d["symbol"]: d["price"] for d in market_data_list if "price" in d}
 
     # Staleness guard: if the laptop slept during the fetch phase, the prices
@@ -80,17 +100,18 @@ def main():
               f"Next scheduled scan will start fresh.{Style.RESET_ALL}")
         return
 
-    # Step 4 — Stop loss / take profit
-    print(f"\n{Fore.CYAN}[4/5] Checking stop-loss / take-profit...{Style.RESET_ALL}")
+    # Step 5 — Stop loss / take profit
+    print(f"\n{Fore.CYAN}[5/6] Checking stop-loss / take-profit...{Style.RESET_ALL}")
     trader.check_and_execute_stops(current_prices)
 
-    # Step 5 — Claude decisions (hard block on BEAR)
-    print(f"\n{Fore.CYAN}[5/5] Getting Claude decisions...{Style.RESET_ALL}")
+    # Step 6 — Claude decisions (hard block on BEAR)
+    print(f"\n{Fore.CYAN}[6/6] Getting Claude decisions...{Style.RESET_ALL}")
     if regime_str == "BEAR":
         print(f"  {Fore.RED}MARKET REGIME: BEAR — skipping new trades to protect capital{Style.RESET_ALL}")
         decisions = []
     else:
-        decisions = claude_brain.get_decisions_for_all(market_data_list, sentiment, regime)
+        decisions = claude_brain.get_decisions_for_all(
+            market_data_list, sentiment, regime, active_trending=set(trending_pairs))
 
     # Second staleness checkpoint: Claude consultations can also straddle a sleep.
     if _elapsed_min() > MAX_SCAN_AGE_MIN and decisions:

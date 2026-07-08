@@ -146,9 +146,12 @@ def get_btc_market_regime() -> dict:
         return {"regime": "UNKNOWN", "error": str(e)}
 
 
-def analyze_all_pairs() -> list[dict]:
+def analyze_all_pairs(extra_pairs: list = None) -> list[dict]:
     results = []
-    all_pairs = TRADING_PAIRS + PENNY_PAIRS
+    all_pairs = TRADING_PAIRS + PENNY_PAIRS + list(extra_pairs or [])
+    # De-dup while preserving order (a trending coin may already be in our lists)
+    seen = set()
+    all_pairs = [p for p in all_pairs if not (p in seen or seen.add(p))]
     for pair in all_pairs:
         print(f"  Analyzing {pair}...")
         results.append(analyze_pair(pair))

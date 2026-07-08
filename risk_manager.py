@@ -9,6 +9,16 @@ from config import (
 
 RISK_STATE_FILE = "risk_state.json"
 
+# Dynamic trending symbols for the current scan — set by run_once each run.
+# Treated as penny-tier (small size, tight stops) since they are the riskiest names.
+_TRENDING: set = set()
+
+
+def set_trending(symbols):
+    """Register this scan's live trending symbols so they get penny-tier risk."""
+    global _TRENDING
+    _TRENDING = set(symbols or [])
+
 
 def _default_state() -> dict:
     return {
@@ -41,11 +51,11 @@ def _save_state(state: dict):
 
 
 def _is_penny(symbol: str) -> bool:
-    return symbol in PENNY_PAIRS
+    return symbol in PENNY_PAIRS or symbol in _TRENDING
 
 
 def _penny_positions_open(state: dict) -> int:
-    return sum(1 for s in state.get("open_positions", {}) if s in PENNY_PAIRS)
+    return sum(1 for s in state.get("open_positions", {}) if _is_penny(s))
 
 
 def _book_equity(state: dict) -> float:

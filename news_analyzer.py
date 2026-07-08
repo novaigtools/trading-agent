@@ -76,6 +76,42 @@ def get_trending_coins() -> list[dict]:
         return [{"error": str(e)}]
 
 
+def get_tradeable_trending(max_coins: int = 3, min_volume_usd: float = 2_000_000) -> list[str]:
+    """
+    CoinGecko trending coins that ALSO have a liquid Binance USDT spot pair.
+    Returns a list of Binance symbols like ['PENGUUSDT', 'BONKUSDT'].
+    Most trending micro-caps trade only on DEXs and are filtered out here —
+    the bot can only trade what Binance lists with real volume.
+    """
+    validated = []
+    try:
+        r = requests.get("https://api.coingecko.com/api/v3/search/trending", timeout=10)
+        coins = r.json().get("coins", [])
+    except Exception as e:
+        print(f"  Trending fetch failed: {e}")
+        return validated
+
+    for c in coins:
+        sym = c["item"]["symbol"].upper()
+        pair = f"{sym}USDT"
+        try:
+            t = requests.get(
+                "https://api.binance.com/api/v3/ticker/24hr",
+                params={"symbol": pair}, timeout=8
+            )
+            if t.status_code != 200:
+                continue  # not listed on Binance
+            vol = float(t.json().get("quoteVolume", 0))
+            if vol >= min_volume_usd:
+                validated.append(pair)
+                print(f"  Trending pick: {pair} (${vol/1e6:.1f}M 24h vol)")
+        except Exception:
+            continue
+        if len(validated) >= max_coins:
+            break
+    return validated
+
+
 def get_btc_dominance() -> dict:
     """Fetch BTC dominance from CoinGecko (free)"""
     try:

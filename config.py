@@ -38,12 +38,23 @@ TRADING_PAIRS = [
 ]
 LONG_TERM_PAIRS = []  # No slow large-caps — all positions are swing/intraday
 
-# Tier 5 — Penny/meme coins (capped exposure, max 2 positions)
+# Tier 5 — Penny/meme coins (capped exposure)
 PENNY_PAIRS = [
     "PEPEUSDT",   # highest-volume pure meme
     "WIFUSDT",    # dogwifhat, SOL meme, 10-30% daily swings
     "FLOKIUSDT",  # classic meme coin
+    "BONKUSDT",   # Solana meme, high volume
+    "TRUMPUSDT",  # political meme, liquid
+    "PENGUUSDT",  # Pudgy Penguins meme
 ]
+
+# Tier 6 — Dynamic trending coins.
+# Each scan the bot pulls CoinGecko's trending list and auto-includes any coin
+# that has a liquid Binance USDT spot pair. These rotate daily and are the
+# highest-risk names — they get penny-tier sizing and stops.
+INCLUDE_TRENDING        = True
+MAX_TRENDING_COINS      = 3          # max trending coins added per scan
+MIN_TRENDING_VOLUME_USD = 2_000_000  # skip illiquid junk (< $2M daily volume)
 
 MAX_POSITION_PCT      = 0.15   # 15% of account equity per standard position
 PENNY_MAX_PCT         = 0.09   # 9% per penny position — 2 positions = 18% max meme exposure

@@ -74,11 +74,21 @@ If action is HOLD, set entry_price, stop_loss, take_profit to null.
 Only recommend BUY when confidence is 8 or above. 7 is not enough — be patient."""
 
 
-def get_trading_decision(market_data: dict, sentiment: dict = None, regime: dict = None) -> dict:
+KNOWN_MEMES = ("PEPEUSDT", "WIFUSDT", "FLOKIUSDT", "BONKUSDT", "TRUMPUSDT", "PENGUUSDT")
+
+
+def get_trading_decision(market_data: dict, sentiment: dict = None, regime: dict = None,
+                         active_trending: set = None) -> dict:
     sym = market_data['symbol']
+    active_trending = active_trending or set()
     if sym in ("BTCUSDT", "ETHUSDT"):
         coin_type = "LARGE CAP — treat as swing trade, be conservative"
-    elif sym in ("PEPEUSDT", "WIFUSDT", "FLOKIUSDT"):
+    elif sym in active_trending and sym not in KNOWN_MEMES:
+        coin_type = ("TIER 6 TRENDING MICRO-CAP — this coin is spiking on CoinGecko's trending list RIGHT NOW and is the HIGHEST-RISK category. "
+                     "Position size is 9% of budget, stop-loss 3%, take-profit 9%. These are frequently pump-and-dumps. "
+                     "ONLY buy on a clear volume-confirmed breakout with strong momentum (RSI rising, price above EMA20, volume 2x+ average). "
+                     "If the move looks already-extended or volume is fading, HOLD. When in doubt, stay out.")
+    elif sym in KNOWN_MEMES:
         coin_type = "TIER 5 PENNY MEME — position size is 9% of budget. Stop-loss 3%, take-profit 9%. Only buy on RSI<30 + volume spike 2x, or BB upper breakout with volume. These move 10-30%/day — be very selective."
     elif sym in ("DOGEUSDT",):
         coin_type = "MEME COIN — high volatility, hunt momentum and volume breakouts aggressively"
@@ -177,7 +187,8 @@ Respond with your JSON trading decision only."""
     return json.loads(raw.strip())
 
 
-def get_decisions_for_all(market_data_list: list[dict], sentiment: dict = None, regime: dict = None) -> list[dict]:
+def get_decisions_for_all(market_data_list: list[dict], sentiment: dict = None, regime: dict = None,
+                          active_trending: set = None) -> list[dict]:
     decisions = []
     for market_data in market_data_list:
         if "error" in market_data:
@@ -185,7 +196,7 @@ def get_decisions_for_all(market_data_list: list[dict], sentiment: dict = None, 
             continue
         print(f"  Consulting Claude for {market_data['symbol']}...")
         try:
-            decision = get_trading_decision(market_data, sentiment, regime)
+            decision = get_trading_decision(market_data, sentiment, regime, active_trending)
             decision["market_price"] = market_data["price"]
             decisions.append(decision)
         except Exception as e:
