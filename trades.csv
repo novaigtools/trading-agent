@@ -63,3 +63,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-06-06 08:49:40,DOGEUSDT,SELL,0.08235,761.42132,62.7,Bot offline — emergency close at market price,10,intraday,PAPER
 2026-06-14 06:56:50,WIFUSDT,BUY,0.1586,31.525851,5.0,FORCE TEST TRADE — verifying bot pipeline,10,intraday,PAPER
 2026-07-06 23:38:05,WIFUSDT,SELL,0.1739,31.525851,5.48,"Automated TAKE PROFIT triggered",10,intraday,PAPER
+2026-07-08 05:40:33,WIFUSDT,BUY,0.1595,62.695925,10.0,Manual $10 test buy â€” verifying live pipeline,10,intraday,PAPER

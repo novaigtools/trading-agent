@@ -1,77 +1,57 @@
 """
-One-shot forced $5 paper trade — used to verify the bot pipeline works end-to-end.
-Uses only Python built-ins (no pip install needed).
+One-shot small PAPER test buy — verifies the bot pipeline end-to-end.
+Runs through the REAL production code path (risk_manager + trader), so the
+position is booked, sized, and stop-lossed exactly as an auto-scan buy would be,
+then picked up by the 5-minute SL/TP monitor automatically.
+
+Usage:  python force_trade.py [SYMBOL] [USD_AMOUNT]
+        python force_trade.py WIFUSDT 10
 """
-import json, csv, os, urllib.request
-from datetime import datetime
+import sys
+import requests
+import risk_manager
+import trader
 
-RISK_FILE   = "risk_state.json"
-TRADES_FILE = "trades.csv"
-SYMBOL      = "WIFUSDT"   # Penny coin — good for a small test
-TARGET_USD  = 5.0         # $5 test trade
+DEFAULT_SYMBOL = "WIFUSDT"
+DEFAULT_USD    = 10.0
 
-def fetch_price(symbol):
-    url = f"https://api.binance.com/api/v3/ticker/price?symbol={symbol}"
-    with urllib.request.urlopen(url, timeout=10) as r:
-        return float(json.loads(r.read())["price"])
 
-def load_state():
-    if os.path.exists(RISK_FILE):
-        with open(RISK_FILE) as f:
-            return json.load(f)
-    return {"week_start": "", "spent_this_week": 0.0, "open_positions": {}}
+def fetch_price(symbol: str) -> float:
+    r = requests.get("https://api.binance.com/api/v3/ticker/price",
+                     params={"symbol": symbol}, timeout=10)
+    r.raise_for_status()
+    return float(r.json()["price"])
 
-def save_state(state):
-    with open(RISK_FILE, "w") as f:
-        json.dump(state, f, indent=2)
 
-def log_trade(symbol, price, quantity):
-    value   = round(price * quantity, 4)
-    ts      = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
-    row     = [ts, symbol, "BUY", price, quantity, value,
-               "FORCE TEST TRADE — verifying bot pipeline", 10, "intraday", "PAPER"]
-    write_header = not os.path.exists(TRADES_FILE)
-    with open(TRADES_FILE, "a", newline="") as f:
-        w = csv.writer(f)
-        if write_header:
-            w.writerow(["timestamp","symbol","action","price","quantity",
-                        "value_usd","reason","confidence","trade_type","mode"])
-        w.writerow(row)
-    print(f"  Logged to trades.csv OK")
-    return value
-
-def run():
-    print(f"\n  Force Trade Test — {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
+def run(symbol: str, usd: float):
+    print(f"\n  Small PAPER test buy — {symbol} for ~${usd:.2f}")
     print(f"  {'-'*50}")
 
-    price    = fetch_price(SYMBOL)
-    quantity = round(TARGET_USD / price, 6)
-    sl       = round(price * 0.97, 6)   # 3% stop loss
-    tp       = round(price * 1.09, 6)   # 9% take profit
+    before = risk_manager.account_summary()
+    print(f"  Before: cash=${before['cash']:.2f} | equity=${before['equity']:.2f} | positions={before['open_positions']}")
 
-    print(f"  Symbol:   {SYMBOL}")
-    print(f"  Price:    ${price}")
-    print(f"  Quantity: {quantity}")
-    print(f"  Cost:     ${round(price * quantity, 4)}")
-    print(f"  SL:       ${sl}  |  TP: ${tp}")
+    if symbol in risk_manager.get_open_positions():
+        print(f"  {symbol} is already open — skipping to avoid a duplicate. Nothing changed.")
+        return
 
-    state = load_state()
-    state["spent_this_week"] = round(state.get("spent_this_week", 0) + (price * quantity), 4)
-    state["open_positions"][SYMBOL] = {
-        "entry_price": price,
-        "quantity":    quantity,
-        "stop_loss":   sl,
-        "take_profit": tp,
-        "opened_at":   datetime.utcnow().isoformat(),
-        "is_penny":    True,
-    }
-    save_state(state)
-    print(f"  Updated risk_state.json OK")
+    price = fetch_price(symbol)
+    quantity = round(usd / price, 6)
 
-    value = log_trade(SYMBOL, price, quantity)
+    # Real production path: logs to trades.csv, books cash, sets tier-based SL/TP
+    value = trader.log_trade(symbol, "BUY", price, quantity,
+                             "Manual $10 test buy — verifying live pipeline", 10, "intraday")
+    risk_manager.record_trade(symbol, "BUY", price, quantity)
 
-    print(f"\n  [OK] PAPER BUY {SYMBOL} — {quantity} @ ${price} = ${value}")
-    print(f"  Check dashboard: https://novaigtools.github.io/trading-agent/")
+    pos = risk_manager.get_open_positions()[symbol]
+    after = risk_manager.account_summary({symbol: price})
+    print(f"\n  [OK] BOUGHT {quantity} {symbol} @ ${price} = ${value:.2f}")
+    print(f"       stop-loss ${pos['stop_loss']}  |  take-profit ${pos['take_profit']}")
+    print(f"  After:  cash=${after['cash']:.2f} | equity=${after['equity']:.2f} | positions={after['open_positions']}")
+    print(f"\n  The 5-minute SL/TP monitor will now manage this position automatically.")
+    print(f"  Watch it on the dashboard: https://novaigtools.github.io/trading-agent/")
+
 
 if __name__ == "__main__":
-    run()
+    sym = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_SYMBOL
+    amt = float(sys.argv[2]) if len(sys.argv) > 2 else DEFAULT_USD
+    run(sym, amt)
