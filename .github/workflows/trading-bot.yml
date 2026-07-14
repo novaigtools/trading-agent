@@ -1,7 +1,11 @@
-name: Crypto Trading Bot (manual only — bot now runs locally)
+name: Crypto Trading Bot (manual fallback — runs the local rule engine)
 
 # The trading scan runs on the laptop via Windows Task Scheduler.
 # This workflow is kept only as a manual fallback (Actions tab → Run workflow).
+#
+# It runs BRAIN_MODE=rules: the deterministic rule engine in local_brain.py. No LLM,
+# no API key, no cost. The Claude Code CLI is not installed on GitHub runners, so
+# hybrid/cli modes would fall back to rules here anyway — we just say so explicitly.
 on:
   workflow_dispatch:
 
@@ -28,9 +32,10 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run trading bot scan
+      - name: Run trading bot scan (local rule engine, zero LLM calls)
         env:
-          CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+          # No CLAUDE_API_KEY on purpose: the paid API is what drained the credit
+          # balance and left the bot brain-dead. The rule engine needs no key.
           BINANCE_API_KEY: ${{ secrets.BINANCE_API_KEY }}
           BINANCE_SECRET_KEY: ${{ secrets.BINANCE_SECRET_KEY }}
           PAPER_TRADING: ${{ secrets.PAPER_TRADING }}
@@ -39,6 +44,7 @@ jobs:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           NOTIFY_EMAIL: ${{ secrets.NOTIFY_EMAIL }}
           SCAN_INTERVAL_MINUTES: '30'
+          BRAIN_MODE: rules
         run: python run_once.py
 
       - name: Save state back to repo

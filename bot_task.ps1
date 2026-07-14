@@ -23,7 +23,9 @@ if ((Test-Path $LogFile) -and ((Get-Item $LogFile).Length -gt 2MB)) {
 
 function Log($msg) {
     $ts = (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")
-    Add-Content -Path $LogFile -Value "[$ts UTC] $msg"
+    # -Encoding utf8: without it PS5.1 writes cp1252 and the bot's em-dashes and
+    # box-drawing characters land in the log as mojibake ("G??").
+    Add-Content -Path $LogFile -Value "[$ts UTC] $msg" -Encoding utf8
 }
 
 Log "=== $Mode run started ==="
@@ -44,7 +46,15 @@ $env:PYTHONUTF8 = "1"
 $script = if ($Mode -eq "scan") { "run_once.py" } else { "sl_monitor.py" }
 & $Python $script 2>&1 | ForEach-Object { Log $_ }
 $exit = $LASTEXITCODE
-Log "$script exited with code $exit"
+if ($exit -ne 0) {
+    # run_once.py exits 1 when every decision call failed — the bot is NOT trading.
+    # This line is what health_check.py and a human skimming the log will latch onto.
+    Log "*** FAILURE: $script exited with code $exit - THE BOT MAY NOT BE TRADING ***"
+    Log "*** Check the DEAD/DEGRADED banner above. If an LLM outage is to blame, set BRAIN_MODE=rules in .env ***"
+}
+else {
+    Log "$script exited with code $exit"
+}
 
 # Push state changes so dashboard + cloud backstop stay in sync
 git add risk_state.json trades.csv 2>$null

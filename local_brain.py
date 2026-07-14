@@ -14,13 +14,19 @@ from config import (
 )
 
 # --- Signal weights ----------------------------------------------------------
-W_RSI_EXTREME      = 4   # 1H RSI < 25 — "EXTREME priority, maximum allowed position size"
-W_RSI_OVERSOLD     = 3   # 1H RSI < 30 — "high priority entry for ALL coins"
-W_VOLUME_SPIKE     = 3   # volume >= 2x average — "Volume is KING"
-W_MACD_FLIP        = 2   # 15M MACD histogram crossed positive
+# Calibrated so that the two canonical setups in the spec land exactly on the buy bar
+# (MIN_BUY_CONFIDENCE = 8) and NO single signal can trigger a trade on its own —
+# every entry needs genuine confluence.
+#   oversold bounce : RSI<30 (4) + volume 2x (4)          = 8  -> BUY
+#   narrative move  : momentum (4) + volume 2x (4)        = 8  -> BUY
+#   lone signal     : max 5                               = 5  -> HOLD
+W_RSI_EXTREME      = 5   # 1H RSI < 25 — "EXTREME priority, maximum allowed position size"
+W_RSI_OVERSOLD     = 4   # 1H RSI < 30 — "high priority entry for ALL coins"
+W_VOLUME_SPIKE     = 4   # volume >= 2x average — "Volume is KING"
+W_MACD_FLIP        = 2   # 15M MACD histogram positive — early momentum shift
 W_EMA_CROSS        = 2   # EMA20 > EMA50 on 15M — trend change
 W_BB_BREAKOUT      = 2   # close above BB upper WITH volume confirmation
-W_MOMENTUM_OVERRIDE = 3  # 24h >= +8% and volume >= 2x — narrative move
+W_MOMENTUM_OVERRIDE = 4  # 24h >= +8% and volume >= 2x — narrative move (TAO/WLD style)
 W_REGIME_BULL      = 1   # BTC regime tailwind
 
 # --- Penalties ---------------------------------------------------------------

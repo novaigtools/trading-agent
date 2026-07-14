@@ -58,14 +58,30 @@ def _record_alert(key: str):
         json.dump(last, f, indent=2)
 
 
+def _write_local_alert(subject: str, body: str):
+    """
+    Always record alerts on disk, even when email works — and especially when it
+    doesn't. Email is the only channel that can fail silently (expired Gmail App
+    Password, no network), and an alerting system that can go quiet is worthless.
+    """
+    os.makedirs("logs", exist_ok=True)
+    stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+    with open(os.path.join("logs", "ALERTS.log"), "a", encoding="utf-8") as f:
+        f.write(f"\n{'=' * 70}\n[{stamp} UTC] {subject}\n{'=' * 70}\n{body}\n")
+
+
 def send_alert_email(subject: str, body: str, key: str = "default") -> bool:
     """
     Health alert (engine dead, bot stalled). Rate-limited to one per `key` per 6 hours
     so a persistent outage can't spam the inbox every 30 minutes.
+
+    Returns True only if the email actually went out. A failed send is NOT recorded,
+    so a broken mail server doesn't consume the alert budget — the next scan retries.
     """
     if _alert_throttled(key):
         print(f"  Alert '{key}' suppressed — already sent within {ALERT_COOLDOWN_HOURS}h.")
         return False
+
     full_body = (
         f"{body}\n\n"
         f"{'-' * 50}\n"
@@ -73,9 +89,14 @@ def send_alert_email(subject: str, body: str, key: str = "default") -> bool:
         f"Mode: {'PAPER' if PAPER_TRADING else 'LIVE'}\n"
         f"This alert is rate-limited to once per {ALERT_COOLDOWN_HOURS} hours.\n"
     )
+
+    _write_local_alert(subject, full_body)   # never lost, even if email is dead
+
     if _send(subject, full_body):
         _record_alert(key)
         return True
+
+    print(f"  !! ALERT COULD NOT BE EMAILED — recorded in logs/ALERTS.log instead: {subject}")
     return False
 
 
