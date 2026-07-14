@@ -11,6 +11,22 @@ PAPER_TRADING = os.getenv("PAPER_TRADING", "true").lower() == "true"
 STARTING_BALANCE = float(os.getenv("STARTING_BALANCE", "500"))
 SCAN_INTERVAL_MINUTES = int(os.getenv("SCAN_INTERVAL_MINUTES", "30"))
 
+# --- Decision engine ---------------------------------------------------------
+# rules  = local_brain only. Zero network, zero LLM, zero cost. Always works.
+# cli    = Claude Code CLI (subscription-billed), falls back to rules on any failure.
+# hybrid = rules score everything; only candidates >= HYBRID_CANDIDATE_SCORE go to the
+#          CLI for a second opinion, capped at MAX_LLM_CALLS_PER_SCAN. DEFAULT.
+# api    = legacy paid Anthropic API. Never the default — it drained the credit balance.
+BRAIN_MODE            = os.getenv("BRAIN_MODE", "hybrid").lower()
+MAX_LLM_CALLS_PER_SCAN = int(os.getenv("MAX_LLM_CALLS_PER_SCAN", "3"))
+HYBRID_CANDIDATE_SCORE = int(os.getenv("HYBRID_CANDIDATE_SCORE", "7"))
+CLAUDE_CLI_PATH       = os.getenv("CLAUDE_CLI_PATH", "claude")  # absolute path if not on PATH
+CLAUDE_CLI_TIMEOUT    = int(os.getenv("CLAUDE_CLI_TIMEOUT", "60"))
+
+# The single source of truth for the buy bar. The prompt, the rule engine and the
+# executor all read THIS — previously the prompt said 8 and trader.py enforced 7.
+MIN_BUY_CONFIDENCE = int(os.getenv("MIN_BUY_CONFIDENCE", "8"))
+
 GMAIL_SENDER = os.getenv("GMAIL_SENDER", "")
 GMAIL_APP_PASSWORD = os.getenv("GMAIL_APP_PASSWORD", "")
 NOTIFY_EMAIL = os.getenv("NOTIFY_EMAIL", "")
@@ -63,5 +79,9 @@ TAKE_PROFIT_PCT       = 0.06   # 6% take profit (standard coins)
 PENNY_STOP_LOSS_PCT   = 0.03   # 3% SL for memes — wider to avoid noise whipsaws
 PENNY_TAKE_PROFIT_PCT = 0.09   # 9% TP for memes — aim for bigger explosive moves
 MAX_PENNY_POSITIONS   = 2      # Max 2 penny positions open at once
+MAX_OPEN_POSITIONS    = 4      # Hard cap across all tiers
+HOLD_ALL_AT_POSITIONS = 3      # At 3+ open positions, HOLD everything until one closes
+
+NEVER_TRADE = ("BTCUSDT", "ETHUSDT")  # Too slow — used as capital, not traded
 
 BINANCE_BASE_URL = "https://api.binance.com"

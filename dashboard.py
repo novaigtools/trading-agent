@@ -4,7 +4,7 @@ import json
 import time
 import requests
 import plotext as plt
-from datetime import datetime
+from datetime import datetime, timezone
 from rich.console import Console
 from rich.table import Table
 from rich.text import Text
@@ -341,7 +341,7 @@ def draw():
     trades    = load_trades()
     fng       = fetch_fng()
     news      = fetch_news()
-    now       = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+    now       = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
 
     os.system("cls" if os.name=="nt" else "clear")
 

@@ -1,10 +1,10 @@
 import time
 import schedule
 import requests
-from datetime import datetime
+from datetime import datetime, timezone
 from colorama import Fore, Style, init
 import market_analyzer
-import claude_brain
+import brain
 import trader
 import risk_manager
 import news_analyzer
@@ -28,7 +28,7 @@ def print_header():
     mode = f"{Fore.YELLOW}PAPER TRADING{Style.RESET_ALL}" if PAPER_TRADING else f"{Fore.RED}LIVE TRADING{Style.RESET_ALL}"
     print("\n" + "=" * 65)
     print(f"  CRYPTO TRADING AGENT  |  {mode}")
-    print(f"  {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
+    print(f"  {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')} UTC")
     print("=" * 65)
 
 
@@ -183,8 +183,14 @@ def run_scan():
         print(f"  Bot will resume buying when BTC 4H structure turns NEUTRAL or BULL.")
     else:
         regime_note = f"⚠ NEUTRAL market — higher confidence required" if regime_str == "NEUTRAL" else "✅ BULL market"
-        print(f"\n{Fore.CYAN}[5/5] Getting Claude decisions... ({regime_note}){Style.RESET_ALL}")
-        decisions = claude_brain.get_decisions_for_all(market_data_list, sentiment, regime)
+        print(f"\n{Fore.CYAN}[5/5] Getting decisions... ({regime_note}){Style.RESET_ALL}")
+        result = brain.get_decisions_for_all(
+            market_data_list, sentiment, regime,
+            open_positions=risk_manager.get_open_positions())
+        if result.is_dead:
+            print(f"  {Fore.RED}*** DECISION ENGINE DEAD: 0/{result.attempted} succeeded — "
+                  f"NOT TRADING. First error: {result.first_error} ***{Style.RESET_ALL}")
+        decisions = result.decisions
         any_trade = False
         for decision in decisions:
             executed = trader.execute_decision(decision)

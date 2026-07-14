@@ -9,7 +9,9 @@ import os
 import smtplib
 import urllib.request
 from email.mime.text import MIMEText
-from datetime import datetime
+from datetime import datetime, timezone
+
+from state_lock import state_lock, LockBusy  # stdlib-only, safe on GitHub Actions
 
 RISK_FILE   = "risk_state.json"
 TRADES_FILE = "trades.csv"
@@ -49,7 +51,7 @@ def save_state(state: dict):
 
 def log_trade(symbol, price, quantity, reason):
     value = round(price * quantity, 2)
-    ts    = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+    ts    = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
     row   = f"{ts},{symbol},SELL,{price},{quantity},{value},{reason},10,intraday,PAPER"
     write_header = not os.path.exists(TRADES_FILE)
     with open(TRADES_FILE, "a") as f:
@@ -82,6 +84,16 @@ def send_alert_email(triggered: list):
 
 
 def run():
+    # A scan may be mid-write on risk_state.json. Rather than race it, skip — the
+    # next monitor cycle is only 5 minutes away and prices barely move in that time.
+    try:
+        with state_lock(wait_sec=5, required=True):
+            _run_locked()
+    except LockBusy:
+        print("  Scan is writing state right now — skipping this cycle (next in 5 min).")
+
+
+def _run_locked():
     state     = load_state()
     positions = state.get("open_positions", {})
 
@@ -128,6 +140,6 @@ def run():
 
 
 if __name__ == "__main__":
-    print(f"\n  SL/TP Monitor  --  {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
+    print(f"\n  SL/TP Monitor  --  {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')} UTC")
     print(f"  {'-'*50}")
     run()

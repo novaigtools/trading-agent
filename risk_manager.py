@@ -1,11 +1,12 @@
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from config import (
     STARTING_BALANCE, MAX_POSITION_PCT, STOP_LOSS_PCT, TAKE_PROFIT_PCT,
     PENNY_PAIRS, PENNY_MAX_PCT, PENNY_STOP_LOSS_PCT, PENNY_TAKE_PROFIT_PCT,
     MAX_PENNY_POSITIONS,
 )
+from state_lock import state_lock
 
 RISK_STATE_FILE = "risk_state.json"
 
@@ -22,7 +23,7 @@ def set_trending(symbols):
 
 def _default_state() -> dict:
     return {
-        "experiment_start": datetime.utcnow().strftime("%Y-%m-%d"),
+        "experiment_start": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         "starting_balance": STARTING_BALANCE,
         "cash": STARTING_BALANCE,
         "open_positions": {},
@@ -86,25 +87,29 @@ def cash_available() -> float:
 
 
 def record_trade(symbol: str, side: str, price: float, quantity: float):
-    state = _load_state()
-    if side == "BUY":
-        cost = price * quantity
-        state["cash"] = round(state["cash"] - cost, 4)
-        sl_pct = PENNY_STOP_LOSS_PCT if _is_penny(symbol) else STOP_LOSS_PCT
-        tp_pct = PENNY_TAKE_PROFIT_PCT if _is_penny(symbol) else TAKE_PROFIT_PCT
-        state["open_positions"][symbol] = {
-            "entry_price": price,
-            "quantity": quantity,
-            "stop_loss": round(price * (1 - sl_pct), 8),
-            "take_profit": round(price * (1 + tp_pct), 8),
-            "opened_at": datetime.utcnow().isoformat(),
-            "is_penny": _is_penny(symbol),
-        }
-    elif side == "SELL" and symbol in state["open_positions"]:
-        # Proceeds go back to cash — realized P&L is captured automatically
-        state["cash"] = round(state["cash"] + price * quantity, 4)
-        del state["open_positions"][symbol]
-    _save_state(state)
+    # Load-modify-save must be atomic w.r.t. sl_monitor.py, which writes the same file
+    # every 5 minutes. required=False: a scan already holding fresh prices should not
+    # abandon a trade just because the monitor is mid-write; it waits, then proceeds.
+    with state_lock(wait_sec=10, required=False):
+        state = _load_state()
+        if side == "BUY":
+            cost = price * quantity
+            state["cash"] = round(state["cash"] - cost, 4)
+            sl_pct = PENNY_STOP_LOSS_PCT if _is_penny(symbol) else STOP_LOSS_PCT
+            tp_pct = PENNY_TAKE_PROFIT_PCT if _is_penny(symbol) else TAKE_PROFIT_PCT
+            state["open_positions"][symbol] = {
+                "entry_price": price,
+                "quantity": quantity,
+                "stop_loss": round(price * (1 - sl_pct), 8),
+                "take_profit": round(price * (1 + tp_pct), 8),
+                "opened_at": datetime.now(timezone.utc).isoformat(),
+                "is_penny": _is_penny(symbol),
+            }
+        elif side == "SELL" and symbol in state["open_positions"]:
+            # Proceeds go back to cash — realized P&L is captured automatically
+            state["cash"] = round(state["cash"] + price * quantity, 4)
+            del state["open_positions"][symbol]
+        _save_state(state)
 
 
 def check_stop_loss_take_profit(current_prices: dict) -> list[dict]:

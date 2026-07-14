@@ -6,7 +6,7 @@ import json
 import csv
 import os
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from datetime import datetime
+from datetime import datetime, timezone
 
 RISK_FILE  = "risk_state.json"
 TRADES_FILE = "trades.csv"
@@ -47,7 +47,7 @@ def get_data():
         "state":  state,
         "trades": trades,
         "budget": float(os.getenv("WEEKLY_BUDGET", "500")),
-        "ts":     datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+        "ts":     datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
     })
 
 
