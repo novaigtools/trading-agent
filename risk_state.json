@@ -1,6 +1,15 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 500.0,
-  "open_positions": {}
+  "cash": 455.0,
+  "open_positions": {
+    "WIFUSDT": {
+      "entry_price": 0.1569,
+      "quantity": 286.806883,
+      "stop_loss": 0.152193,
+      "take_profit": 0.171021,
+      "opened_at": "2026-07-18T00:51:06.866032+00:00",
+      "is_penny": true
+    }
+  }
 }
