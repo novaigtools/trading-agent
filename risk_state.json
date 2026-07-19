@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 410.0,
+  "cash": 335.0,
   "open_positions": {
     "WIFUSDT": {
       "entry_price": 0.1569,
@@ -18,6 +18,14 @@
       "take_profit": 1.75272,
       "opened_at": "2026-07-18T02:35:30.588560+00:00",
       "is_penny": true
+    },
+    "TAOUSDT": {
+      "entry_price": 198.3,
+      "quantity": 0.378215,
+      "stop_loss": 194.334,
+      "take_profit": 210.198,
+      "opened_at": "2026-07-19T06:40:10.157048+00:00",
+      "is_penny": false
     }
   }
 }

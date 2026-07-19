@@ -1,3 +1,4 @@
 timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mode
 2026-07-18 00:51:06,WIFUSDT,BUY,0.1569,286.806883,45.0,"RULES: vol 5.4x avg (+4); 15M MACD hist +0.0002 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); BTC regime BULL (+1). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",10,intraday,PAPER
 2026-07-18 02:35:30,TRUMPUSDT,BUY,1.608,27.985075,45.0,"RULES: vol 4.9x avg (+4); 15M MACD hist +0.0042 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); BTC regime BULL (+1). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",10,intraday,PAPER
+2026-07-19 06:40:10,TAOUSDT,BUY,198.3,0.378215,75.0,"RULES: vol 2.5x avg (+4); 15M MACD hist +0.1066 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); BTC regime BULL (+1); bearish news backdrop (-1). Score 10/10 (>= 8). Tier standard: SL 2%, TP 6%.",10,intraday,PAPER
