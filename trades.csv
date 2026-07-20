@@ -4,3 +4,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-07-19 06:40:10,TAOUSDT,BUY,198.3,0.378215,75.0,"RULES: vol 2.5x avg (+4); 15M MACD hist +0.1066 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); BTC regime BULL (+1); bearish news backdrop (-1). Score 10/10 (>= 8). Tier standard: SL 2%, TP 6%.",10,intraday,PAPER
 2026-07-19 18:21:27,WIFUSDT,SELL,0.1514,286.806883,43.42,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-07-20 06:06:05,TAOUSDT,SELL,194.3,0.378215,73.49,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-07-20 09:25:26,TRUMPUSDT,SELL,1.555,27.985075,43.52,Automated STOP LOSS triggered,10,intraday,PAPER
