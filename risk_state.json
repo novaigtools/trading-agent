@@ -1,6 +1,31 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 495.4266,
-  "open_positions": {}
+  "cash": 302.2103,
+  "open_positions": {
+    "TAOUSDT": {
+      "entry_price": 201.3,
+      "quantity": 0.36917,
+      "stop_loss": 197.274,
+      "take_profit": 213.378,
+      "opened_at": "2026-07-21T10:41:11.574799+00:00",
+      "is_penny": false
+    },
+    "INJUSDT": {
+      "entry_price": 5.386,
+      "quantity": 13.797622,
+      "stop_loss": 5.27828,
+      "take_profit": 5.70916,
+      "opened_at": "2026-07-21T10:41:13.826274+00:00",
+      "is_penny": false
+    },
+    "WIFUSDT": {
+      "entry_price": 0.1552,
+      "quantity": 287.296361,
+      "stop_loss": 0.150544,
+      "take_profit": 0.169168,
+      "opened_at": "2026-07-21T10:41:16.304288+00:00",
+      "is_penny": true
+    }
+  }
 }
