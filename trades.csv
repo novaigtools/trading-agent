@@ -10,3 +10,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-07-21 10:41:16,WIFUSDT,BUY,0.1552,287.296361,44.59,"RULES: vol 2.4x avg (+4); 15M MACD hist +0.0002 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); BTC regime BULL (+1). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",10,intraday,PAPER
 2026-07-22 10:47:25,INJUSDT,SELL,5.23,13.797622,72.16,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-07-23 07:51:25,TAOUSDT,SELL,195.7,0.36917,72.25,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-07-24 04:23:06,WIFUSDT,SELL,0.1445,287.296361,41.51,Automated STOP LOSS triggered,10,intraday,PAPER
