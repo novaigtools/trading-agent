@@ -1,6 +1,15 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 488.1328,
-  "open_positions": {}
+  "cash": 444.2008,
+  "open_positions": {
+    "EULUSDT": {
+      "entry_price": 1.914,
+      "quantity": 22.952953,
+      "stop_loss": 1.85658,
+      "take_profit": 2.08626,
+      "opened_at": "2026-07-26T00:11:24.923281+00:00",
+      "is_penny": true
+    }
+  }
 }
