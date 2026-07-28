@@ -1,15 +1,6 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 448.0023,
-  "open_positions": {
-    "TRUMPUSDT": {
-      "entry_price": 1.598,
-      "quantity": 27.727108,
-      "stop_loss": 1.55006,
-      "take_profit": 1.74182,
-      "opened_at": "2026-07-26T05:35:30.528589+00:00",
-      "is_penny": true
-    }
-  }
+  "cash": 490.0089,
+  "open_positions": {}
 }
