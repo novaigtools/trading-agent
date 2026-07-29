@@ -15,3 +15,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-07-26 00:41:04,EULUSDT,SELL,2.096,22.952953,48.11,Automated TAKE PROFIT triggered,10,intraday,PAPER
 2026-07-26 05:35:30,TRUMPUSDT,BUY,1.598,27.727108,44.31,"RULES: vol 2.1x avg (+4); 15M MACD hist +0.0022 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); bearish news backdrop (-1). Score 9/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",9,intraday,PAPER
 2026-07-28 01:53:43,TRUMPUSDT,SELL,1.515,27.727108,42.01,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-07-29 09:36:06,COTIUSDT,BUY,0.0148,2979.783851,44.1,"RULES: vol 2.1x avg (+4); 15M MACD hist +0.0002 (+2); 15M EMA20>EMA50 trend up (+2); MOMENTUM OVERRIDE: 24h +35.19% on 2.1x vol (+4); bearish news backdrop (-1). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",10,intraday,PAPER
