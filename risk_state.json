@@ -1,15 +1,6 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 445.9081,
-  "open_positions": {
-    "COTIUSDT": {
-      "entry_price": 0.0148,
-      "quantity": 2979.783851,
-      "stop_loss": 0.014356,
-      "take_profit": 0.016132,
-      "opened_at": "2026-07-29T09:36:06.945709+00:00",
-      "is_penny": true
-    }
-  }
+  "cash": 497.1604,
+  "open_positions": {}
 }
