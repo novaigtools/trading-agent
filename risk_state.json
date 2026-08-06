@@ -1,6 +1,15 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 497.1604,
-  "open_positions": {}
+  "cash": 422.5863,
+  "open_positions": {
+    "NEARUSDT": {
+      "entry_price": 1.73,
+      "quantity": 43.106393,
+      "stop_loss": 1.6954,
+      "take_profit": 1.8338,
+      "opened_at": "2026-08-06T04:46:03.630914+00:00",
+      "is_penny": false
+    }
+  }
 }
