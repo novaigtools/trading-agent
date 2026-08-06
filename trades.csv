@@ -18,3 +18,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-07-29 09:36:06,COTIUSDT,BUY,0.0148,2979.783851,44.1,"RULES: vol 2.1x avg (+4); 15M MACD hist +0.0002 (+2); 15M EMA20>EMA50 trend up (+2); MOMENTUM OVERRIDE: 24h +35.19% on 2.1x vol (+4); bearish news backdrop (-1). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",10,intraday,PAPER
 2026-07-29 09:41:06,COTIUSDT,SELL,0.0172,2979.783851,51.25,Automated TAKE PROFIT triggered,10,intraday,PAPER
 2026-08-06 04:46:03,NEARUSDT,BUY,1.73,43.106393,74.57,"RULES: vol 2.7x avg (+4); 15M MACD hist +0.0027 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); BTC regime BULL (+1); bearish news backdrop (-1). Score 10/10 (>= 8). Tier standard: SL 2%, TP 6%.",10,intraday,PAPER
+2026-08-06 12:22:41,NEARUSDT,SELL,1.692,43.106393,72.94,Automated STOP LOSS triggered,10,intraday,PAPER
