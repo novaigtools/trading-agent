@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 376.597,
+  "cash": 257.6716,
   "open_positions": {
     "WLDUSDT": {
       "entry_price": 0.3219,
@@ -17,6 +17,22 @@
       "stop_loss": 1.45985,
       "take_profit": 1.64045,
       "opened_at": "2026-08-09T15:35:28.569475+00:00",
+      "is_penny": true
+    },
+    "AVAXUSDT": {
+      "entry_price": 6.553,
+      "quantity": 11.342645,
+      "stop_loss": 6.42194,
+      "take_profit": 6.94618,
+      "opened_at": "2026-08-09T16:06:08.483497+00:00",
+      "is_penny": false
+    },
+    "WIFUSDT": {
+      "entry_price": 0.1449,
+      "quantity": 307.777831,
+      "stop_loss": 0.140553,
+      "take_profit": 0.157941,
+      "opened_at": "2026-08-09T16:06:10.728716+00:00",
       "is_penny": true
     }
   }
