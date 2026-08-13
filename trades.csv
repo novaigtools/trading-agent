@@ -23,3 +23,6 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-08-09 15:35:28,TRUMPUSDT,BUY,1.505,29.632565,44.6,"RULES: vol 3.0x avg (+4); 15M MACD hist +0.0023 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); bearish news backdrop (-1). Score 9/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",9,intraday,PAPER
 2026-08-09 16:06:08,AVAXUSDT,BUY,6.553,11.342645,74.33,"RULES: vol 2.7x avg (+4); 15M MACD hist +0.0078 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); bearish news backdrop (-1). Score 9/10 (>= 8). Tier standard: SL 2%, TP 6%.",9,intraday,PAPER
 2026-08-09 16:06:10,WIFUSDT,BUY,0.1449,307.777831,44.6,"RULES: vol 3.7x avg (+4); 15M MACD hist +0.0002 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); bearish news backdrop (-1). Score 9/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",9,intraday,PAPER
+2026-08-13 20:40:10,TRUMPUSDT,SELL,1.384,29.632565,41.01,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-08-13 20:40:10,AVAXUSDT,SELL,6.414,11.342645,72.75,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-08-13 20:40:10,WIFUSDT,SELL,0.1363,307.777831,41.95,Automated STOP LOSS triggered,10,intraday,PAPER
