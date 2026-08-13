@@ -1,15 +1,6 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 413.3849,
-  "open_positions": {
-    "WLDUSDT": {
-      "entry_price": 0.3219,
-      "quantity": 230.905079,
-      "stop_loss": 0.315462,
-      "take_profit": 0.341214,
-      "opened_at": "2026-08-09T15:06:06.463207+00:00",
-      "is_penny": false
-    }
-  }
+  "cash": 492.2159,
+  "open_positions": {}
 }

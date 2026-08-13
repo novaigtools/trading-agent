@@ -26,3 +26,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-08-13 20:40:10,TRUMPUSDT,SELL,1.384,29.632565,41.01,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-08-13 20:40:10,AVAXUSDT,SELL,6.414,11.342645,72.75,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-08-13 20:40:10,WIFUSDT,SELL,0.1363,307.777831,41.95,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-08-13 21:11:06,WLDUSDT,SELL,0.3414,230.905079,78.83,Automated TAKE PROFIT triggered,10,intraday,PAPER
