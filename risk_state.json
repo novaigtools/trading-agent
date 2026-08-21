@@ -1,16 +1,8 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 208.6618,
+  "cash": 368.4516,
   "open_positions": {
-    "SUIUSDT": {
-      "entry_price": 0.7923,
-      "quantity": 94.913886,
-      "stop_loss": 0.776454,
-      "take_profit": 0.839838,
-      "opened_at": "2026-08-21T09:05:06.648800+00:00",
-      "is_penny": false
-    },
     "TAOUSDT": {
       "entry_price": 221.4,
       "quantity": 0.339658,
@@ -25,14 +17,6 @@
       "stop_loss": 1.43178,
       "take_profit": 1.54866,
       "opened_at": "2026-08-21T09:05:12.193062+00:00",
-      "is_penny": false
-    },
-    "ADAUSDT": {
-      "entry_price": 0.2115,
-      "quantity": 355.556783,
-      "stop_loss": 0.20727,
-      "take_profit": 0.22419,
-      "opened_at": "2026-08-21T09:05:14.460994+00:00",
       "is_penny": false
     }
   }
