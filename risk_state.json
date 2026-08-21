@@ -1,16 +1,8 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 377.245,
+  "cash": 456.6614,
   "open_positions": {
-    "RENDERUSDT": {
-      "entry_price": 1.381,
-      "quantity": 53.914736,
-      "stop_loss": 1.35338,
-      "take_profit": 1.46386,
-      "opened_at": "2026-08-20T08:08:35.963997+00:00",
-      "is_penny": false
-    },
     "PENGUUSDT": {
       "entry_price": 0.0071,
       "quantity": 6292.076836,
