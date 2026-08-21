@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 159.4658,
+  "cash": 208.6618,
   "open_positions": {
     "SUIUSDT": {
       "entry_price": 0.7923,
@@ -34,14 +34,6 @@
       "take_profit": 0.22419,
       "opened_at": "2026-08-21T09:05:14.460994+00:00",
       "is_penny": false
-    },
-    "WIFUSDT": {
-      "entry_price": 0.1738,
-      "quantity": 259.609621,
-      "stop_loss": 0.168586,
-      "take_profit": 0.189442,
-      "opened_at": "2026-08-21T09:05:17.134550+00:00",
-      "is_penny": true
     }
   }
 }

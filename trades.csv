@@ -38,3 +38,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-08-21 09:05:14,ADAUSDT,BUY,0.2115,355.556783,75.2,"RULES: vol 2.2x avg (+4); 15M MACD hist +0.0003 (+2); 15M EMA20>EMA50 trend up (+2); MOMENTUM OVERRIDE: 24h +11.32% on 2.2x vol (+4); BTC regime BULL (+1). Score 10/10 (>= 8). Tier standard: SL 2%, TP 6%.",10,intraday,PAPER
 2026-08-21 09:05:17,WIFUSDT,BUY,0.1738,259.609621,45.12,"RULES: vol 3.1x avg (+4); 15M MACD hist +0.0005 (+2); 15M EMA20>EMA50 trend up (+2); MOMENTUM OVERRIDE: 24h +13.31% on 3.1x vol (+4); BTC regime BULL (+1). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",10,intraday,PAPER
 2026-08-21 10:41:03,PENGUUSDT,SELL,0.007744,6292.076836,48.73,Automated TAKE PROFIT triggered,10,intraday,PAPER
+2026-08-21 20:31:05,WIFUSDT,SELL,0.1895,259.609621,49.2,Automated TAKE PROFIT triggered,10,intraday,PAPER
