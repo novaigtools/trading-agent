@@ -1,16 +1,8 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 370.4565,
+  "cash": 452.1442,
   "open_positions": {
-    "TAOUSDT": {
-      "entry_price": 221.4,
-      "quantity": 0.339658,
-      "stop_loss": 216.972,
-      "take_profit": 234.684,
-      "opened_at": "2026-08-21T09:05:09.342333+00:00",
-      "is_penny": false
-    },
     "AVAXUSDT": {
       "entry_price": 7.822,
       "quantity": 9.949862,

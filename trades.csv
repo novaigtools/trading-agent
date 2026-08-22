@@ -43,3 +43,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-08-21 21:46:05,ADAUSDT,SELL,0.2244,355.556783,79.79,Automated TAKE PROFIT triggered,10,intraday,PAPER
 2026-08-21 22:34:51,AVAXUSDT,BUY,7.822,9.949862,77.83,"RULES: vol 2.3x avg (+4); 15M MACD hist +0.0242 (+2); 15M EMA20>EMA50 trend up (+2); MOMENTUM OVERRIDE: 24h +9.02% on 2.3x vol (+4); BTC regime BULL (+1). Score 10/10 (>= 8). Tier standard: SL 2%, TP 6%.",10,intraday,PAPER
 2026-08-22 01:26:05,RENDERUSDT,SELL,1.551,51.471776,79.83,Automated TAKE PROFIT triggered,10,intraday,PAPER
+2026-08-22 02:38:19,TAOUSDT,SELL,240.5,0.339658,81.69,Automated TAKE PROFIT triggered,10,intraday,PAPER
