@@ -48,3 +48,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-08-22 02:39:13,TRUMPUSDT,BUY,2.12,22.498811,47.7,"RULES: vol 2.2x avg (+4); 15M MACD hist +0.0222 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); MOMENTUM OVERRIDE: 24h +28.11% on 2.2x vol (+4); BTC regime BULL (+1). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",10,intraday,PAPER
 2026-08-22 03:34:58,TRUMPUSDT,SELL,2.319,22.498811,52.17,Automated TAKE PROFIT triggered,10,intraday,PAPER
 2026-08-22 04:05:00,TRUMPUSDT,BUY,2.793,17.221779,48.1,"RULES: vol 2.6x avg (+4); 15M MACD hist +0.0789 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); MOMENTUM OVERRIDE: 24h +67.33% on 2.6x vol (+4); BTC regime BULL (+1). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",10,intraday,PAPER
+2026-08-22 04:11:05,TRUMPUSDT,SELL,2.665,17.221779,45.9,Automated STOP LOSS triggered,10,intraday,PAPER
