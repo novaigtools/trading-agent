@@ -1,12 +1,13 @@
-name: SL/TP Monitor (cloud backstop)
+name: SL/TP Monitor (cloud backstop — protects positions while the laptop sleeps)
 
-# The primary SL/TP monitor runs on the laptop every 5 minutes.
-# This is an emergency backstop for when the laptop is off/asleep.
-# GitHub cron is heavily throttled (fires every few hours in practice) —
-# that is fine for a backstop, but do NOT rely on it as the primary monitor.
+# The primary SL/TP + trailing-stop monitor runs on the laptop every 5 minutes.
+# This cloud copy takes over ONLY when the laptop's heartbeat is stale (asleep/off),
+# so the two never both try to close the same position. GitHub throttles cron, so the
+# real cadence is looser than requested — fine for a backstop, and vastly better than
+# the "positions unwatched for days" failure that lost money before.
 on:
   schedule:
-    - cron: '*/30 * * * *'   # requested every 30 min; GitHub throttles to ~hours
+    - cron: '*/15 * * * *'   # requested every 15 min; GitHub throttles
   workflow_dispatch:
 
 concurrency:
@@ -23,7 +24,21 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4.2.2
 
+      - name: Skip if the laptop is awake (fresh heartbeat)
+        id: guard
+        run: |
+          STATUS=$(python3 heartbeat.py check 50)
+          echo "Laptop heartbeat: $STATUS"
+          if [ "$STATUS" = "active" ]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Laptop is monitoring — cloud backstop stands down."
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "Laptop is quiet — cloud takes over position monitoring."
+          fi
+
       - name: Check SL/TP (no pip install needed)
+        if: steps.guard.outputs.run == 'true'
         env:
           GMAIL_SENDER: ${{ secrets.GMAIL_SENDER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
@@ -31,6 +46,7 @@ jobs:
         run: python3 sl_monitor.py
 
       - name: Save state if changed
+        if: steps.guard.outputs.run == 'true'
         run: |
           git config user.name "Trading Bot"
           git config user.email "bot@trading-agent.com"

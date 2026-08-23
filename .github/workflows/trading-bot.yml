@@ -1,13 +1,18 @@
-name: Crypto Trading Bot (manual fallback — runs the local rule engine)
+name: Crypto Trading Bot (cloud scan — runs when the laptop is asleep)
 
-# The trading scan runs on the laptop via Windows Task Scheduler.
-# This workflow is kept only as a manual fallback (Actions tab → Run workflow).
+# Primary scan runs on the laptop every 30 min (Windows Task Scheduler). This cloud
+# scan is the always-on backstop for when the laptop is asleep or off.
 #
-# It runs BRAIN_MODE=rules: the deterministic rule engine in local_brain.py. No LLM,
-# no API key, no cost. The Claude Code CLI is not installed on GitHub runners, so
-# hybrid/cli modes would fall back to rules here anyway — we just say so explicitly.
+# It runs BRAIN_MODE=rules: the deterministic rule engine. No LLM, no API key, no cost.
+#
+# Handoff: the laptop stamps heartbeat.json every scan. This workflow SKIPS the scan
+# while that heartbeat is fresh (laptop awake and handling entries) so the two never
+# fight over risk_state.json or double-open a position. It only trades when the laptop
+# has gone quiet.
 on:
-  workflow_dispatch:
+  schedule:
+    - cron: '15 * * * *'   # hourly; GitHub throttles, which is fine for a backstop
+  workflow_dispatch:        # manual "Run workflow" always runs, heartbeat-guarded too
 
 concurrency:
   group: bot-state
@@ -23,16 +28,32 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4.2.2
 
+      - name: Skip if the laptop is awake (fresh heartbeat)
+        id: guard
+        run: |
+          STATUS=$(python3 heartbeat.py check 50)
+          echo "Laptop heartbeat: $STATUS"
+          if [ "$STATUS" = "active" ]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Laptop is handling scans — cloud scan skipped."
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "Laptop is quiet — cloud takes over scanning."
+          fi
+
       - name: Set up Python 3.11
+        if: steps.guard.outputs.run == 'true'
         uses: actions/setup-python@v5.4.0
         with:
           python-version: '3.11'
           cache: 'pip'
 
       - name: Install dependencies
+        if: steps.guard.outputs.run == 'true'
         run: pip install -r requirements.txt
 
       - name: Run trading bot scan (local rule engine, zero LLM calls)
+        if: steps.guard.outputs.run == 'true'
         env:
           # No CLAUDE_API_KEY on purpose: the paid API is what drained the credit
           # balance and left the bot brain-dead. The rule engine needs no key.
@@ -48,6 +69,7 @@ jobs:
         run: python run_once.py
 
       - name: Save state back to repo
+        if: steps.guard.outputs.run == 'true'
         run: |
           git config user.name "Trading Bot"
           git config user.email "bot@trading-agent.com"
@@ -56,7 +78,7 @@ jobs:
             echo "No state changes."
             exit 0
           fi
-          git commit -m "Bot state update $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git commit -m "Cloud scan state update $(date -u '+%Y-%m-%d %H:%M UTC')"
           for i in 1 2 3; do
             git push && exit 0
             echo "Push failed, rebasing and retrying ($i/3)..."

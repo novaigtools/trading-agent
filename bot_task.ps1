@@ -56,8 +56,15 @@ else {
     Log "$script exited with code $exit"
 }
 
+# Stamp the liveness heartbeat on scan runs so the cloud backstop knows the laptop is
+# awake and handling entries. Only on scan (every 30 min) — not the 5-min monitor.
+if ($Mode -eq "scan") {
+    & $Python heartbeat.py write | Out-Null
+    Log "Heartbeat stamped."
+}
+
 # Push state changes so dashboard + cloud backstop stay in sync
-git add risk_state.json trades.csv 2>$null
+git add risk_state.json trades.csv heartbeat.json 2>$null
 git diff --staged --quiet
 if ($LASTEXITCODE -ne 0) {
     $stamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd HH:mm 'UTC'")
