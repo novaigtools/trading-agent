@@ -11,6 +11,7 @@ Score is clamped to 0-10 and compared against MIN_BUY_CONFIDENCE.
 from config import (
     PENNY_PAIRS, NEVER_TRADE, MIN_BUY_CONFIDENCE, HOLD_ALL_AT_POSITIONS,
     STOP_LOSS_PCT, TAKE_PROFIT_PCT, PENNY_STOP_LOSS_PCT, PENNY_TAKE_PROFIT_PCT,
+    MOMENTUM_TP_MULTIPLIER,
 )
 
 # --- Signal weights ----------------------------------------------------------
@@ -220,12 +221,17 @@ def score_symbol(market_data: dict, sentiment: dict = None, regime: dict = None,
         sl_pct = PENNY_STOP_LOSS_PCT if is_penny else STOP_LOSS_PCT
         tp_pct = PENNY_TAKE_PROFIT_PCT if is_penny else TAKE_PROFIT_PCT
         tier   = "penny/trending" if is_penny else "standard"
+        # Let proven momentum winners run — the trailing stop protects the downside.
+        runner = ""
+        if momentum_override:
+            tp_pct *= MOMENTUM_TP_MULTIPLIER
+            runner = " [momentum runner: wide TP, trailing stop manages exit]"
         return {
             "symbol": symbol,
             "action": "BUY",
             "confidence": score,
             "reasoning": f"RULES: {detail}. Score {score}/10 (>= {MIN_BUY_CONFIDENCE}). "
-                         f"Tier {tier}: SL {sl_pct:.0%}, TP {tp_pct:.0%}.",
+                         f"Tier {tier}: SL {sl_pct:.0%}, TP {tp_pct:.0%}.{runner}",
             "entry_price": price,
             "stop_loss": round(price * (1 - sl_pct), 8),
             "take_profit": round(price * (1 + tp_pct), 8),

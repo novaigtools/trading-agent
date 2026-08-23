@@ -145,9 +145,18 @@ def main() -> int:
               f"decisions are based on stale data.{Style.RESET_ALL}")
         result.decisions = []
 
+    # Daily circuit breaker: if the account is down hard today, manage existing
+    # positions but open nothing new. Checked once, with live prices.
+    breaker_tripped, breaker_msg = risk_manager.circuit_breaker_tripped(current_prices)
+    if breaker_tripped:
+        print(f"  {Fore.RED}CIRCUIT BREAKER: {breaker_msg}{Style.RESET_ALL}")
+
     # ---- Execute -----------------------------------------------------------
     any_trade = False
     for decision in result.decisions:
+        # Under the breaker, drop BUYs but still allow SELLs (position management).
+        if breaker_tripped and decision.get("action") == "BUY":
+            continue
         if dry:
             act, sym, conf = decision["action"], decision["symbol"], decision["confidence"]
             if act == "BUY":

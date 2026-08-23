@@ -1,14 +1,18 @@
+import csv
 import json
 import os
 from datetime import datetime, timezone
 from config import (
     STARTING_BALANCE, MAX_POSITION_PCT, STOP_LOSS_PCT, TAKE_PROFIT_PCT,
     PENNY_PAIRS, PENNY_MAX_PCT, PENNY_STOP_LOSS_PCT, PENNY_TAKE_PROFIT_PCT,
-    MAX_PENNY_POSITIONS,
+    MAX_PENNY_POSITIONS, COOLDOWN_HOURS_AFTER_SL, DAILY_LOSS_LIMIT_PCT,
+    CONVICTION_FULL_SCORE, REDUCED_SIZE_FACTOR,
 )
 from state_lock import state_lock
+import position_rules
 
 RISK_STATE_FILE = "risk_state.json"
+TRADES_FILE = "trades.csv"
 
 # Dynamic trending symbols for the current scan — set by run_once each run.
 # Treated as penny-tier (small size, tight stops) since they are the riskiest names.
@@ -65,7 +69,7 @@ def _book_equity(state: dict) -> float:
     return state["cash"] + held
 
 
-def get_position_size(price: float, symbol: str = "") -> float:
+def get_position_size(price: float, symbol: str = "", confidence: int = None) -> float:
     # A bad price (0, negative, or NaN) must never divide-by-zero and crash the whole
     # scan — a micro-cap once rounded to 0.0 and took down a run. No price, no trade.
     if not price or price <= 0 or price != price:
@@ -82,6 +86,11 @@ def get_position_size(price: float, symbol: str = "") -> float:
     else:
         max_trade = equity * MAX_POSITION_PCT
 
+    # Conviction-scaled sizing: the trade-history autopsy showed score-10 setups made
+    # +$14.54 while score-9 barely broke even. Put more capital behind the best signals.
+    if confidence is not None and confidence < CONVICTION_FULL_SCORE:
+        max_trade *= REDUCED_SIZE_FACTOR
+
     amount_usd = min(state["cash"], max_trade)
     if amount_usd < 5:
         return 0.0
@@ -90,6 +99,72 @@ def get_position_size(price: float, symbol: str = "") -> float:
 
 def cash_available() -> float:
     return round(_load_state()["cash"], 2)
+
+
+def _last_sell_for(symbol: str):
+    """Most recent SELL row for a symbol from trades.csv, or None. trades.csv is the
+    shared source of truth both the scan and the 5-min monitor append to, so cooldown
+    logic reads it directly rather than duplicating state across two writers."""
+    if not os.path.exists(TRADES_FILE):
+        return None
+    last = None
+    try:
+        with open(TRADES_FILE) as f:
+            for row in csv.DictReader(f):
+                if row.get("symbol") == symbol and row.get("action") == "SELL":
+                    last = row
+    except (OSError, csv.Error):
+        return None
+    return last
+
+
+def in_cooldown(symbol: str, now: datetime = None) -> bool:
+    """True if this symbol was stopped/trailed/stale-exited within the cooldown window.
+    Stops the revenge-trading the autopsy exposed (TRUMP 1/5, TAO 1/4)."""
+    row = _last_sell_for(symbol)
+    if not row:
+        return False
+    reason = (row.get("reason") or "")
+    if not any(k in reason for k in ("STOP LOSS", "Trailing stop", "Stale exit")):
+        return False   # a take-profit exit is fine to re-enter; only losses cool down
+    ts = (row.get("timestamp") or "").strip()
+    try:
+        iso = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc).isoformat()
+    except ValueError:
+        return False
+    return position_rules.in_cooldown(iso, COOLDOWN_HOURS_AFTER_SL, now)
+
+
+def circuit_breaker_tripped(current_prices: dict = None) -> tuple:
+    """
+    Daily loss circuit breaker. Tracks the day's opening equity; if equity has since
+    fallen DAILY_LOSS_LIMIT_PCT below it, block NEW entries for the rest of the UTC day.
+    Existing positions keep being managed (stops/TPs still fire). Returns (tripped, msg).
+    """
+    with state_lock(wait_sec=5, required=False):
+        state = _load_state()
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        equity = _book_equity(state)
+        if current_prices:
+            equity = state["cash"] + sum(
+                current_prices.get(s, p["entry_price"]) * p["quantity"]
+                for s, p in state["open_positions"].items()
+            )
+        day = state.get("day")
+        if not day or day.get("date") != today:
+            state["day"] = {"date": today, "open_equity": round(equity, 2)}
+            _save_state(state)
+            return (False, "")
+        open_eq = day.get("open_equity", equity)
+
+    if open_eq <= 0:
+        return (False, "")
+    drawdown = (open_eq - equity) / open_eq
+    if drawdown >= DAILY_LOSS_LIMIT_PCT:
+        return (True, f"Daily loss limit hit: equity ${equity:.2f} is {drawdown:.1%} below "
+                      f"today's open ${open_eq:.2f} (limit {DAILY_LOSS_LIMIT_PCT:.0%}). "
+                      f"No new entries until tomorrow (UTC).")
+    return (False, "")
 
 
 def record_trade(symbol: str, side: str, price: float, quantity: float):
@@ -110,6 +185,7 @@ def record_trade(symbol: str, side: str, price: float, quantity: float):
                 "take_profit": round(price * (1 + tp_pct), 8),
                 "opened_at": datetime.now(timezone.utc).isoformat(),
                 "is_penny": _is_penny(symbol),
+                "peak_price": price,   # seeds the trailing stop's high-water mark
             }
         elif side == "SELL" and symbol in state["open_positions"]:
             # Proceeds go back to cash — realized P&L is captured automatically

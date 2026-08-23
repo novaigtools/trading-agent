@@ -11,10 +11,25 @@ import urllib.request
 from email.mime.text import MIMEText
 from datetime import datetime, timezone
 
-from state_lock import state_lock, LockBusy  # stdlib-only, safe on GitHub Actions
+from state_lock import state_lock, LockBusy       # stdlib-only, safe on GitHub Actions
+import position_rules                              # stdlib-only shared position logic
 
 RISK_FILE   = "risk_state.json"
 TRADES_FILE = "trades.csv"
+
+# Risk knobs. sl_monitor stays stdlib-only (no config import — it runs on GitHub with
+# no pip install), so these mirror config.py's defaults and can be overridden via .env.
+_ENV = None
+def _cfg(key, default, cast=float):
+    global _ENV
+    if _ENV is None:
+        _ENV = _load_env()
+    try:
+        return cast(_ENV.get(key, default))
+    except (ValueError, TypeError):
+        return default
+
+PENNY_MARKERS = ("PEPE", "WIF", "FLOKI", "BONK", "TRUMP", "PENGU")
 
 
 def _load_env():
@@ -101,21 +116,44 @@ def _run_locked():
         print("  No open positions — nothing to monitor.")
         return
 
+    trail_enabled = str(_cfg("TRAIL_ENABLED", "true", str)).lower() == "true"
+    trail_activate = _cfg("TRAIL_ACTIVATE_PCT", 0.03)
+    trail_std      = _cfg("TRAIL_DISTANCE_PCT", 0.02)
+    trail_penny    = _cfg("PENNY_TRAIL_DISTANCE_PCT", 0.03)
+    max_hold       = _cfg("MAX_HOLD_HOURS", 48)
+
     triggered = []
+    stops_moved = False
     for symbol, pos in list(positions.items()):
         try:
             price = fetch_price(symbol)
             entry = pos["entry_price"]
+
+            # 1) Ratchet the trailing stop up on new highs (locks in gains).
+            is_penny = pos.get("is_penny") or any(m in symbol for m in PENNY_MARKERS)
+            if trail_enabled:
+                updated = position_rules.update_trailing_stop(
+                    pos, price, trail_activate, trail_penny if is_penny else trail_std)
+                if updated["stop_loss"] != pos["stop_loss"] or \
+                        updated.get("peak_price") != pos.get("peak_price"):
+                    state["open_positions"][symbol] = updated
+                    pos = updated
+                    stops_moved = True
+
             sl    = pos["stop_loss"]
             tp    = pos["take_profit"]
             pct   = (price - entry) / entry * 100
             pnl   = (price - entry) * pos["quantity"]
-            print(f"  {symbol:<12} entry=${entry}  now=${price}  {pct:+.2f}%  P&L=${pnl:+.2f}  SL={sl}  TP={tp}")
+            trail_note = "  [trailing]" if pos.get("trailing") else ""
+            print(f"  {symbol:<12} entry=${entry}  now=${price}  {pct:+.2f}%  P&L=${pnl:+.2f}  SL={sl}  TP={tp}{trail_note}")
 
             if price <= sl:
-                reason = "Automated STOP LOSS triggered"
+                reason = "Automated STOP LOSS triggered" if not pos.get("trailing") \
+                         else "Trailing stop triggered (gains locked)"
             elif price >= tp:
                 reason = "Automated TAKE PROFIT triggered"
+            elif position_rules.should_stale_exit(pos, price, max_hold):
+                reason = f"Stale exit (held > {int(max_hold)}h, not in profit)"
             else:
                 continue
 
@@ -123,18 +161,22 @@ def _run_locked():
             # Sale proceeds return to cash — realized P&L captured automatically
             state["cash"] = round(state.get("cash", 0) + price * pos["quantity"], 4)
             del state["open_positions"][symbol]
-            label = "SL" if "STOP" in reason else "TP"
-            triggered.append(f"{label} {symbol} @ ${price}  P&L=${pnl:+.2f}")
+            label = "TP" if "TAKE PROFIT" in reason else ("SL" if "STOP" in reason or "Trailing" in reason else "EXIT")
+            triggered.append(f"{label} {symbol} @ ${price}  P&L=${pnl:+.2f}  ({reason})")
 
         except Exception as e:
             print(f"  Could not check {symbol}: {e}")
 
-    if triggered:
+    if triggered or stops_moved:
         save_state(state)
+
+    if triggered:
         print(f"\n  EXECUTED: {len(triggered)} trade(s):")
         for t in triggered:
             print(f"    {t}")
         send_alert_email(triggered)
+    elif stops_moved:
+        print(f"\n  Trailing stops ratcheted up — no exits this cycle.")
     else:
         print(f"\n  All {len(positions)} position(s) within range — no action needed.")
 

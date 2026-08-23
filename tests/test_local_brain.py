@@ -198,3 +198,19 @@ def test_zero_price_never_crashes_position_sizing():
     # Must return 0.0 (no trade), NOT raise ZeroDivisionError.
     assert r.get_position_size(0.0, "PUMPUSDT") == 0.0
     assert r.get_position_size(-1.0, "PUMPUSDT") == 0.0
+
+
+def test_momentum_trade_gets_a_wider_runner_take_profit():
+    """Momentum-override = the proven edge. It should get a wider TP than a normal
+    trade so the trailing stop (not a tight 6% cap) manages the exit."""
+    mom = make_market_data(symbol="TAOUSDT", change_24h=12.0,
+                           vol_latest=2300.0, vol_avg=1000.0, rsi_1h=58.0,
+                           ema20_15m=98.0, ema50_15m=100.0, ema20_1h=98.0, ema50_1h=100.0)
+    normal = make_market_data(symbol="SOLUSDT", rsi_1h=26.0, vol_latest=2500.0, vol_avg=1000.0)
+    dm = local_brain.score_symbol(mom, sentiment(), NEUTRAL)
+    dn = local_brain.score_symbol(normal, sentiment(), NEUTRAL)
+    assert dm["action"] == dn["action"] == "BUY"
+    mom_tp_pct = (dm["take_profit"] - dm["entry_price"]) / dm["entry_price"]
+    nrm_tp_pct = (dn["take_profit"] - dn["entry_price"]) / dn["entry_price"]
+    assert mom_tp_pct > nrm_tp_pct        # runner target is wider
+    assert "momentum runner" in dm["reasoning"]

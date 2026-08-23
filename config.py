@@ -82,6 +82,38 @@ MAX_PENNY_POSITIONS   = 2      # Max 2 penny positions open at once
 MAX_OPEN_POSITIONS    = 4      # Hard cap across all tiers
 HOLD_ALL_AT_POSITIONS = 3      # At 3+ open positions, HOLD everything until one closes
 
+# --- Adaptive risk controls (added 2026-08-23 from trade-history analysis) ---
+# The autopsy of experiment 2 showed: winners exit in ~14h, losers dragged ~43h;
+# the bot round-tripped winners back into losses and revenge-bought coins right
+# after they stopped it out. These are the standard professional fixes.
+
+# Trailing stop: once a position is up TRAIL_ACTIVATE_PCT, ratchet the stop up so it
+# trails TRAIL_DISTANCE_PCT below the highest price seen. A winner can no longer round-
+# trip all the way back to the original stop.
+TRAIL_ENABLED           = os.getenv("TRAIL_ENABLED", "true").lower() == "true"
+TRAIL_ACTIVATE_PCT      = 0.03   # start trailing once +3% in profit
+TRAIL_DISTANCE_PCT      = 0.02   # standard coins: trail 2% below peak
+PENNY_TRAIL_DISTANCE_PCT = 0.03  # penny coins: 3% (they're noisier)
+
+# Stale exit: a position older than this that is NOT in profit is closed to free capital.
+MAX_HOLD_HOURS          = int(os.getenv("MAX_HOLD_HOURS", "48"))
+
+# Cooldown: after a stop-loss on a symbol, refuse to re-enter it for this long.
+COOLDOWN_HOURS_AFTER_SL = int(os.getenv("COOLDOWN_HOURS_AFTER_SL", "12"))
+
+# Daily circuit breaker: if equity falls this fraction below the day's opening equity,
+# open no new positions for the rest of the UTC day (existing positions still managed).
+DAILY_LOSS_LIMIT_PCT    = float(os.getenv("DAILY_LOSS_LIMIT_PCT", "0.05"))
+
+# Conviction-scaled sizing: full size for top-conviction setups, reduced below that.
+CONVICTION_FULL_SCORE   = 10     # score at/above this gets full tier size
+REDUCED_SIZE_FACTOR     = 0.7    # scores below CONVICTION_FULL_SCORE get 70% size
+
+# Momentum "runner" take-profit: momentum-override trades were the edge (73% win) and
+# can run 10-30%. Now that a trailing stop protects the downside, give them a wider
+# target so the trailing stop — not a tight 6% TP — decides when a runner ends.
+MOMENTUM_TP_MULTIPLIER  = 2.0    # momentum trades get 2x the normal take-profit
+
 NEVER_TRADE = ("BTCUSDT", "ETHUSDT")  # Too slow — used as capital, not traded
 
 BINANCE_BASE_URL = "https://api.binance.com"
