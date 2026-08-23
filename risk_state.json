@@ -2,5 +2,9 @@
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
   "cash": 519.9876,
-  "open_positions": {}
+  "open_positions": {},
+  "day": {
+    "date": "2026-08-23",
+    "open_equity": 519.99
+  }
 }
