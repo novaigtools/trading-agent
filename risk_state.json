@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 487.2284,
+  "cash": 409.2303,
   "open_positions": {
     "PEPEUSDT": {
       "entry_price": 4.16e-06,
@@ -11,6 +11,15 @@
       "opened_at": "2026-08-23T21:04:58.981156+00:00",
       "is_penny": true,
       "peak_price": 4.25e-06
+    },
+    "INJUSDT": {
+      "entry_price": 5.392,
+      "quantity": 14.465531,
+      "stop_loss": 5.28416,
+      "take_profit": 5.71552,
+      "opened_at": "2026-08-23T23:34:56.098197+00:00",
+      "is_penny": false,
+      "peak_price": 5.392
     }
   },
   "day": {
