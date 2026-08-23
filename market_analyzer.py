@@ -30,6 +30,21 @@ def fetch_ticker(symbol: str) -> dict:
     return response.json()
 
 
+def _round_price(x: float) -> float:
+    """
+    Round a price-like value keeping ~6 significant figures, so cheap coins survive.
+    A flat round(x, 4) collapses sub-$0.0001 coins (PEPE ~0.0000028, micro-caps) to
+    0.0 — which fed garbage indicators to the rule engine and once divided-by-zero in
+    position sizing. Significant-figure rounding preserves precision at any magnitude.
+    """
+    x = float(x)
+    if x == 0 or not (x == x):  # zero or NaN
+        return 0.0
+    import math
+    digits = 6 - int(math.floor(math.log10(abs(x)))) - 1
+    return round(x, max(digits, 4))
+
+
 def compute_indicators(df: pd.DataFrame) -> dict:
     close = df["close"]
     volume = df["volume"]
@@ -45,12 +60,12 @@ def compute_indicators(df: pd.DataFrame) -> dict:
         "macd": round(float(macd_obj.macd().iloc[-1]), 4),
         "macd_signal": round(float(macd_obj.macd_signal().iloc[-1]), 4),
         "macd_hist": round(float(macd_obj.macd_diff().iloc[-1]), 4),
-        "bb_upper": round(float(bb_obj.bollinger_hband().iloc[-1]), 4),
-        "bb_mid": round(float(bb_obj.bollinger_mavg().iloc[-1]), 4),
-        "bb_lower": round(float(bb_obj.bollinger_lband().iloc[-1]), 4),
-        "ema_20": round(float(ema_20.iloc[-1]), 4),
-        "ema_50": round(float(ema_50.iloc[-1]), 4),
-        "current_price": round(float(close.iloc[-1]), 4),
+        "bb_upper": _round_price(bb_obj.bollinger_hband().iloc[-1]),
+        "bb_mid": _round_price(bb_obj.bollinger_mavg().iloc[-1]),
+        "bb_lower": _round_price(bb_obj.bollinger_lband().iloc[-1]),
+        "ema_20": _round_price(ema_20.iloc[-1]),
+        "ema_50": _round_price(ema_50.iloc[-1]),
+        "current_price": _round_price(close.iloc[-1]),
         "volume_avg": round(float(volume.tail(20).mean()), 2),
         "volume_latest": round(float(volume.iloc[-1]), 2),
         "price_change_5": round(float((close.iloc[-1] - close.iloc[-5]) / close.iloc[-5] * 100), 2),

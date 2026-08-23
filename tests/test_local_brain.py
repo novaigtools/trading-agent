@@ -181,3 +181,20 @@ def test_fetch_errors_are_skipped_not_traded():
     decisions = local_brain.get_decisions_for_all(
         [{"symbol": "BROKENUSDT", "error": "timeout"}], sentiment(), NEUTRAL)
     assert decisions == []
+
+
+def test_micro_cap_price_is_not_rounded_to_zero():
+    """PUMP/PEPE-class coins (< $0.0001) once rounded to 0.0, feeding garbage
+    indicators and crashing position sizing with a ZeroDivisionError."""
+    import market_analyzer as m
+    assert m._round_price(0.00003) > 0        # PUMPUSDT — the coin that crashed a scan
+    assert m._round_price(0.0000028) > 0      # PEPEUSDT
+    assert m._round_price(0.0) == 0.0         # genuine zero stays zero
+    assert m._round_price(63000.0) == 63000.0 # big prices unaffected
+
+
+def test_zero_price_never_crashes_position_sizing():
+    import risk_manager as r
+    # Must return 0.0 (no trade), NOT raise ZeroDivisionError.
+    assert r.get_position_size(0.0, "PUMPUSDT") == 0.0
+    assert r.get_position_size(-1.0, "PUMPUSDT") == 0.0

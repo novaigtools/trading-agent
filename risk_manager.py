@@ -66,6 +66,12 @@ def _book_equity(state: dict) -> float:
 
 
 def get_position_size(price: float, symbol: str = "") -> float:
+    # A bad price (0, negative, or NaN) must never divide-by-zero and crash the whole
+    # scan — a micro-cap once rounded to 0.0 and took down a run. No price, no trade.
+    if not price or price <= 0 or price != price:
+        print(f"  Refusing to size {symbol}: invalid price {price!r}")
+        return 0.0
+
     state = _load_state()
     equity = _book_equity(state)
 
