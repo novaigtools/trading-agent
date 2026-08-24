@@ -54,3 +54,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-08-23 21:04:58,PEPEUSDT,BUY,4.16e-06,7874812.211538,32.76,"RULES: vol 2.8x avg (+4); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2). Score 8/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",8,intraday,PAPER
 2026-08-23 23:34:56,INJUSDT,BUY,5.392,14.465531,78.0,"RULES: vol 2.1x avg (+4); 15M EMA20>EMA50 trend up (+2); MOMENTUM OVERRIDE: 24h +9.6% on 2.1x vol (+4). Score 10/10 (>= 8). Tier standard: SL 2%, TP 12%. [momentum runner: wide TP, trailing stop manages exit]",10,intraday,PAPER
 2026-08-24 00:21:04,PEPEUSDT,SELL,4.03e-06,7874812.211538,31.74,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-08-24 03:31:04,INJUSDT,SELL,5.276,14.465531,76.32,Automated STOP LOSS triggered,10,intraday,PAPER
