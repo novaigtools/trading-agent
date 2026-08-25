@@ -56,3 +56,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-08-24 00:21:04,PEPEUSDT,SELL,4.03e-06,7874812.211538,31.74,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-08-24 03:31:04,INJUSDT,SELL,5.276,14.465531,76.32,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-08-24 11:38:29,WIFUSDT,BUY,0.202,161.331741,32.59,"RULES: vol 2.8x avg (+4); 15M MACD hist +0.0005 (+2); 15M EMA20>EMA50 trend up (+2); BTC regime BULL (+1); bearish news backdrop (-1). Score 8/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",8,intraday,PAPER
+2026-08-25 05:37:00,WIFUSDT,SELL,0.2257,161.331741,36.41,Automated TAKE PROFIT triggered,10,intraday,PAPER
