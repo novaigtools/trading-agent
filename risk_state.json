@@ -1,18 +1,8 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 442.9431,
-  "open_positions": {
-    "INJUSDT": {
-      "entry_price": 5.96,
-      "quantity": 13.115172,
-      "stop_loss": 5.8408,
-      "take_profit": 6.3176,
-      "opened_at": "2026-08-25T08:29:48.852439+00:00",
-      "is_penny": false,
-      "peak_price": 5.978
-    }
-  },
+  "cash": 519.3652,
+  "open_positions": {},
   "day": {
     "date": "2026-08-25",
     "open_equity": 517.29
