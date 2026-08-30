@@ -60,3 +60,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-08-25 08:29:48,INJUSDT,BUY,5.96,13.115172,78.17,"RULES: vol 3.6x avg (+4); 15M EMA20>EMA50 trend up (+2); MOMENTUM OVERRIDE: 24h +12.56% on 3.6x vol (+4). Score 10/10 (>= 8). Tier standard: SL 2%, TP 12%. [momentum runner: wide TP, trailing stop manages exit]",10,intraday,PAPER
 2026-08-25 09:56:04,INJUSDT,SELL,5.827,13.115172,76.42,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-08-30 03:05:00,UNIUSDT,BUY,4.886,9.566694,46.74,"RULES: vol 2.1x avg (+4); 15M MACD hist +0.0206 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); MOMENTUM OVERRIDE: 24h +10.92% on 2.1x vol (+4); bearish news backdrop (-1). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 18%. [momentum runner: wide TP, trailing stop manages exit]",10,intraday,PAPER
+2026-08-30 16:57:36,UNIUSDT,SELL,5.375,9.566694,51.42,Automated TAKE PROFIT triggered,10,intraday,PAPER
