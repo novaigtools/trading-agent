@@ -47,10 +47,18 @@ TRADING_PAIRS = [
     # Tier 3 — Solid mid-caps with volume
     "INJUSDT",    # DeFi/derivatives
     "AVAXUSDT",   # reliable alt
+    "LINKUSDT",   # oracle blue-chip, reliable mover
+    "UNIUSDT",    # DeFi blue-chip (won +10% as a trending pick — promoted to permanent)
+    "APTUSDT",    # volatile L1
+    "ARBUSDT",    # L2 leader, volatile
 
     # Tier 4 — Established large-cap alts (XRP/ADA style — deep liquidity, slower but steady)
     "XRPUSDT",    # payments, top-5 by market cap, still swings 5-15% on news
     "ADAUSDT",    # long-cycle performer, liquid
+
+    # Tier 4b — Hot-narrative mid-caps (added 2026-08-31 to widen shot count)
+    "ENAUSDT",    # Ethena — yield narrative, high volatility
+    "ONDOUSDT",   # RWA (real-world assets) narrative, hot sector
 ]
 LONG_TERM_PAIRS = []  # No slow large-caps — all positions are swing/intraday
 
