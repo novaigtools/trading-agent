@@ -1,8 +1,18 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 524.0433,
-  "open_positions": {},
+  "cash": 491.0286,
+  "open_positions": {
+    "POLYUSDT": {
+      "entry_price": 0.2696,
+      "quantity": 122.45819,
+      "stop_loss": 0.261512,
+      "take_profit": 0.293864,
+      "opened_at": "2026-09-01T10:05:29.204931+00:00",
+      "is_penny": true,
+      "peak_price": 0.2696
+    }
+  },
   "day": {
     "date": "2026-09-01",
     "open_equity": 524.04
