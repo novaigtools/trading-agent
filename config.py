@@ -80,6 +80,17 @@ INCLUDE_TRENDING        = True
 MAX_TRENDING_COINS      = 3          # max trending coins added per scan
 MIN_TRENDING_VOLUME_USD = 2_000_000  # skip illiquid junk (< $2M daily volume)
 
+# Tier 7 — Dynamic liquid universe. Each scan the bot pulls the top-N Binance USDT
+# spot pairs by 24h volume (stablecoins/wrapped/fiat excluded) so it watches ~100
+# genuinely liquid coins without hand-maintaining the list. Universe-only coins (those
+# not in the curated tiers) are treated as penny-tier: small size, wide stops — cautious,
+# since they are less battle-tested than the core names. Fetching is parallelized so a
+# big list still scans in well under the staleness limit.
+INCLUDE_LIQUID_UNIVERSE = True
+LIQUID_UNIVERSE_SIZE    = 100        # how many top-volume coins to watch
+UNIVERSE_MIN_VOLUME_USD = 1_000_000  # floor so the tail is still liquid (~$1M/day)
+SCAN_MAX_WORKERS        = 8          # parallel market-data fetch threads (rate-limit safe)
+
 MAX_POSITION_PCT      = 0.15   # 15% of account equity per standard position
 PENNY_MAX_PCT         = 0.09   # 9% per penny position — 2 positions = 18% max meme exposure
 STOP_LOSS_PCT         = 0.02   # 2% stop loss (standard coins)

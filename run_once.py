@@ -22,6 +22,7 @@ import notifier
 from config import (
     PAPER_TRADING, STARTING_BALANCE, TRADING_PAIRS, PENNY_PAIRS,
     INCLUDE_TRENDING, MAX_TRENDING_COINS, MIN_TRENDING_VOLUME_USD,
+    INCLUDE_LIQUID_UNIVERSE, LIQUID_UNIVERSE_SIZE, UNIVERSE_MIN_VOLUME_USD,
     BRAIN_MODE, MIN_BUY_CONFIDENCE,
 )
 
@@ -77,20 +78,35 @@ def main() -> int:
         print(f"  Sentiment fetch failed: {e}")
         sentiment = {}
 
-    # Step 2 — Live trending coins (Binance-tradeable only)
+    # Step 2 — Live trending coins + liquid universe (Binance-tradeable only)
     trending_pairs = []
+    known = set(TRADING_PAIRS + PENNY_PAIRS)
     if INCLUDE_TRENDING:
         print(f"\n{Fore.CYAN}[2/6] Scanning live trending coins...{Style.RESET_ALL}")
         try:
             raw_trending = news_analyzer.get_tradeable_trending(
                 MAX_TRENDING_COINS, MIN_TRENDING_VOLUME_USD)
-            known = set(TRADING_PAIRS + PENNY_PAIRS)
             trending_pairs = [p for p in raw_trending if p not in known]
             print(f"  Trending & tradeable this scan: "
                   f"{', '.join(trending_pairs) if trending_pairs else 'none new passed the liquidity filter'}")
         except Exception as e:
             print(f"  Trending scan failed: {e}")
-    risk_manager.set_trending(trending_pairs)
+
+    # Top-N liquid coins by volume — the wide net. Universe-only names are treated as
+    # penny-tier (small size, wide stops): cautious, since they're less proven than core.
+    universe_pairs = []
+    if INCLUDE_LIQUID_UNIVERSE:
+        try:
+            uni = market_analyzer.get_liquid_universe(LIQUID_UNIVERSE_SIZE, UNIVERSE_MIN_VOLUME_USD)
+            universe_pairs = [p for p in uni if p not in known and p not in trending_pairs]
+            print(f"  Liquid universe: {len(uni)} coins (top by volume), "
+                  f"{len(universe_pairs)} new beyond the curated tiers")
+        except Exception as e:
+            print(f"  Liquid-universe scan failed: {e}")
+
+    extra_pairs = trending_pairs + universe_pairs
+    # Both trending and universe extras get cautious penny-tier risk sizing.
+    risk_manager.set_trending(extra_pairs)
 
     # Step 3 — Market regime
     print(f"\n{Fore.CYAN}[3/6] Checking BTC market regime...{Style.RESET_ALL}")
@@ -105,7 +121,7 @@ def main() -> int:
 
     # Step 4 — Market data
     print(f"\n{Fore.CYAN}[4/6] Fetching market data...{Style.RESET_ALL}")
-    market_data_list = market_analyzer.analyze_all_pairs(extra_pairs=trending_pairs)
+    market_data_list = market_analyzer.analyze_all_pairs(extra_pairs=extra_pairs)
     current_prices = {d["symbol"]: d["price"] for d in market_data_list if "price" in d}
 
     if _elapsed_min() > MAX_FETCH_AGE_MIN:
@@ -134,7 +150,7 @@ def main() -> int:
         bear_skip = False
         result = brain.get_decisions_for_all(
             market_data_list, sentiment, regime,
-            active_trending=set(trending_pairs),
+            active_trending=set(extra_pairs),
             open_positions=open_positions,
             mode=mode,
         )

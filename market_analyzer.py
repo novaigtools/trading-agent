@@ -1,7 +1,55 @@
+import concurrent.futures
 import requests
 import pandas as pd
 import ta
-from config import BINANCE_BASE_URL, TRADING_PAIRS, PENNY_PAIRS
+from config import BINANCE_BASE_URL, TRADING_PAIRS, PENNY_PAIRS, NEVER_TRADE
+
+try:
+    from config import SCAN_MAX_WORKERS
+except ImportError:
+    SCAN_MAX_WORKERS = 8
+
+# Excluded from the liquid universe: stablecoins, wrapped/staked tokens, and fiat —
+# they either don't move (stables) or double-count majors (wrapped). Substring match.
+_UNIVERSE_EXCLUDE = (
+    "USDC", "FDUSD", "TUSD", "DAI", "USDP", "USTC", "EUR", "GBP", "AEUR", "USD1",
+    "WBTC", "WBETH", "WETH", "BTCUSDT", "ETHUSDT", "USDEUSDT", "BUSD", "RLUSD",
+    "XUSD", "USDG", "PYUSD", "BFUSD",
+)
+
+
+def get_liquid_universe(top_n: int = 100, min_volume_usd: float = 5_000_000) -> list[str]:
+    """
+    Top USDT spot pairs by 24h quote volume, excluding stablecoins/wrapped/fiat and the
+    never-trade majors. One API call returns every ticker, so this is cheap. Returns a
+    volume-sorted list of symbols like ['SOLUSDT', 'DOGEUSDT', ...].
+    """
+    try:
+        r = requests.get(f"{BINANCE_BASE_URL}/api/v3/ticker/24hr", timeout=20)
+        r.raise_for_status()
+        tickers = r.json()
+    except Exception as e:
+        print(f"  Liquid-universe fetch failed: {e}")
+        return []
+
+    rows = []
+    for t in tickers:
+        sym = t.get("symbol", "")
+        if not sym.endswith("USDT"):
+            continue
+        if sym in NEVER_TRADE or any(x in sym for x in _UNIVERSE_EXCLUDE):
+            continue
+        if "UP" in sym or "DOWN" in sym or "BULL" in sym or "BEAR" in sym:
+            continue  # leveraged tokens
+        try:
+            vol = float(t.get("quoteVolume", 0))
+        except (TypeError, ValueError):
+            continue
+        if vol >= min_volume_usd:
+            rows.append((sym, vol))
+
+    rows.sort(key=lambda x: x[1], reverse=True)
+    return [sym for sym, _ in rows[:top_n]]
 
 
 def fetch_ohlcv(symbol: str, interval: str = "15m", limit: int = 100) -> pd.DataFrame:
@@ -162,12 +210,21 @@ def get_btc_market_regime() -> dict:
 
 
 def analyze_all_pairs(extra_pairs: list = None) -> list[dict]:
-    results = []
     all_pairs = TRADING_PAIRS + PENNY_PAIRS + list(extra_pairs or [])
-    # De-dup while preserving order (a trending coin may already be in our lists)
+    # De-dup while preserving order (a trending/universe coin may already be listed)
     seen = set()
     all_pairs = [p for p in all_pairs if not (p in seen or seen.add(p))]
-    for pair in all_pairs:
-        print(f"  Analyzing {pair}...")
-        results.append(analyze_pair(pair))
+
+    # Fetch in parallel — each coin is 3 network calls, so a 100-coin list scans in
+    # seconds instead of minutes and stays well inside the staleness guard.
+    print(f"  Analyzing {len(all_pairs)} pairs (parallel, {SCAN_MAX_WORKERS} workers)...")
+    results = [None] * len(all_pairs)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=SCAN_MAX_WORKERS) as pool:
+        future_to_idx = {pool.submit(analyze_pair, p): i for i, p in enumerate(all_pairs)}
+        for fut in concurrent.futures.as_completed(future_to_idx):
+            idx = future_to_idx[fut]
+            try:
+                results[idx] = fut.result()
+            except Exception as e:
+                results[idx] = {"symbol": all_pairs[idx], "error": str(e)}
     return results
