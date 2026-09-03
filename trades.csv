@@ -66,3 +66,5 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-02 09:29:33,SOPHUSDT,BUY,0.00437,10792.654967,47.16,"RULES: vol 5.5x avg (+4); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); MOMENTUM OVERRIDE: 24h +10.66% on 5.5x vol (+4); bearish news backdrop (-1). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 18%. [momentum runner: wide TP, trailing stop manages exit]",10,intraday,PAPER
 2026-09-02 18:36:34,SOPHUSDT,SELL,0.00411,10792.654967,44.36,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-09-02 18:37:44,ZAMAUSDT,BUY,0.05151,637.506256,32.84,"RULES: vol 2.4x avg (+4); 15M MACD hist +0.0001 (+2); 15M EMA20>EMA50 trend up (+2). Score 8/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",8,intraday,PAPER
+2026-09-03 09:06:06,FILUSDT,SELL,0.7829,42.099885,32.96,Trailing stop triggered (gains locked),10,intraday,PAPER
+2026-09-03 09:06:06,ZAMAUSDT,SELL,0.0563,637.506256,35.89,Automated TAKE PROFIT triggered,10,intraday,PAPER
