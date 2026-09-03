@@ -1,17 +1,8 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 444.0402,
+  "cash": 477.0549,
   "open_positions": {
-    "POLYUSDT": {
-      "entry_price": 0.2696,
-      "quantity": 122.45819,
-      "stop_loss": 0.261512,
-      "take_profit": 0.293864,
-      "opened_at": "2026-09-01T10:05:29.204931+00:00",
-      "is_penny": true,
-      "peak_price": 0.2696
-    },
     "CAKEUSDT": {
       "entry_price": 1.987,
       "quantity": 23.744973,
