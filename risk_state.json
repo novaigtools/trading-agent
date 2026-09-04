@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 351.2382,
+  "cash": 472.0178,
   "open_positions": {
     "CAKEUSDT": {
       "entry_price": 1.987,
@@ -11,24 +11,6 @@
       "opened_at": "2026-09-03T09:06:30.589567+00:00",
       "is_penny": true,
       "peak_price": 2.031
-    },
-    "TRUMPUSDT": {
-      "entry_price": 2.353,
-      "quantity": 20.051532,
-      "stop_loss": 2.28241,
-      "take_profit": 2.56477,
-      "opened_at": "2026-09-03T11:24:02.083882+00:00",
-      "is_penny": true,
-      "peak_price": 2.386
-    },
-    "LINKUSDT": {
-      "entry_price": 12.081,
-      "quantity": 6.509016,
-      "stop_loss": 11.83938,
-      "take_profit": 12.80586,
-      "opened_at": "2026-09-04T09:57:44.852349+00:00",
-      "is_penny": false,
-      "peak_price": 12.081
     }
   },
   "day": {
