@@ -123,9 +123,10 @@ def test_momentum_override_allows_buy_against_btc_trend():
     assert "MOMENTUM OVERRIDE" in d["reasoning"]
 
 
-def test_three_open_positions_holds_everything():
+def test_position_cap_holds_everything_when_full():
+    """At the concurrent-position cap (HOLD_ALL_AT_POSITIONS=5), no new entries."""
     md = make_market_data(rsi_1h=22.0, vol_latest=5000.0, vol_avg=1000.0)
-    open_pos = {"SUIUSDT": {}, "NEARUSDT": {}, "DOGEUSDT": {}}
+    open_pos = {"SUIUSDT": {}, "NEARUSDT": {}, "DOGEUSDT": {}, "SOLUSDT2": {}, "AVAXUSDT2": {}}
     d = local_brain.score_symbol(md, sentiment(), BULL, open_positions=open_pos)
     assert d["action"] == "HOLD"
     assert "already open" in d["reasoning"]
@@ -214,3 +215,30 @@ def test_momentum_trade_gets_a_wider_runner_take_profit():
     nrm_tp_pct = (dn["take_profit"] - dn["entry_price"]) / dn["entry_price"]
     assert mom_tp_pct > nrm_tp_pct        # runner target is wider
     assert "momentum runner" in dm["reasoning"]
+
+
+def test_overextended_blowoff_top_is_refused():
+    """Coin already +35% on the day AND 1H RSI 80 = chasing the top. HOLD."""
+    md = make_market_data(symbol="SOMEUSDT", change_24h=35.0, rsi_1h=80.0,
+                          vol_latest=3000.0, vol_avg=1000.0, macd_hist_15m=0.02,
+                          ema20_15m=105.0, ema50_15m=100.0)
+    d = local_brain.score_symbol(md, sentiment(), NEUTRAL)
+    assert d["action"] == "HOLD"
+    assert "Overextended" in d["reasoning"]
+
+
+def test_strong_momentum_not_yet_overbought_still_buys():
+    """+12% on the day but RSI still 58 = early strength, NOT overextended. BUY."""
+    md = make_market_data(symbol="TAOUSDT", change_24h=12.0, rsi_1h=58.0,
+                          vol_latest=2300.0, vol_avg=1000.0,
+                          ema20_15m=98.0, ema50_15m=100.0, ema20_1h=98.0, ema50_1h=100.0)
+    d = local_brain.score_symbol(md, sentiment(), NEUTRAL)
+    assert d["action"] == "BUY"
+
+
+def test_higher_position_cap_allows_a_fourth_open_position():
+    """With HOLD_ALL_AT_POSITIONS raised to 5, a 4th concurrent position is allowed."""
+    md = make_market_data(rsi_1h=26.0, vol_latest=2500.0, vol_avg=1000.0)
+    four_open = {"AUSDT": {}, "BUSDT2": {}, "CUSDT": {}, "DUSDT": {}}
+    d = local_brain.score_symbol(md, sentiment(), NEUTRAL, open_positions=four_open)
+    assert d["action"] == "BUY"   # was HOLD under the old cap of 3

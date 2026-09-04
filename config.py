@@ -97,9 +97,19 @@ STOP_LOSS_PCT         = 0.02   # 2% stop loss (standard coins)
 TAKE_PROFIT_PCT       = 0.06   # 6% take profit (standard coins)
 PENNY_STOP_LOSS_PCT   = 0.03   # 3% SL for memes — wider to avoid noise whipsaws
 PENNY_TAKE_PROFIT_PCT = 0.09   # 9% TP for memes — aim for bigger explosive moves
-MAX_PENNY_POSITIONS   = 2      # Max 2 penny positions open at once
-MAX_OPEN_POSITIONS    = 4      # Hard cap across all tiers
-HOLD_ALL_AT_POSITIONS = 3      # At 3+ open positions, HOLD everything until one closes
+# Concurrent-position caps. Raised 2026-09-04: with a 100-coin field there are more
+# genuine setups at once, so let more capital work — but the daily circuit breaker (5%),
+# trailing stops and BEAR-regime block cap the correlated-drawdown risk that a bigger
+# book creates. Quality bar per position is unchanged (still 8/10).
+MAX_PENNY_POSITIONS   = 4      # riskier universe/meme names — was 2
+MAX_OPEN_POSITIONS    = 6      # hard cap across all tiers — was 4
+HOLD_ALL_AT_POSITIONS = 5      # stop opening new positions at 5 open — was 3
+
+# "Don't chase the blow-off top" guard (research: buying after a coin has already
+# exploded is where momentum bots bleed). Refuse fresh entries that are both far
+# extended on the day AND already overbought — we want to buy strength early, not late.
+OVEREXTENDED_24H_PCT  = 30.0   # 24h change at/above this is "already extended"
+OVEREXTENDED_RSI_1H   = 78.0   # 1H RSI at/above this is "already overbought"
 
 # --- Adaptive risk controls (added 2026-08-23 from trade-history analysis) ---
 # The autopsy of experiment 2 showed: winners exit in ~14h, losers dragged ~43h;

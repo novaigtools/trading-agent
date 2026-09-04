@@ -11,7 +11,7 @@ Score is clamped to 0-10 and compared against MIN_BUY_CONFIDENCE.
 from config import (
     PENNY_PAIRS, NEVER_TRADE, MIN_BUY_CONFIDENCE, HOLD_ALL_AT_POSITIONS,
     STOP_LOSS_PCT, TAKE_PROFIT_PCT, PENNY_STOP_LOSS_PCT, PENNY_TAKE_PROFIT_PCT,
-    MOMENTUM_TP_MULTIPLIER,
+    MOMENTUM_TP_MULTIPLIER, OVEREXTENDED_24H_PCT, OVEREXTENDED_RSI_1H,
 )
 
 # --- Signal weights ----------------------------------------------------------
@@ -129,6 +129,13 @@ def score_symbol(market_data: dict, sentiment: dict = None, regime: dict = None,
     vol_avg    = i15.get("volume_avg", 0) or 0
     vol_ratio  = (vol_latest / vol_avg) if vol_avg else 0
     change_24h = market_data.get("change_24h", 0) or 0
+
+    # Don't chase the blow-off top: a coin already far up on the day AND overbought is a
+    # late entry with wide risk and compressed reward. Buy strength early, not late.
+    if change_24h >= OVEREXTENDED_24H_PCT and rsi_1h is not None and rsi_1h >= OVEREXTENDED_RSI_1H:
+        return _hold(symbol, price,
+                     f"Overextended: 24h +{_fmt(change_24h)}% with 1H RSI {_fmt(rsi_1h)} "
+                     f"(>= {OVEREXTENDED_RSI_1H}) — too late to chase, waiting for a pullback.")
 
     if rsi_1h is not None and rsi_1h < 25:
         score += W_RSI_EXTREME
