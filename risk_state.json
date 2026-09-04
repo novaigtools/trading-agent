@@ -10,7 +10,7 @@
       "take_profit": 2.16583,
       "opened_at": "2026-09-03T09:06:30.589567+00:00",
       "is_penny": true,
-      "peak_price": 1.989
+      "peak_price": 1.996
     },
     "TRUMPUSDT": {
       "entry_price": 2.353,
@@ -19,7 +19,7 @@
       "take_profit": 2.56477,
       "opened_at": "2026-09-03T11:24:02.083882+00:00",
       "is_penny": true,
-      "peak_price": 2.353
+      "peak_price": 2.386
     }
   },
   "day": {
