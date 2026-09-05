@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 439.3083,
+  "cash": 305.355,
   "open_positions": {
     "CAKEUSDT": {
       "entry_price": 1.987,
@@ -20,6 +20,33 @@
       "opened_at": "2026-09-04T13:00:59.296236+00:00",
       "is_penny": true,
       "peak_price": 0.00181
+    },
+    "WLDUSDT": {
+      "entry_price": 0.3945,
+      "quantity": 138.189875,
+      "stop_loss": 0.38661,
+      "take_profit": 0.41817,
+      "opened_at": "2026-09-05T08:05:44.554050+00:00",
+      "is_penny": false,
+      "peak_price": 0.3945
+    },
+    "GRAMUSDT": {
+      "entry_price": 1.432,
+      "quantity": 32.631229,
+      "stop_loss": 1.38904,
+      "take_profit": 1.56088,
+      "opened_at": "2026-09-05T08:05:47.993308+00:00",
+      "is_penny": true,
+      "peak_price": 1.432
+    },
+    "FORMUSDT": {
+      "entry_price": 0.2904,
+      "quantity": 112.636174,
+      "stop_loss": 0.281688,
+      "take_profit": 0.316536,
+      "opened_at": "2026-09-05T08:05:50.704043+00:00",
+      "is_penny": true,
+      "peak_price": 0.2904
     }
   },
   "day": {
