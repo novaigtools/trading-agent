@@ -81,3 +81,5 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-06 00:26:46,CAKEUSDT,SELL,2.279,23.744973,54.11,Automated TAKE PROFIT triggered,10,intraday,PAPER
 2026-09-06 03:39:03,FORMUSDT,SELL,0.2772,112.636174,31.22,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-09-06 09:05:25,ZKUSDT,BUY,0.01061,3115.239358,33.05,"RULES: vol 5.1x avg (+4); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2). Score 8/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",8,intraday,PAPER
+2026-09-06 09:35:12,SOLUSDT,BUY,106.87,0.515466,55.09,"RULES: vol 2.1x avg (+4); 15M MACD hist +0.0852 (+2); 15M EMA20>EMA50 trend up (+2). Score 8/10 (>= 8). Tier standard: SL 2%, TP 6%.",8,intraday,PAPER
+2026-09-06 09:35:14,HEMIUSDT,BUY,0.012,2754.390489,33.05,"RULES: vol 2.1x avg (+4); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2). Score 8/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",8,intraday,PAPER
