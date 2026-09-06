@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 390.6925,
+  "cash": 357.6398,
   "open_positions": {
     "NFPUSDT": {
       "entry_price": 0.00181,
@@ -29,6 +29,15 @@
       "opened_at": "2026-09-05T08:05:47.993308+00:00",
       "is_penny": true,
       "peak_price": 1.432
+    },
+    "ZKUSDT": {
+      "entry_price": 0.01061,
+      "quantity": 3115.239358,
+      "stop_loss": 0.0102917,
+      "take_profit": 0.0115649,
+      "opened_at": "2026-09-06T09:05:25.407201+00:00",
+      "is_penny": true,
+      "peak_price": 0.01061
     }
   },
   "day": {
