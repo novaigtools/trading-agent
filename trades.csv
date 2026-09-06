@@ -79,3 +79,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-05 08:05:47,GRAMUSDT,BUY,1.432,32.631229,46.73,"RULES: vol 3.8x avg (+4); 15M MACD hist +0.0021 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",10,intraday,PAPER
 2026-09-05 08:05:50,FORMUSDT,BUY,0.2904,112.636174,32.71,"RULES: vol 2.8x avg (+4); 15M MACD hist +0.0014 (+2); 15M EMA20>EMA50 trend up (+2). Score 8/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",8,intraday,PAPER
 2026-09-06 00:26:46,CAKEUSDT,SELL,2.279,23.744973,54.11,Automated TAKE PROFIT triggered,10,intraday,PAPER
+2026-09-06 03:39:03,FORMUSDT,SELL,0.2772,112.636174,31.22,Automated STOP LOSS triggered,10,intraday,PAPER
