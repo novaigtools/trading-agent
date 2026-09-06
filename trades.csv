@@ -85,3 +85,5 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-06 09:35:14,HEMIUSDT,BUY,0.012,2754.390489,33.05,"RULES: vol 2.1x avg (+4); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2). Score 8/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",8,intraday,PAPER
 2026-09-06 10:36:06,HEMIUSDT,SELL,0.01164,2754.390489,32.06,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-09-06 11:05:25,WLDUSDT,SELL,0.4182,138.189875,57.79,Automated TAKE PROFIT triggered,10,intraday,PAPER
+2026-09-06 15:18:00,NFPUSDT,SELL,0.00181,18071.569539,32.71,Stale exit (held > 48h, not in profit),10,intraday,PAPER
+2026-09-06 15:18:01,ZKUSDT,SELL,0.01097,3115.239358,34.17,Trailing stop triggered (gains locked),10,intraday,PAPER

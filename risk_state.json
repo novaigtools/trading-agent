@@ -1,17 +1,8 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 359.3513,
+  "cash": 426.235,
   "open_positions": {
-    "NFPUSDT": {
-      "entry_price": 0.00181,
-      "quantity": 18071.569539,
-      "stop_loss": 0.0017557,
-      "take_profit": 0.0019729,
-      "opened_at": "2026-09-04T13:00:59.296236+00:00",
-      "is_penny": true,
-      "peak_price": 0.00181
-    },
     "GRAMUSDT": {
       "entry_price": 1.432,
       "quantity": 32.631229,
@@ -20,16 +11,6 @@
       "opened_at": "2026-09-05T08:05:47.993308+00:00",
       "is_penny": true,
       "peak_price": 1.432
-    },
-    "ZKUSDT": {
-      "entry_price": 0.01061,
-      "quantity": 3115.239358,
-      "stop_loss": 0.0109901,
-      "take_profit": 0.0115649,
-      "opened_at": "2026-09-06T09:05:25.407201+00:00",
-      "is_penny": true,
-      "peak_price": 0.01133,
-      "trailing": true
     },
     "SOLUSDT": {
       "entry_price": 106.87,
