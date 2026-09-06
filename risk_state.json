@@ -15,11 +15,11 @@
     "WLDUSDT": {
       "entry_price": 0.3945,
       "quantity": 138.189875,
-      "stop_loss": 0.400918,
+      "stop_loss": 0.40327,
       "take_profit": 0.41817,
       "opened_at": "2026-09-05T08:05:44.554050+00:00",
       "is_penny": false,
-      "peak_price": 0.4091,
+      "peak_price": 0.4115,
       "trailing": true
     },
     "GRAMUSDT": {
@@ -34,11 +34,11 @@
     "ZKUSDT": {
       "entry_price": 0.01061,
       "quantity": 3115.239358,
-      "stop_loss": 0.0107476,
+      "stop_loss": 0.0108252,
       "take_profit": 0.0115649,
       "opened_at": "2026-09-06T09:05:25.407201+00:00",
       "is_penny": true,
-      "peak_price": 0.01108,
+      "peak_price": 0.01116,
       "trailing": true
     },
     "SOLUSDT": {
