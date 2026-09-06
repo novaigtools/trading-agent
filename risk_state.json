@@ -19,7 +19,7 @@
       "take_profit": 0.41817,
       "opened_at": "2026-09-05T08:05:44.554050+00:00",
       "is_penny": false,
-      "peak_price": 0.4033
+      "peak_price": 0.404
     },
     "GRAMUSDT": {
       "entry_price": 1.432,
@@ -37,7 +37,7 @@
       "take_profit": 0.0115649,
       "opened_at": "2026-09-06T09:05:25.407201+00:00",
       "is_penny": true,
-      "peak_price": 0.01089
+      "peak_price": 0.01091
     },
     "SOLUSDT": {
       "entry_price": 106.87,
