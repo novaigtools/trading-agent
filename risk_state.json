@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 391.95,
+  "cash": 437.791,
   "open_positions": {
     "SOLUSDT": {
       "entry_price": 106.87,
@@ -11,15 +11,6 @@
       "opened_at": "2026-09-06T09:35:12.241664+00:00",
       "is_penny": false,
       "peak_price": 106.87
-    },
-    "FIDAUSDT": {
-      "entry_price": 0.02146,
-      "quantity": 2213.470533,
-      "stop_loss": 0.0208162,
-      "take_profit": 0.0233914,
-      "opened_at": "2026-09-07T10:41:07.053397+00:00",
-      "is_penny": true,
-      "peak_price": 0.02146
     },
     "YGGUSDT": {
       "entry_price": 0.02488,
