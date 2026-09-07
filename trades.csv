@@ -89,3 +89,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-06 15:18:01,ZKUSDT,SELL,0.01097,3115.239358,34.17,Trailing stop triggered (gains locked),10,intraday,PAPER
 2026-09-07 09:14:56,GRAMUSDT,SELL,1.424,32.631229,46.47,Stale exit (held > 48h, not in profit),10,intraday,PAPER
 2026-09-07 10:41:07,FIDAUSDT,BUY,0.02146,2213.470533,47.5,"RULES: vol 7.7x avg (+4); 15M MACD hist +0.0001 (+2); BB upper breakout w/ volume (+2); MOMENTUM OVERRIDE: 24h +8.71% on 7.7x vol (+4); bearish news backdrop (-1). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 18%. [momentum runner: wide TP, trailing stop manages exit]",10,intraday,PAPER
+2026-09-07 11:05:29,YGGUSDT,BUY,0.02488,1336.445053,33.25,"RULES: vol 5.5x avg (+4); 15M MACD hist +0.0001 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); bearish news backdrop (-1). Score 9/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",9,intraday,PAPER

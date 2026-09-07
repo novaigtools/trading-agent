@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 425.2008,
+  "cash": 391.95,
   "open_positions": {
     "SOLUSDT": {
       "entry_price": 106.87,
@@ -20,6 +20,15 @@
       "opened_at": "2026-09-07T10:41:07.053397+00:00",
       "is_penny": true,
       "peak_price": 0.02146
+    },
+    "YGGUSDT": {
+      "entry_price": 0.02488,
+      "quantity": 1336.445053,
+      "stop_loss": 0.0241336,
+      "take_profit": 0.0271192,
+      "opened_at": "2026-09-07T11:05:29.209272+00:00",
+      "is_penny": true,
+      "peak_price": 0.02488
     }
   },
   "day": {
