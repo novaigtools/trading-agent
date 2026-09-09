@@ -1,8 +1,45 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 522.4044,
-  "open_positions": {},
+  "cash": 362.5486,
+  "open_positions": {
+    "FFUSDT": {
+      "entry_price": 0.15459,
+      "quantity": 304.136076,
+      "stop_loss": 0.1499523,
+      "take_profit": 0.1685031,
+      "opened_at": "2026-09-09T08:57:14.143439+00:00",
+      "is_penny": true,
+      "peak_price": 0.15459
+    },
+    "CAKEUSDT": {
+      "entry_price": 2.327,
+      "quantity": 20.204725,
+      "stop_loss": 2.25719,
+      "take_profit": 2.53643,
+      "opened_at": "2026-09-09T08:57:17.696259+00:00",
+      "is_penny": true,
+      "peak_price": 2.327
+    },
+    "NFPUSDT": {
+      "entry_price": 0.00181,
+      "quantity": 18183.136264,
+      "stop_loss": 0.0017557,
+      "take_profit": 0.0019729,
+      "opened_at": "2026-09-09T08:57:21.278994+00:00",
+      "is_penny": true,
+      "peak_price": 0.00181
+    },
+    "CATIUSDT": {
+      "entry_price": 0.06343,
+      "quantity": 518.862922,
+      "stop_loss": 0.0615271,
+      "take_profit": 0.0691387,
+      "opened_at": "2026-09-09T08:57:25.066769+00:00",
+      "is_penny": true,
+      "peak_price": 0.06343
+    }
+  },
   "day": {
     "date": "2026-09-09",
     "open_equity": 522.4
