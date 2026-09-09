@@ -97,3 +97,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-09 08:57:17,CAKEUSDT,BUY,2.327,20.204725,47.02,"RULES: vol 4.3x avg (+4); 15M MACD hist +0.0023 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); BTC regime BULL (+1). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",10,intraday,PAPER
 2026-09-09 08:57:21,NFPUSDT,BUY,0.00181,18183.136264,32.91,"RULES: 1H RSI 13.47 <25 EXTREME (+5); vol 2.6x avg (+4); BTC regime BULL (+1); EMA20<EMA50 on both TFs (-2). Score 8/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",8,intraday,PAPER
 2026-09-09 08:57:25,CATIUSDT,BUY,0.06343,518.862922,32.91,"RULES: vol 2.3x avg (+4); 15M MACD hist +0.0001 (+2); 15M EMA20>EMA50 trend up (+2); BTC regime BULL (+1). Score 9/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",9,intraday,PAPER
+2026-09-09 16:10:12,CAKEUSDT,SELL,2.25,20.204725,45.46,Automated STOP LOSS triggered,10,intraday,PAPER

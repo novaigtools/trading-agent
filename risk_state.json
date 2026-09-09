@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 362.5486,
+  "cash": 408.0092,
   "open_positions": {
     "FFUSDT": {
       "entry_price": 0.15459,
@@ -11,15 +11,6 @@
       "opened_at": "2026-09-09T08:57:14.143439+00:00",
       "is_penny": true,
       "peak_price": 0.15459
-    },
-    "CAKEUSDT": {
-      "entry_price": 2.327,
-      "quantity": 20.204725,
-      "stop_loss": 2.25719,
-      "take_profit": 2.53643,
-      "opened_at": "2026-09-09T08:57:17.696259+00:00",
-      "is_penny": true,
-      "peak_price": 2.327
     },
     "NFPUSDT": {
       "entry_price": 0.00181,
