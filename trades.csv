@@ -113,3 +113,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-11 14:05:08,LINKUSDT,BUY,12.11,9.422327,114.1,"RULES: vol 2.1x avg (+4); 15M MACD hist +0.0753 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2). Score 10/10 (>= 8). Tier standard: SL 2%, TP 6%.",10,intraday,PAPER
 2026-09-11 14:51:04,ZECUSDT,SELL,1177.25,0.063368,74.6,Trailing stop triggered (gains locked),10,intraday,PAPER
 2026-09-11 14:51:05,LINKUSDT,SELL,11.857,9.422327,111.72,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-09-11 15:05:06,BLURUSDT,BUY,0.01932,3755.508996,72.56,"RULES: vol 2.5x avg (+4); 15M MACD hist +0.0003 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); MOMENTUM OVERRIDE: 24h +19.89% on 2.5x vol (+4). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 18%. [momentum runner: wide TP, trailing stop manages exit]",10,intraday,PAPER
