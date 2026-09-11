@@ -1,48 +1,8 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 216.5163,
-  "open_positions": {
-    "FLOKIUSDT": {
-      "entry_price": 2.445e-05,
-      "quantity": 2078867.386503,
-      "stop_loss": 2.476e-05,
-      "take_profit": 2.665e-05,
-      "opened_at": "2026-09-11T12:35:06.475403+00:00",
-      "is_penny": true,
-      "peak_price": 2.553e-05,
-      "trailing": true
-    },
-    "AAVEUSDT": {
-      "entry_price": 124.06,
-      "quantity": 0.585296,
-      "stop_loss": 125.5859,
-      "take_profit": 135.2254,
-      "opened_at": "2026-09-11T12:35:12.608328+00:00",
-      "is_penny": true,
-      "peak_price": 129.47,
-      "trailing": true
-    },
-    "EIGENUSDT": {
-      "entry_price": 0.2162,
-      "quantity": 335.855113,
-      "stop_loss": 0.221839,
-      "take_profit": 0.235658,
-      "opened_at": "2026-09-11T12:35:15.250593+00:00",
-      "is_penny": true,
-      "peak_price": 0.2287,
-      "trailing": true
-    },
-    "SOLUSDT": {
-      "entry_price": 104.98,
-      "quantity": 1.086915,
-      "stop_loss": 102.8804,
-      "take_profit": 111.2788,
-      "opened_at": "2026-09-11T14:05:06.007487+00:00",
-      "is_penny": false,
-      "peak_price": 104.98
-    }
-  },
+  "cash": 525.638,
+  "open_positions": {},
   "day": {
     "date": "2026-09-11",
     "open_equity": 520.85
