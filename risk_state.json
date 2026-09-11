@@ -16,11 +16,11 @@
     "ZECUSDT": {
       "entry_price": 1145.88,
       "quantity": 0.063368,
-      "stop_loss": 1171.2071,
+      "stop_loss": 1177.4442,
       "take_profit": 1249.0092,
       "opened_at": "2026-09-11T12:35:09.868257+00:00",
       "is_penny": true,
-      "peak_price": 1207.43,
+      "peak_price": 1213.86,
       "trailing": true
     },
     "AAVEUSDT": {
