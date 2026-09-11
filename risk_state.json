@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 376.7529,
+  "cash": 447.6216,
   "open_positions": {
     "SKYUSDT": {
       "entry_price": 0.06064,
@@ -11,15 +11,6 @@
       "opened_at": "2026-09-11T08:05:09.750674+00:00",
       "is_penny": true,
       "peak_price": 0.0608
-    },
-    "SOPHUSDT": {
-      "entry_price": 0.0046,
-      "quantity": 15925.544866,
-      "stop_loss": 0.004462,
-      "take_profit": 0.005014,
-      "opened_at": "2026-09-11T10:05:08.626273+00:00",
-      "is_penny": true,
-      "peak_price": 0.0046
     }
   },
   "day": {
