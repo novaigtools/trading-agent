@@ -26,11 +26,11 @@
     "EIGENUSDT": {
       "entry_price": 0.2162,
       "quantity": 335.855113,
-      "stop_loss": 0.220093,
+      "stop_loss": 0.220578,
       "take_profit": 0.235658,
       "opened_at": "2026-09-11T12:35:15.250593+00:00",
       "is_penny": true,
-      "peak_price": 0.2269,
+      "peak_price": 0.2274,
       "trailing": true
     },
     "SOLUSDT": {
