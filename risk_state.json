@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 21.7834,
+  "cash": 208.1039,
   "open_positions": {
     "FLOKIUSDT": {
       "entry_price": 2.445e-05,
@@ -11,16 +11,6 @@
       "opened_at": "2026-09-11T12:35:06.475403+00:00",
       "is_penny": true,
       "peak_price": 2.553e-05,
-      "trailing": true
-    },
-    "ZECUSDT": {
-      "entry_price": 1145.88,
-      "quantity": 0.063368,
-      "stop_loss": 1177.4442,
-      "take_profit": 1249.0092,
-      "opened_at": "2026-09-11T12:35:09.868257+00:00",
-      "is_penny": true,
-      "peak_price": 1213.86,
       "trailing": true
     },
     "AAVEUSDT": {
@@ -51,15 +41,6 @@
       "opened_at": "2026-09-11T14:05:06.007487+00:00",
       "is_penny": false,
       "peak_price": 104.98
-    },
-    "LINKUSDT": {
-      "entry_price": 12.11,
-      "quantity": 9.422327,
-      "stop_loss": 11.8678,
-      "take_profit": 12.8366,
-      "opened_at": "2026-09-11T14:05:08.789990+00:00",
-      "is_penny": false,
-      "peak_price": 12.11
     }
   },
   "day": {
