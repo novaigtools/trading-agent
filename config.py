@@ -91,8 +91,11 @@ LIQUID_UNIVERSE_SIZE    = 100        # how many top-volume coins to watch
 UNIVERSE_MIN_VOLUME_USD = 1_000_000  # floor so the tail is still liquid (~$1M/day)
 SCAN_MAX_WORKERS        = 8          # parallel market-data fetch threads (rate-limit safe)
 
-MAX_POSITION_PCT      = 0.15   # 15% of account equity per standard position
-PENNY_MAX_PCT         = 0.09   # 9% per penny position — 2 positions = 18% max meme exposure
+# AGGRESSIVE sizing (2026-09-11, user opted in with eyes open): bigger bets per trade
+# so more of the account works and wins hit harder. Losses are still capped by the same
+# tight stops (2%/3%) and the daily circuit breaker — bigger size, seatbelts on.
+MAX_POSITION_PCT      = 0.22   # 22% per standard position (was 15%)
+PENNY_MAX_PCT         = 0.14   # 14% per penny position (was 9%)
 STOP_LOSS_PCT         = 0.02   # 2% stop loss (standard coins)
 TAKE_PROFIT_PCT       = 0.06   # 6% take profit (standard coins)
 PENNY_STOP_LOSS_PCT   = 0.03   # 3% SL for memes — wider to avoid noise whipsaws
@@ -132,7 +135,7 @@ COOLDOWN_HOURS_AFTER_SL = int(os.getenv("COOLDOWN_HOURS_AFTER_SL", "12"))
 
 # Daily circuit breaker: if equity falls this fraction below the day's opening equity,
 # open no new positions for the rest of the UTC day (existing positions still managed).
-DAILY_LOSS_LIMIT_PCT    = float(os.getenv("DAILY_LOSS_LIMIT_PCT", "0.05"))
+DAILY_LOSS_LIMIT_PCT    = float(os.getenv("DAILY_LOSS_LIMIT_PCT", "0.06"))  # 6% (was 5%) — room for bigger swings, still protective
 
 # Conviction-scaled sizing: full size for top-conviction setups, reduced below that.
 CONVICTION_FULL_SCORE   = 10     # score at/above this gets full tier size
