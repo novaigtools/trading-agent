@@ -101,3 +101,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-11 05:59:56,FFUSDT,SELL,0.16855,304.136076,51.26,Automated TAKE PROFIT triggered,10,intraday,PAPER
 2026-09-11 05:59:57,CATIUSDT,SELL,0.05991,518.862922,31.09,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-09-11 08:05:09,SKYUSDT,BUY,0.06064,1208.072275,73.26,"RULES: vol 5.2x avg (+4); 15M MACD hist +0.0001 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",10,intraday,PAPER
+2026-09-11 09:01:05,NFPUSDT,SELL,0.00181,18183.136264,32.91,Stale exit (held > 48h, not in profit),10,intraday,PAPER
