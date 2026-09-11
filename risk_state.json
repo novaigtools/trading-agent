@@ -1,18 +1,8 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 474.1255,
-  "open_positions": {
-    "HOLOUSDT": {
-      "entry_price": 0.0639,
-      "quantity": 806.142786,
-      "stop_loss": 0.061983,
-      "take_profit": 0.069651,
-      "opened_at": "2026-09-11T16:35:04.727973+00:00",
-      "is_penny": true,
-      "peak_price": 0.0648
-    }
-  },
+  "cash": 524.0257,
+  "open_positions": {},
   "day": {
     "date": "2026-09-11",
     "open_equity": 520.85

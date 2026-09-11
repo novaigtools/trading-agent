@@ -120,3 +120,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-11 15:56:04,EIGENUSDT,SELL,0.2205,335.855113,74.06,Trailing stop triggered (gains locked),10,intraday,PAPER
 2026-09-11 15:56:04,SOLUSDT,SELL,101.45,1.086915,110.27,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-09-11 16:35:04,HOLOUSDT,BUY,0.0639,806.142786,51.51,"RULES: vol 4.3x avg (+4); 15M MACD hist +0.0002 (+2); 15M EMA20>EMA50 trend up (+2). Score 8/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",8,intraday,PAPER
+2026-09-11 22:11:03,HOLOUSDT,SELL,0.0619,806.142786,49.9,Automated STOP LOSS triggered,10,intraday,PAPER
