@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 249.9921,
+  "cash": 21.7834,
   "open_positions": {
     "FLOKIUSDT": {
       "entry_price": 2.445e-05,
@@ -42,6 +42,24 @@
       "is_penny": true,
       "peak_price": 0.2245,
       "trailing": true
+    },
+    "SOLUSDT": {
+      "entry_price": 104.98,
+      "quantity": 1.086915,
+      "stop_loss": 102.8804,
+      "take_profit": 111.2788,
+      "opened_at": "2026-09-11T14:05:06.007487+00:00",
+      "is_penny": false,
+      "peak_price": 104.98
+    },
+    "LINKUSDT": {
+      "entry_price": 12.11,
+      "quantity": 9.422327,
+      "stop_loss": 11.8678,
+      "take_profit": 12.8366,
+      "opened_at": "2026-09-11T14:05:08.789990+00:00",
+      "is_penny": false,
+      "peak_price": 12.11
     }
   },
   "day": {
