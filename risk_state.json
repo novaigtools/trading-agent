@@ -10,7 +10,7 @@
       "take_profit": 2.665e-05,
       "opened_at": "2026-09-11T12:35:06.475403+00:00",
       "is_penny": true,
-      "peak_price": 2.46e-05
+      "peak_price": 2.461e-05
     },
     "ZECUSDT": {
       "entry_price": 1145.88,
@@ -19,7 +19,7 @@
       "take_profit": 1249.0092,
       "opened_at": "2026-09-11T12:35:09.868257+00:00",
       "is_penny": true,
-      "peak_price": 1157.65
+      "peak_price": 1165.0
     },
     "AAVEUSDT": {
       "entry_price": 124.06,
@@ -28,7 +28,7 @@
       "take_profit": 135.2254,
       "opened_at": "2026-09-11T12:35:12.608328+00:00",
       "is_penny": true,
-      "peak_price": 124.92
+      "peak_price": 125.2
     },
     "EIGENUSDT": {
       "entry_price": 0.2162,
@@ -37,7 +37,7 @@
       "take_profit": 0.235658,
       "opened_at": "2026-09-11T12:35:15.250593+00:00",
       "is_penny": true,
-      "peak_price": 0.2162
+      "peak_price": 0.2169
     }
   },
   "day": {
