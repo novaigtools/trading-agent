@@ -6,30 +6,32 @@
     "FLOKIUSDT": {
       "entry_price": 2.445e-05,
       "quantity": 2078867.386503,
-      "stop_loss": 2.372e-05,
+      "stop_loss": 2.45e-05,
       "take_profit": 2.665e-05,
       "opened_at": "2026-09-11T12:35:06.475403+00:00",
       "is_penny": true,
-      "peak_price": 2.501e-05
+      "peak_price": 2.526e-05,
+      "trailing": true
     },
     "ZECUSDT": {
       "entry_price": 1145.88,
       "quantity": 0.063368,
-      "stop_loss": 1148.7225,
+      "stop_loss": 1158.8299,
       "take_profit": 1249.0092,
       "opened_at": "2026-09-11T12:35:09.868257+00:00",
       "is_penny": true,
-      "peak_price": 1184.25,
+      "peak_price": 1194.67,
       "trailing": true
     },
     "AAVEUSDT": {
       "entry_price": 124.06,
       "quantity": 0.585296,
-      "stop_loss": 120.3382,
+      "stop_loss": 124.8972,
       "take_profit": 135.2254,
       "opened_at": "2026-09-11T12:35:12.608328+00:00",
       "is_penny": true,
-      "peak_price": 127.22
+      "peak_price": 128.76,
+      "trailing": true
     },
     "EIGENUSDT": {
       "entry_price": 0.2162,
@@ -38,7 +40,7 @@
       "take_profit": 0.235658,
       "opened_at": "2026-09-11T12:35:15.250593+00:00",
       "is_penny": true,
-      "peak_price": 0.2189
+      "peak_price": 0.2207
     }
   },
   "day": {
