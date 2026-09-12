@@ -1,8 +1,18 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 524.0257,
-  "open_positions": {},
+  "cash": 450.6621,
+  "open_positions": {
+    "SOPHUSDT": {
+      "entry_price": 0.00487,
+      "quantity": 15064.39384,
+      "stop_loss": 0.0047239,
+      "take_profit": 0.0053083,
+      "opened_at": "2026-09-12T00:35:07.203380+00:00",
+      "is_penny": true,
+      "peak_price": 0.00487
+    }
+  },
   "day": {
     "date": "2026-09-12",
     "open_equity": 524.03
