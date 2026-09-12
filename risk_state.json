@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 444.2267,
+  "cash": 371.9107,
   "open_positions": {
     "MITOUSDT": {
       "entry_price": 0.01454,
@@ -11,6 +11,15 @@
       "opened_at": "2026-09-12T07:05:06.762157+00:00",
       "is_penny": true,
       "peak_price": 0.01469
+    },
+    "BERAUSDT": {
+      "entry_price": 0.1945,
+      "quantity": 371.804498,
+      "stop_loss": 0.188665,
+      "take_profit": 0.212005,
+      "opened_at": "2026-09-12T08:05:11.854560+00:00",
+      "is_penny": true,
+      "peak_price": 0.1945
     }
   },
   "day": {
