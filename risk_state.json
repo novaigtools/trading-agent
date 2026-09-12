@@ -1,18 +1,8 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 446.3545,
-  "open_positions": {
-    "MINAUSDT": {
-      "entry_price": 0.1116,
-      "quantity": 651.09647,
-      "stop_loss": 0.108252,
-      "take_profit": 0.121644,
-      "opened_at": "2026-09-12T05:05:09.792693+00:00",
-      "is_penny": true,
-      "peak_price": 0.1144
-    }
-  },
+  "cash": 516.5427,
+  "open_positions": {},
   "day": {
     "date": "2026-09-12",
     "open_equity": 524.03
