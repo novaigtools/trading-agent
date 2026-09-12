@@ -6,11 +6,11 @@
     "MITOUSDT": {
       "entry_price": 0.01454,
       "quantity": 4973.588583,
-      "stop_loss": 0.0147537,
+      "stop_loss": 0.0147634,
       "take_profit": 0.0158486,
       "opened_at": "2026-09-12T07:05:06.762157+00:00",
       "is_penny": true,
-      "peak_price": 0.01521,
+      "peak_price": 0.01522,
       "trailing": true
     },
     "BERAUSDT": {
