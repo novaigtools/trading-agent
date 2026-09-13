@@ -15,11 +15,11 @@
     "FILUSDT": {
       "entry_price": 0.8217,
       "quantity": 86.214916,
-      "stop_loss": 0.823336,
+      "stop_loss": 0.825761,
       "take_profit": 0.895653,
       "opened_at": "2026-09-13T04:35:04.988470+00:00",
       "is_penny": true,
-      "peak_price": 0.8488,
+      "peak_price": 0.8513,
       "trailing": true
     }
   },
