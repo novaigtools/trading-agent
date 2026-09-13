@@ -151,3 +151,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-13 07:36:03,ORDIUSDT,SELL,4.156,12.353545,51.34,Trailing stop triggered (gains locked),10,intraday,PAPER
 2026-09-13 14:04:54,TIAUSDT,BUY,0.3585,198.53035,71.17,"RULES: vol 2.3x avg (+4); 15M MACD hist +0.0007 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",10,intraday,PAPER
 2026-09-13 14:16:04,FILUSDT,SELL,0.8964,86.214916,77.28,Automated TAKE PROFIT triggered,10,intraday,PAPER
+2026-09-13 16:04:54,INJUSDT,BUY,6.171,12.847554,79.28,"RULES: vol 2.1x avg (+4); 15M MACD hist +0.0169 (+2); 15M EMA20>EMA50 trend up (+2). Score 8/10 (>= 8). Tier standard: SL 2%, TP 6%.",8,intraday,PAPER
