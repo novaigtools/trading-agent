@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 424.8277,
+  "cash": 277.6309,
   "open_positions": {
     "ORDIUSDT": {
       "entry_price": 4.095,
@@ -21,6 +21,24 @@
       "opened_at": "2026-09-13T01:05:09.704602+00:00",
       "is_penny": true,
       "peak_price": 0.2696
+    },
+    "\u725b\u6765USDT": {
+      "entry_price": 0.15857,
+      "quantity": 464.138427,
+      "stop_loss": 0.1538129,
+      "take_profit": 0.1728413,
+      "opened_at": "2026-09-13T02:05:12.459279+00:00",
+      "is_penny": true,
+      "peak_price": 0.15857
+    },
+    "MARSCOINUSDT": {
+      "entry_price": 0.1239,
+      "quantity": 594.014807,
+      "stop_loss": 0.120183,
+      "take_profit": 0.135051,
+      "opened_at": "2026-09-13T02:05:15.864974+00:00",
+      "is_penny": true,
+      "peak_price": 0.1239
     }
   },
   "day": {
