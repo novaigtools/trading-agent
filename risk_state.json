@@ -16,11 +16,12 @@
     "ARKUSDT": {
       "entry_price": 0.129,
       "quantity": 560.21878,
-      "stop_loss": 0.12513,
+      "stop_loss": 0.130853,
       "take_profit": 0.14061,
       "opened_at": "2026-09-13T00:05:04.261291+00:00",
       "is_penny": true,
-      "peak_price": 0.1328
+      "peak_price": 0.1349,
+      "trailing": true
     },
     "POLYUSDT": {
       "entry_price": 0.2696,
