@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 387.2491,
+  "cash": 316.076,
   "open_positions": {
     "POLYUSDT": {
       "entry_price": 0.2696,
@@ -21,6 +21,15 @@
       "is_penny": true,
       "peak_price": 0.8568,
       "trailing": true
+    },
+    "TIAUSDT": {
+      "entry_price": 0.3585,
+      "quantity": 198.53035,
+      "stop_loss": 0.347745,
+      "take_profit": 0.390765,
+      "opened_at": "2026-09-13T14:04:54.829861+00:00",
+      "is_penny": true,
+      "peak_price": 0.3585
     }
   },
   "day": {
