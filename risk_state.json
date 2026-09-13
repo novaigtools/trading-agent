@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 465.6139,
+  "cash": 292.1701,
   "open_positions": {
     "ORDIUSDT": {
       "entry_price": 4.095,
@@ -11,10 +11,37 @@
       "opened_at": "2026-09-12T12:05:30.320051+00:00",
       "is_penny": true,
       "peak_price": 4.203
+    },
+    "VTHOUSDT": {
+      "entry_price": 0.000665,
+      "quantity": 76071.824577,
+      "stop_loss": 0.00064505,
+      "take_profit": 0.00072485,
+      "opened_at": "2026-09-13T00:04:57.950540+00:00",
+      "is_penny": true,
+      "peak_price": 0.000665
+    },
+    "SOPHUSDT": {
+      "entry_price": 0.00479,
+      "quantity": 10561.118946,
+      "stop_loss": 0.0046463,
+      "take_profit": 0.0052211,
+      "opened_at": "2026-09-13T00:05:01.106153+00:00",
+      "is_penny": true,
+      "peak_price": 0.00479
+    },
+    "ARKUSDT": {
+      "entry_price": 0.129,
+      "quantity": 560.21878,
+      "stop_loss": 0.12513,
+      "take_profit": 0.14061,
+      "opened_at": "2026-09-13T00:05:04.261291+00:00",
+      "is_penny": true,
+      "peak_price": 0.129
     }
   },
   "day": {
-    "date": "2026-09-12",
-    "open_equity": 524.03
+    "date": "2026-09-13",
+    "open_equity": 517.24
   }
 }
