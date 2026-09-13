@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 347.8435,
+  "cash": 341.3083,
   "open_positions": {
     "ORDIUSDT": {
       "entry_price": 4.095,
@@ -22,14 +22,14 @@
       "is_penny": true,
       "peak_price": 0.2696
     },
-    "\u725b\u6765USDT": {
-      "entry_price": 0.15857,
-      "quantity": 464.138427,
-      "stop_loss": 0.1538129,
-      "take_profit": 0.1728413,
-      "opened_at": "2026-09-13T02:05:12.459279+00:00",
+    "KAVAUSDT": {
+      "entry_price": 0.08164,
+      "quantity": 881.717178,
+      "stop_loss": 0.0791908,
+      "take_profit": 0.0889876,
+      "opened_at": "2026-09-13T02:35:12.660226+00:00",
       "is_penny": true,
-      "peak_price": 0.15857
+      "peak_price": 0.08164
     }
   },
   "day": {
