@@ -138,3 +138,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-13 01:05:06,SOPHUSDT,SELL,0.0045,10561.118946,47.53,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-09-13 01:05:09,POLYUSDT,BUY,0.2696,186.526734,50.29,"RULES: vol 5.4x avg (+4); 15M MACD hist +0.0005 (+2); 15M EMA20>EMA50 trend up (+2). Score 8/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",8,intraday,PAPER
 2026-09-13 01:11:04,VTHOUSDT,SELL,0.000744,76071.824577,56.6,Automated TAKE PROFIT triggered,10,intraday,PAPER
+2026-09-13 01:41:06,ARKUSDT,SELL,0.1407,560.21878,78.82,Automated TAKE PROFIT triggered,10,intraday,PAPER
