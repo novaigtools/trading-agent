@@ -155,3 +155,7 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-13 18:34:53,ZILUSDT,BUY,0.003262,22095.270116,72.07,"RULES: vol 2.4x avg (+4); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); MOMENTUM OVERRIDE: 24h +19.84% on 2.4x vol (+4). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 18%. [momentum runner: wide TP, trailing stop manages exit]",10,intraday,PAPER
 2026-09-13 19:04:54,CAKEUSDT,BUY,2.276,31.667297,72.07,"RULES: vol 3.6x avg (+4); 15M MACD hist +0.0068 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",10,intraday,PAPER
 2026-09-13 19:21:04,ZILUSDT,SELL,0.003121,22095.270116,68.96,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-09-15 09:43:02,POLYUSDT,SELL,0.2696,186.526734,50.29,Stale exit (held > 48h, not in profit),10,intraday,PAPER
+2026-09-15 09:43:02,TIAUSDT,SELL,0.3473,198.53035,68.95,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-09-15 09:43:02,INJUSDT,SELL,6.025,12.847554,77.41,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-09-15 09:43:02,CAKEUSDT,SELL,2.282,31.667297,72.26,Trailing stop triggered (gains locked),10,intraday,PAPER
