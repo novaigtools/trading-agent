@@ -49,7 +49,8 @@ def test_no_cooldown_after_a_take_profit(sandbox):
 
 
 def test_cooldown_expires(sandbox):
-    old = (datetime.now(timezone.utc) - timedelta(hours=20)).strftime("%Y-%m-%d %H:%M:%S")
+    # Cooldown is 24h (raised from 12h after SOPH re-entered and lost repeatedly).
+    old = (datetime.now(timezone.utc) - timedelta(hours=30)).strftime("%Y-%m-%d %H:%M:%S")
     _write_trades(sandbox / "trades.csv", [
         [old, "TAOUSDT", "SELL", 200, 0.3, 60, "Automated STOP LOSS triggered", 10, "intraday", "PAPER"],
     ])

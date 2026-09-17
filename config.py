@@ -87,15 +87,18 @@ MIN_TRENDING_VOLUME_USD = 2_000_000  # skip illiquid junk (< $2M daily volume)
 # since they are less battle-tested than the core names. Fetching is parallelized so a
 # big list still scans in well under the staleness limit.
 INCLUDE_LIQUID_UNIVERSE = True
-LIQUID_UNIVERSE_SIZE    = 100        # how many top-volume coins to watch
-UNIVERSE_MIN_VOLUME_USD = 1_000_000  # floor so the tail is still liquid (~$1M/day)
+# Tightened 2026-09-18: the $1M floor / 100-coin tail let in junk (a non-ASCII symbol,
+# MARSCOIN, KAVA) that produced most of the era's losses. The ~50 coins clearing $5M/day
+# are the genuinely liquid ones — quality over breadth.
+LIQUID_UNIVERSE_SIZE    = 50         # top-volume coins to watch (was 100)
+UNIVERSE_MIN_VOLUME_USD = 5_000_000  # $5M/day floor (was $1M) — cuts the junk tail
 SCAN_MAX_WORKERS        = 8          # parallel market-data fetch threads (rate-limit safe)
 
 # AGGRESSIVE sizing (2026-09-11, user opted in with eyes open): bigger bets per trade
 # so more of the account works and wins hit harder. Losses are still capped by the same
 # tight stops (2%/3%) and the daily circuit breaker — bigger size, seatbelts on.
-MAX_POSITION_PCT      = 0.22   # 22% per standard position (was 15%)
-PENNY_MAX_PCT         = 0.14   # 14% per penny position (was 9%)
+MAX_POSITION_PCT      = 0.15   # back to 15% — the aggressive 22% amplified losses in a flat market
+PENNY_MAX_PCT         = 0.09   # back to 9%  — same reason (autopsy 2026-09-18: 34% win, -$18 net)
 STOP_LOSS_PCT         = 0.02   # 2% stop loss (standard coins)
 TAKE_PROFIT_PCT       = 0.06   # 6% take profit (standard coins)
 PENNY_STOP_LOSS_PCT   = 0.03   # 3% SL for memes — wider to avoid noise whipsaws
@@ -104,9 +107,9 @@ PENNY_TAKE_PROFIT_PCT = 0.09   # 9% TP for memes — aim for bigger explosive mo
 # genuine setups at once, so let more capital work — but the daily circuit breaker (5%),
 # trailing stops and BEAR-regime block cap the correlated-drawdown risk that a bigger
 # book creates. Quality bar per position is unchanged (still 8/10).
-MAX_PENNY_POSITIONS   = 4      # riskier universe/meme names — was 2
-MAX_OPEN_POSITIONS    = 6      # hard cap across all tiers — was 4
-HOLD_ALL_AT_POSITIONS = 5      # stop opening new positions at 5 open — was 3
+MAX_PENNY_POSITIONS   = 3      # moderate — 6/5/4 caps drove over-trading (50 trades in 2.5 wks)
+MAX_OPEN_POSITIONS    = 5      # hard cap across all tiers
+HOLD_ALL_AT_POSITIONS = 4      # stop opening new positions at 4 open
 
 # "Don't chase the blow-off top" guard (research: buying after a coin has already
 # exploded is where momentum bots bleed). Refuse fresh entries that are both far
@@ -131,11 +134,11 @@ PENNY_TRAIL_DISTANCE_PCT = 0.03  # penny coins: 3% (they're noisier)
 MAX_HOLD_HOURS          = int(os.getenv("MAX_HOLD_HOURS", "48"))
 
 # Cooldown: after a stop-loss on a symbol, refuse to re-enter it for this long.
-COOLDOWN_HOURS_AFTER_SL = int(os.getenv("COOLDOWN_HOURS_AFTER_SL", "12"))
+COOLDOWN_HOURS_AFTER_SL = int(os.getenv("COOLDOWN_HOURS_AFTER_SL", "24"))  # 24h (was 12) — SOPH re-entered & lost repeatedly
 
 # Daily circuit breaker: if equity falls this fraction below the day's opening equity,
 # open no new positions for the rest of the UTC day (existing positions still managed).
-DAILY_LOSS_LIMIT_PCT    = float(os.getenv("DAILY_LOSS_LIMIT_PCT", "0.06"))  # 6% (was 5%) — room for bigger swings, still protective
+DAILY_LOSS_LIMIT_PCT    = float(os.getenv("DAILY_LOSS_LIMIT_PCT", "0.05"))  # back to 5%
 
 # Conviction-scaled sizing: full size for top-conviction setups, reduced below that.
 CONVICTION_FULL_SCORE   = 10     # score at/above this gets full tier size

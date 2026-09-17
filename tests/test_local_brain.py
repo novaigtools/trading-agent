@@ -236,9 +236,19 @@ def test_strong_momentum_not_yet_overbought_still_buys():
     assert d["action"] == "BUY"
 
 
-def test_higher_position_cap_allows_a_fourth_open_position():
-    """With HOLD_ALL_AT_POSITIONS raised to 5, a 4th concurrent position is allowed."""
+def test_below_position_cap_still_allows_entry():
+    """With HOLD_ALL_AT_POSITIONS=4, three open positions leave room for one more."""
     md = make_market_data(rsi_1h=26.0, vol_latest=2500.0, vol_avg=1000.0)
-    four_open = {"AUSDT": {}, "BUSDT2": {}, "CUSDT": {}, "DUSDT": {}}
-    d = local_brain.score_symbol(md, sentiment(), NEUTRAL, open_positions=four_open)
-    assert d["action"] == "BUY"   # was HOLD under the old cap of 3
+    three_open = {"AUSDT": {}, "BUSDT2": {}, "CUSDT": {}}
+    d = local_brain.score_symbol(md, sentiment(), NEUTRAL, open_positions=three_open)
+    assert d["action"] == "BUY"
+
+
+def test_universe_rejects_non_ascii_symbols():
+    """A Chinese-named token slipped into the universe, lost $8 in one trade, and
+    corrupted the CSV encoding. Only plain [A-Z0-9]+USDT tickers may ever qualify."""
+    import market_analyzer as m
+    assert m._SYMBOL_OK.match("SOLUSDT")
+    assert m._SYMBOL_OK.match("1000PEPEUSDT")
+    assert not m._SYMBOL_OK.match("\u725b\u6765USDT")   # non-Latin characters
+    assert not m._SYMBOL_OK.match("sol-usdt")

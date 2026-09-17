@@ -1,4 +1,5 @@
 import concurrent.futures
+import re
 import requests
 import pandas as pd
 import ta
@@ -8,6 +9,9 @@ try:
     from config import SCAN_MAX_WORKERS
 except ImportError:
     SCAN_MAX_WORKERS = 8
+
+# Only plain Latin-letter/digit tickers are tradeable-by-design here.
+_SYMBOL_OK = re.compile(r"^[A-Z0-9]+USDT$")
 
 # Excluded from the liquid universe: stablecoins, wrapped/staked tokens, and fiat —
 # they either don't move (stables) or double-count majors (wrapped). Substring match.
@@ -36,6 +40,10 @@ def get_liquid_universe(top_n: int = 100, min_volume_usd: float = 5_000_000) -> 
     for t in tickers:
         sym = t.get("symbol", "")
         if not sym.endswith("USDT"):
+            continue
+        # Hard ASCII gate: a symbol with non-Latin characters (e.g. a Chinese-named token)
+        # slipped through once, lost $8 in one trade, and corrupted the CSV encoding.
+        if not _SYMBOL_OK.match(sym):
             continue
         if sym in NEVER_TRADE or any(x in sym for x in _UNIVERSE_EXCLUDE):
             continue
