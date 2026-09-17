@@ -1,8 +1,27 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 507.795,
-  "open_positions": {},
+  "cash": 386.9398,
+  "open_positions": {
+    "WLFIUSDT": {
+      "entry_price": 0.0592,
+      "quantity": 840.606588,
+      "stop_loss": 0.057424,
+      "take_profit": 0.064528,
+      "opened_at": "2026-09-17T10:45:00.346281+00:00",
+      "is_penny": true,
+      "peak_price": 0.0592
+    },
+    "JTOUSDT": {
+      "entry_price": 0.4309,
+      "quantity": 164.983294,
+      "stop_loss": 0.417973,
+      "take_profit": 0.469681,
+      "opened_at": "2026-09-17T10:45:02.342400+00:00",
+      "is_penny": true,
+      "peak_price": 0.4309
+    }
+  },
   "day": {
     "date": "2026-09-17",
     "open_equity": 507.8
