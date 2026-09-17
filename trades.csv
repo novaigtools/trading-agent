@@ -161,3 +161,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-15 09:43:02,CAKEUSDT,SELL,2.282,31.667297,72.26,Trailing stop triggered (gains locked),10,intraday,PAPER
 2026-09-17 10:45:00,WLFIUSDT,BUY,0.0592,840.606588,49.76,"RULES: vol 2.3x avg (+4); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2). Score 8/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",8,intraday,PAPER
 2026-09-17 10:45:02,JTOUSDT,BUY,0.4309,164.983294,71.09,"RULES: vol 2.3x avg (+4); 15M MACD hist +0.0004 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",10,intraday,PAPER
+2026-09-17 16:38:15,WLFIUSDT,SELL,0.0565,840.606588,47.49,Automated STOP LOSS triggered,10,intraday,PAPER
