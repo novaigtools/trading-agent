@@ -16,11 +16,11 @@
     "ENAUSDT": {
       "entry_price": 0.1654,
       "quantity": 326.154173,
-      "stop_loss": 0.16709,
+      "stop_loss": 0.167384,
       "take_profit": 0.175324,
       "opened_at": "2026-09-18T16:34:42.265569+00:00",
       "is_penny": false,
-      "peak_price": 0.1705,
+      "peak_price": 0.1708,
       "trailing": true
     },
     "POLUSDT": {
