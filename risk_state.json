@@ -16,11 +16,11 @@
     "PUMPUSDT": {
       "entry_price": 0.004035,
       "quantity": 11275.659736,
-      "stop_loss": 0.00417197,
+      "stop_loss": 0.00419525,
       "take_profit": 0.00439815,
       "opened_at": "2026-09-17T22:45:09.836473+00:00",
       "is_penny": true,
-      "peak_price": 0.004301,
+      "peak_price": 0.004325,
       "trailing": true
     },
     "ADAUSDT": {
