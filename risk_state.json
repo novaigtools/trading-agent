@@ -6,20 +6,21 @@
     "ADAUSDT": {
       "entry_price": 0.2138,
       "quantity": 358.90972,
-      "stop_loss": 0.209524,
+      "stop_loss": 0.216384,
       "take_profit": 0.226628,
       "opened_at": "2026-09-18T02:22:00.340898+00:00",
       "is_penny": false,
-      "peak_price": 0.2199
+      "peak_price": 0.2208,
+      "trailing": true
     },
     "ETHFIUSDT": {
       "entry_price": 0.6951,
       "quantity": 66.672248,
-      "stop_loss": 0.708391,
+      "stop_loss": 0.709846,
       "take_profit": 0.757659,
       "opened_at": "2026-09-18T11:34:59.181574+00:00",
       "is_penny": true,
-      "peak_price": 0.7303,
+      "peak_price": 0.7318,
       "trailing": true
     }
   },
