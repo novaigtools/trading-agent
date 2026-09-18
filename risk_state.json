@@ -6,11 +6,11 @@
     "JTOUSDT": {
       "entry_price": 0.4309,
       "quantity": 164.983294,
-      "stop_loss": 0.438731,
+      "stop_loss": 0.439119,
       "take_profit": 0.469681,
       "opened_at": "2026-09-17T10:45:02.342400+00:00",
       "is_penny": true,
-      "peak_price": 0.4523,
+      "peak_price": 0.4527,
       "trailing": true
     },
     "PUMPUSDT": {
@@ -20,7 +20,7 @@
       "take_profit": 0.00439815,
       "opened_at": "2026-09-17T22:45:09.836473+00:00",
       "is_penny": true,
-      "peak_price": 0.00412
+      "peak_price": 0.00413
     },
     "WLDUSDT": {
       "entry_price": 0.4073,
