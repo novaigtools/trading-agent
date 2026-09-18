@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 317.0014,
+  "cash": 364.2351,
   "open_positions": {
     "JTOUSDT": {
       "entry_price": 0.4309,
@@ -11,16 +11,6 @@
       "opened_at": "2026-09-17T10:45:02.342400+00:00",
       "is_penny": true,
       "peak_price": 0.4627,
-      "trailing": true
-    },
-    "PUMPUSDT": {
-      "entry_price": 0.004035,
-      "quantity": 11275.659736,
-      "stop_loss": 0.00420107,
-      "take_profit": 0.00439815,
-      "opened_at": "2026-09-17T22:45:09.836473+00:00",
-      "is_penny": true,
-      "peak_price": 0.004331,
       "trailing": true
     },
     "ADAUSDT": {
