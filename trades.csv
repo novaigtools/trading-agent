@@ -176,3 +176,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-18 15:04:46,AVAUSDT,BUY,0.2737,118.526542,32.44,"RULES: vol 2.8x avg (+4); 15M MACD hist +0.0007 (+2); BB upper breakout w/ volume (+2); BTC regime BULL (+1). Score 9/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",9,intraday,PAPER
 2026-09-18 15:11:04,AVAUSDT,SELL,0.2639,118.526542,31.28,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-09-18 16:34:42,ENAUSDT,BUY,0.1654,326.154173,53.95,"RULES: vol 2.3x avg (+4); 15M MACD hist +0.0003 (+2); 15M EMA20>EMA50 trend up (+2); BTC regime BULL (+1); bearish news backdrop (-1). Score 8/10 (>= 8). Tier standard: SL 2%, TP 6%.",8,intraday,PAPER
+2026-09-18 16:41:04,ETHFIUSDT,SELL,0.7221,66.672248,48.14,Trailing stop triggered (gains locked),10,intraday,PAPER
