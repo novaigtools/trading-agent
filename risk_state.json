@@ -16,11 +16,12 @@
     "APTUSDT": {
       "entry_price": 0.59,
       "quantity": 128.523407,
-      "stop_loss": 0.5782,
+      "stop_loss": 0.59682,
       "take_profit": 0.6254,
       "opened_at": "2026-09-17T22:45:07.845999+00:00",
       "is_penny": false,
-      "peak_price": 0.606
+      "peak_price": 0.609,
+      "trailing": true
     },
     "PUMPUSDT": {
       "entry_price": 0.004035,
