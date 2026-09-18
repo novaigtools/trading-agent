@@ -344,8 +344,14 @@ function renderEquity(expStart,startBal,closed,equity){
     options:{responsive:true,maintainAspectRatio:false,animation:REDUCED?false:{duration:600},
       interaction:{mode:"index",intersect:false},
       plugins:{legend:{display:false},tooltip:{enabled:false,external:extTip}},
-      scales:{x:{grid:{display:false},ticks:{color:"#5F6883",font:{family:"JetBrains Mono",size:10},maxTicksLimit:8}},
+      scales:{x:{grid:{display:false},ticks:{color:"#5F6883",font:{family:"JetBrains Mono",size:10},maxTicksLimit:innerWidth<520?5:8}},
               y:{grid:{color:"rgba(255,255,255,.06)"},border:{display:false},ticks:{color:"#5F6883",font:{family:"JetBrains Mono",size:10},callback:v=>"$"+v}}}}};
+  // dashed reference at the starting balance — the curve's whole job is above/below this
+  cfg.plugins=[{id:"baseline",afterDatasetsDraw(ch){const y=ch.scales.y.getPixelForValue(startBal);
+    const {left,right}=ch.chartArea;const g=ch.ctx;g.save();g.strokeStyle="rgba(255,255,255,.28)";
+    g.setLineDash([4,4]);g.lineWidth=1;g.beginPath();g.moveTo(left,y);g.lineTo(right,y);g.stroke();
+    g.fillStyle="#9AA3B8";g.font="10px JetBrains Mono";g.textAlign="right";
+    g.fillText(`$${startBal.toFixed(0)} start`,right-4,y-4);g.restore();}}];
   if(eqChart){eqChart.data=cfg.data;eqChart.update("none");}else{eqChart=new Chart(ctx,cfg);}
 }
 function extTip(c){const tip=$("tip");const t=c.tooltip;if(!t||t.opacity===0){tip.style.opacity=0;return;}
