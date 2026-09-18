@@ -29,7 +29,7 @@
       "take_profit": 0.431738,
       "opened_at": "2026-09-18T02:21:58.402141+00:00",
       "is_penny": false,
-      "peak_price": 0.4102
+      "peak_price": 0.4122
     },
     "ADAUSDT": {
       "entry_price": 0.2138,
@@ -38,7 +38,7 @@
       "take_profit": 0.226628,
       "opened_at": "2026-09-18T02:22:00.340898+00:00",
       "is_penny": false,
-      "peak_price": 0.2157
+      "peak_price": 0.2171
     }
   },
   "day": {
