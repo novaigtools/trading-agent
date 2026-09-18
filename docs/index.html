@@ -68,11 +68,12 @@ header{display:flex;align-items:center;justify-content:space-between;gap:16px;pa
 .odo{display:flex;align-items:flex-start;gap:.04em;font-family:var(--num);font-weight:800;font-size:clamp(64px,9vw,118px);line-height:1;letter-spacing:-.045em;color:var(--brass2);
   text-shadow:0 0 40px rgba(217,179,104,.18)}
 .odo .sym{font-size:.55em;line-height:1;color:var(--brass);font-weight:600;margin-top:.14em}
+/* One digit per window, absolutely positioned to inset:0 — aligned by construction.
+   A change slides the old digit up and the new one in from below. */
 .odo .col{position:relative;height:1em;overflow:hidden;width:.62em}
-/* grid rows are exactly 1em each, stacked top-to-bottom — block stacking of inline spans
-   collapsed to ~half height and put the digits out of their windows */
-.odo .col .strip{position:absolute;left:0;top:0;width:100%;display:grid;grid-auto-rows:1em;transition:transform 1.1s cubic-bezier(.16,.84,.26,1)}
-.odo .col .strip span{height:1em;line-height:1em;text-align:center;display:block}
+.odo .col span{position:absolute;inset:0;line-height:1em;text-align:center;transition:transform 1.1s cubic-bezier(.16,.84,.26,1),opacity .6s}
+.odo .col span.out{transform:translateY(-100%);opacity:0}
+.odo .col span.in{transform:translateY(100%)}
 .odo .sep{width:.28em;height:1em;line-height:1em;text-align:center;color:var(--brass)}
 .delta{display:flex;align-items:baseline;gap:18px;margin-top:18px;font:600 16px/1 var(--mono);letter-spacing:.02em}
 .delta .arrow{font-family:var(--num);font-weight:700}
@@ -248,14 +249,21 @@ function odometer(el,valueStr){
     el.innerHTML="";
     for(const ch of chars){
       if(/\d/.test(ch)){const col=document.createElement("span");col.className="col";col.dataset.kind="d";
-        const strip=document.createElement("span");strip.className="strip";
-        for(let i=0;i<10;i++){const s=document.createElement("span");s.textContent=i;strip.appendChild(s);}
-        col.appendChild(strip);el.appendChild(col);}
+        const s=document.createElement("span");s.textContent=ch;col.appendChild(s);el.appendChild(col);}
       else{const s=document.createElement("span");s.className=ch==="$"?"sym":"sep";s.dataset.kind="s";s.textContent=ch;el.appendChild(s);}
     }
+    return;
   }
-  // 1em per row (grid-auto-rows:1em); em on the strip resolves to the column's font-size (verified).
-  [...el.children].forEach((c,i)=>{if(c.dataset.kind==="d"){c.firstChild.style.transform=`translateY(-${+chars[i]}em)`;}else c.textContent=chars[i];});
+  [...el.children].forEach((c,i)=>{
+    if(c.dataset.kind!=="d"){c.textContent=chars[i];return;}
+    const cur=c.querySelector("span:not(.out)");
+    if(cur&&cur.textContent===chars[i])return;
+    if(REDUCED){c.innerHTML="";const s=document.createElement("span");s.textContent=chars[i];c.appendChild(s);return;}
+    const nxt=document.createElement("span");nxt.className="in";nxt.textContent=chars[i];c.appendChild(nxt);
+    void nxt.offsetHeight;                       // commit the start position, then animate
+    if(cur){cur.classList.add("out");setTimeout(()=>cur.remove(),1200);}
+    nxt.classList.remove("in");
+  });
 }
 
 /* ================= main update ================= */
