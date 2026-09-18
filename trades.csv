@@ -173,3 +173,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-18 11:17:33,PUMPUSDT,SELL,0.004189,11275.659736,47.23,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-09-18 11:31:07,JTOUSDT,SELL,0.4483,164.983294,73.96,Trailing stop triggered (gains locked),10,intraday,PAPER
 2026-09-18 11:34:59,ETHFIUSDT,BUY,0.6951,66.672248,46.34,"RULES: vol 2.7x avg (+4); 15M EMA20>EMA50 trend up (+2); MOMENTUM OVERRIDE: 24h +15.12% on 2.7x vol (+4). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 18%. [momentum runner: wide TP, trailing stop manages exit]",10,intraday,PAPER
+2026-09-18 15:04:46,AVAUSDT,BUY,0.2737,118.526542,32.44,"RULES: vol 2.8x avg (+4); 15M MACD hist +0.0007 (+2); BB upper breakout w/ volume (+2); BTC regime BULL (+1). Score 9/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",9,intraday,PAPER
