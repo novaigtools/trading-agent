@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 273.1445,
+  "cash": 317.0014,
   "open_positions": {
     "JTOUSDT": {
       "entry_price": 0.4309,
@@ -31,15 +31,6 @@
       "opened_at": "2026-09-18T02:22:00.340898+00:00",
       "is_penny": false,
       "peak_price": 0.2171
-    },
-    "GUSDT": {
-      "entry_price": 0.00628,
-      "quantity": 7346.20968,
-      "stop_loss": 0.0060916,
-      "take_profit": 0.0068452,
-      "opened_at": "2026-09-18T07:05:02.252735+00:00",
-      "is_penny": true,
-      "peak_price": 0.00628
     }
   },
   "day": {
