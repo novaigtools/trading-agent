@@ -10,16 +10,17 @@
       "take_profit": 0.226628,
       "opened_at": "2026-09-18T02:22:00.340898+00:00",
       "is_penny": false,
-      "peak_price": 0.2171
+      "peak_price": 0.218
     },
     "ETHFIUSDT": {
       "entry_price": 0.6951,
       "quantity": 66.672248,
-      "stop_loss": 0.674247,
+      "stop_loss": 0.704414,
       "take_profit": 0.757659,
       "opened_at": "2026-09-18T11:34:59.181574+00:00",
       "is_penny": true,
-      "peak_price": 0.7154
+      "peak_price": 0.7262,
+      "trailing": true
     }
   },
   "day": {
