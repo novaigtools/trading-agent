@@ -25,11 +25,12 @@
     "WLDUSDT": {
       "entry_price": 0.4073,
       "quantity": 188.398965,
-      "stop_loss": 0.399154,
+      "stop_loss": 0.41209,
       "take_profit": 0.431738,
       "opened_at": "2026-09-18T02:21:58.402141+00:00",
       "is_penny": false,
-      "peak_price": 0.4179
+      "peak_price": 0.4205,
+      "trailing": true
     },
     "ADAUSDT": {
       "entry_price": 0.2138,
