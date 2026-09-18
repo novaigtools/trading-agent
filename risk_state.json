@@ -20,7 +20,7 @@
       "take_profit": 0.175324,
       "opened_at": "2026-09-18T16:34:42.265569+00:00",
       "is_penny": false,
-      "peak_price": 0.1677
+      "peak_price": 0.1686
     },
     "POLUSDT": {
       "entry_price": 0.10617,
@@ -29,7 +29,7 @@
       "take_profit": 0.1157253,
       "opened_at": "2026-09-18T19:34:44.683172+00:00",
       "is_penny": true,
-      "peak_price": 0.10672
+      "peak_price": 0.10676
     }
   },
   "day": {
