@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 428.2966,
+  "cash": 381.3931,
   "open_positions": {
     "POLUSDT": {
       "entry_price": 0.10617,
@@ -20,6 +20,15 @@
       "opened_at": "2026-09-18T23:04:47.504143+00:00",
       "is_penny": true,
       "peak_price": 1582.2
+    },
+    "PROVEUSDT": {
+      "entry_price": 0.2171,
+      "quantity": 216.045503,
+      "stop_loss": 0.210587,
+      "take_profit": 0.236639,
+      "opened_at": "2026-09-19T02:34:48.235401+00:00",
+      "is_penny": true,
+      "peak_price": 0.2171
     }
   },
   "day": {
