@@ -19,7 +19,7 @@
       "take_profit": 0.227592,
       "opened_at": "2026-09-19T04:34:52.303090+00:00",
       "is_penny": true,
-      "peak_price": 0.2098
+      "peak_price": 0.21
     },
     "RAYUSDT": {
       "entry_price": 1.8448,
@@ -37,7 +37,7 @@
       "take_profit": 0.904604,
       "opened_at": "2026-09-19T10:43:35.973343+00:00",
       "is_penny": false,
-      "peak_price": 0.8534
+      "peak_price": 0.8539
     },
     "LINKUSDT": {
       "entry_price": 12.612,
