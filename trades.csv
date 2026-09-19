@@ -184,3 +184,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-19 02:34:48,PROVEUSDT,BUY,0.2171,216.045503,46.9,"RULES: vol 5.4x avg (+4); 15M EMA20>EMA50 trend up (+2); MOMENTUM OVERRIDE: 24h +10.6% on 5.4x vol (+4); BTC regime BULL (+1). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 18%. [momentum runner: wide TP, trailing stop manages exit]",10,intraday,PAPER
 2026-09-19 03:46:04,ZECUSDT,SELL,1532.58,0.029359,45.0,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-09-19 04:34:52,WIFUSDT,BUY,0.2088,224.005574,46.77,"RULES: vol 3.2x avg (+4); 15M EMA20>EMA50 trend up (+2); MOMENTUM OVERRIDE: 24h +9.43% on 3.2x vol (+4); BTC regime BULL (+1). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 18%. [momentum runner: wide TP, trailing stop manages exit]",10,intraday,PAPER
+2026-09-19 06:31:04,POLUSDT,SELL,0.10276,437.047696,44.91,Automated STOP LOSS triggered,10,intraday,PAPER
