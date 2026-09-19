@@ -188,3 +188,5 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-19 08:38:36,RAYUSDT,BUY,1.8448,25.280913,46.64,"RULES: vol 2.6x avg (+4); 15M MACD hist +0.0068 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); BTC regime BULL (+1). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",10,intraday,PAPER
 2026-09-19 10:43:35,SUIUSDT,BUY,0.8534,91.08318,77.73,"RULES: vol 5.1x avg (+4); 15M MACD hist +0.0035 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); BTC regime BULL (+1). Score 10/10 (>= 8). Tier standard: SL 2%, TP 6%.",10,intraday,PAPER
 2026-09-19 10:43:38,LINKUSDT,BUY,12.612,6.163208,77.73,"RULES: vol 2.6x avg (+4); 15M MACD hist +0.0233 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); BTC regime BULL (+1). Score 10/10 (>= 8). Tier standard: SL 2%, TP 6%.",10,intraday,PAPER
+2026-09-19 21:57:11,RAYUSDT,SELL,1.701,25.280913,43.0,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-09-19 21:57:11,LINKUSDT,SELL,12.346,6.163208,76.09,Automated STOP LOSS triggered,10,intraday,PAPER
