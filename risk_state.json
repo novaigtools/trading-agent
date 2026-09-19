@@ -1,18 +1,8 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 346.537,
+  "cash": 428.2966,
   "open_positions": {
-    "ADAUSDT": {
-      "entry_price": 0.2138,
-      "quantity": 358.90972,
-      "stop_loss": 0.222068,
-      "take_profit": 0.226628,
-      "opened_at": "2026-09-18T02:22:00.340898+00:00",
-      "is_penny": false,
-      "peak_price": 0.2266,
-      "trailing": true
-    },
     "POLUSDT": {
       "entry_price": 0.10617,
       "quantity": 437.047696,
