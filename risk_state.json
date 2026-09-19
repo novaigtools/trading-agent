@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 426.3881,
+  "cash": 379.6157,
   "open_positions": {
     "POLUSDT": {
       "entry_price": 0.10617,
@@ -20,6 +20,15 @@
       "opened_at": "2026-09-19T02:34:48.235401+00:00",
       "is_penny": true,
       "peak_price": 0.2227
+    },
+    "WIFUSDT": {
+      "entry_price": 0.2088,
+      "quantity": 224.005574,
+      "stop_loss": 0.202536,
+      "take_profit": 0.227592,
+      "opened_at": "2026-09-19T04:34:52.303090+00:00",
+      "is_penny": true,
+      "peak_price": 0.2088
     }
   },
   "day": {
