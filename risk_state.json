@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 381.3931,
+  "cash": 426.3881,
   "open_positions": {
     "POLUSDT": {
       "entry_price": 0.10617,
@@ -11,15 +11,6 @@
       "opened_at": "2026-09-18T19:34:44.683172+00:00",
       "is_penny": true,
       "peak_price": 0.10904
-    },
-    "ZECUSDT": {
-      "entry_price": 1582.2,
-      "quantity": 0.029359,
-      "stop_loss": 1534.734,
-      "take_profit": 1724.598,
-      "opened_at": "2026-09-18T23:04:47.504143+00:00",
-      "is_penny": true,
-      "peak_price": 1582.2
     },
     "PROVEUSDT": {
       "entry_price": 0.2171,
