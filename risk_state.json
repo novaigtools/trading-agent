@@ -6,11 +6,11 @@
     "HBARUSDT": {
       "entry_price": 0.08396,
       "quantity": 546.841008,
-      "stop_loss": 0.0848459,
+      "stop_loss": 0.0850593,
       "take_profit": 0.0915164,
       "opened_at": "2026-09-20T13:34:24.745025+00:00",
       "is_penny": true,
-      "peak_price": 0.08747,
+      "peak_price": 0.08769,
       "trailing": true
     },
     "SYNUSDT": {
