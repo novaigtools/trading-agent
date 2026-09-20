@@ -195,3 +195,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-20 09:11:03,PROVEUSDT,SELL,0.2182,216.045503,47.14,Trailing stop triggered (gains locked),10,intraday,PAPER
 2026-09-20 13:34:24,HBARUSDT,BUY,0.08396,546.841008,45.91,"RULES: vol 2.5x avg (+4); 15M MACD hist +0.0003 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2). Score 10/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",10,intraday,PAPER
 2026-09-20 14:34:26,SYNUSDT,BUY,0.22847,140.670276,32.14,"RULES: vol 3.2x avg (+4); 15M MACD hist +0.0029 (+2); BB upper breakout w/ volume (+2). Score 8/10 (>= 8). Tier penny/trending: SL 3%, TP 9%.",8,intraday,PAPER
+2026-09-20 14:46:03,SYNUSDT,SELL,0.22091,140.670276,31.08,Automated STOP LOSS triggered,10,intraday,PAPER
