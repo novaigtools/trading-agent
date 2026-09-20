@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 386.1626,
+  "cash": 430.2319,
   "open_positions": {
     "WLDUSDT": {
       "entry_price": 0.4447,
@@ -11,15 +11,6 @@
       "opened_at": "2026-09-20T16:34:24.392483+00:00",
       "is_penny": false,
       "peak_price": 0.4519
-    },
-    "ARUSDT": {
-      "entry_price": 5.088,
-      "quantity": 8.993741,
-      "stop_loss": 4.93536,
-      "take_profit": 5.54592,
-      "opened_at": "2026-09-20T17:34:24.405008+00:00",
-      "is_penny": true,
-      "peak_price": 5.226
     }
   },
   "day": {
