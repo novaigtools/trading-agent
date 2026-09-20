@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 341.5215,
+  "cash": 417.6397,
   "open_positions": {
     "PROVEUSDT": {
       "entry_price": 0.2171,
@@ -21,15 +21,6 @@
       "opened_at": "2026-09-19T04:34:52.303090+00:00",
       "is_penny": true,
       "peak_price": 0.2123
-    },
-    "SUIUSDT": {
-      "entry_price": 0.8534,
-      "quantity": 91.08318,
-      "stop_loss": 0.836332,
-      "take_profit": 0.904604,
-      "opened_at": "2026-09-19T10:43:35.973343+00:00",
-      "is_penny": false,
-      "peak_price": 0.8689
     }
   },
   "day": {
