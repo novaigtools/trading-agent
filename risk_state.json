@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 464.2291,
+  "cash": 432.0902,
   "open_positions": {
     "HBARUSDT": {
       "entry_price": 0.08396,
@@ -12,6 +12,15 @@
       "is_penny": true,
       "peak_price": 0.08747,
       "trailing": true
+    },
+    "SYNUSDT": {
+      "entry_price": 0.22847,
+      "quantity": 140.670276,
+      "stop_loss": 0.2216159,
+      "take_profit": 0.2490323,
+      "opened_at": "2026-09-20T14:34:26.261738+00:00",
+      "is_penny": true,
+      "peak_price": 0.22847
     }
   },
   "day": {
