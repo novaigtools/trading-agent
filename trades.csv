@@ -191,3 +191,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-19 21:57:11,RAYUSDT,SELL,1.701,25.280913,43.0,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-09-19 21:57:11,LINKUSDT,SELL,12.346,6.163208,76.09,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-09-20 02:46:03,SUIUSDT,SELL,0.8357,91.08318,76.12,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-09-20 02:56:03,WIFUSDT,SELL,0.2025,224.005574,45.36,Automated STOP LOSS triggered,10,intraday,PAPER
