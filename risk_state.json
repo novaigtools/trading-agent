@@ -1,19 +1,8 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 463.1657,
-  "open_positions": {
-    "HBARUSDT": {
-      "entry_price": 0.08396,
-      "quantity": 546.841008,
-      "stop_loss": 0.0869411,
-      "take_profit": 0.0915164,
-      "opened_at": "2026-09-20T13:34:24.745025+00:00",
-      "is_penny": true,
-      "peak_price": 0.08963,
-      "trailing": true
-    }
-  },
+  "cash": 510.1557,
+  "open_positions": {},
   "day": {
     "date": "2026-09-20",
     "open_equity": 514.43
