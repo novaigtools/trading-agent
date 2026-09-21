@@ -10,7 +10,7 @@
       "take_profit": 121.9424,
       "opened_at": "2026-09-21T08:40:48.970405+00:00",
       "is_penny": false,
-      "peak_price": 116.47,
+      "peak_price": 116.56,
       "trail_pct": 0.02
     },
     "DOGEUSDT": {
@@ -30,17 +30,17 @@
       "take_profit": 331.2846592,
       "opened_at": "2026-09-21T08:40:52.376486+00:00",
       "is_penny": false,
-      "peak_price": 281.3,
+      "peak_price": 283.8,
       "trail_pct": 0.033312
     },
     "FETUSDT": {
       "entry_price": 0.1864,
       "quantity": 406.425722,
-      "stop_loss": 0.18618619,
+      "stop_loss": 0.18821415,
       "take_profit": 0.22476559,
       "opened_at": "2026-09-21T08:40:54.022704+00:00",
       "is_penny": false,
-      "peak_price": 0.1928,
+      "peak_price": 0.1949,
       "trail_pct": 0.034304,
       "trailing": true
     },
@@ -71,7 +71,7 @@
       "take_profit": 0.25266442,
       "opened_at": "2026-09-21T08:40:59.253261+00:00",
       "is_penny": false,
-      "peak_price": 0.2407,
+      "peak_price": 0.2419,
       "trail_pct": 0.02384
     }
   },
