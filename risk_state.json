@@ -40,7 +40,7 @@
       "take_profit": 0.22476559,
       "opened_at": "2026-09-21T08:40:54.022704+00:00",
       "is_penny": false,
-      "peak_price": 0.1895,
+      "peak_price": 0.1918,
       "trail_pct": 0.034304
     },
     "LINKUSDT": {
@@ -70,7 +70,7 @@
       "take_profit": 0.25266442,
       "opened_at": "2026-09-21T08:40:59.253261+00:00",
       "is_penny": false,
-      "peak_price": 0.2373,
+      "peak_price": 0.2378,
       "trail_pct": 0.02384
     }
   },
