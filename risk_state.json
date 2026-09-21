@@ -30,18 +30,19 @@
       "take_profit": 331.2846592,
       "opened_at": "2026-09-21T08:40:52.376486+00:00",
       "is_penny": false,
-      "peak_price": 278.9,
+      "peak_price": 280.4,
       "trail_pct": 0.033312
     },
     "FETUSDT": {
       "entry_price": 0.1864,
       "quantity": 406.425722,
-      "stop_loss": 0.18000573,
+      "stop_loss": 0.18618619,
       "take_profit": 0.22476559,
       "opened_at": "2026-09-21T08:40:54.022704+00:00",
       "is_penny": false,
-      "peak_price": 0.1918,
-      "trail_pct": 0.034304
+      "peak_price": 0.1928,
+      "trail_pct": 0.034304,
+      "trailing": true
     },
     "LINKUSDT": {
       "entry_price": 12.745,
@@ -50,7 +51,7 @@
       "take_profit": 13.52744104,
       "opened_at": "2026-09-21T08:40:55.722463+00:00",
       "is_penny": false,
-      "peak_price": 12.862,
+      "peak_price": 12.922,
       "trail_pct": 0.020464
     },
     "XRPUSDT": {
@@ -70,7 +71,7 @@
       "take_profit": 0.25266442,
       "opened_at": "2026-09-21T08:40:59.253261+00:00",
       "is_penny": false,
-      "peak_price": 0.2378,
+      "peak_price": 0.2389,
       "trail_pct": 0.02384
     }
   },
