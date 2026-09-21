@@ -10,7 +10,7 @@
       "take_profit": 121.9424,
       "opened_at": "2026-09-21T08:40:48.970405+00:00",
       "is_penny": false,
-      "peak_price": 116.18,
+      "peak_price": 116.33,
       "trail_pct": 0.02
     },
     "DOGEUSDT": {
@@ -20,7 +20,7 @@
       "take_profit": 0.0970218,
       "opened_at": "2026-09-21T08:40:50.678317+00:00",
       "is_penny": false,
-      "peak_price": 0.09279,
+      "peak_price": 0.09398,
       "trail_pct": 0.02
     },
     "TAOUSDT": {
@@ -51,7 +51,7 @@
       "take_profit": 13.52744104,
       "opened_at": "2026-09-21T08:40:55.722463+00:00",
       "is_penny": false,
-      "peak_price": 12.986,
+      "peak_price": 13.034,
       "trail_pct": 0.020464
     },
     "XRPUSDT": {
@@ -71,7 +71,7 @@
       "take_profit": 0.25266442,
       "opened_at": "2026-09-21T08:40:59.253261+00:00",
       "is_penny": false,
-      "peak_price": 0.2395,
+      "peak_price": 0.2407,
       "trail_pct": 0.02384
     }
   },
