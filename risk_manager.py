@@ -167,7 +167,8 @@ def circuit_breaker_tripped(current_prices: dict = None) -> tuple:
     return (False, "")
 
 
-def record_trade(symbol: str, side: str, price: float, quantity: float):
+def record_trade(symbol: str, side: str, price: float, quantity: float,
+                 stop_loss: float = None, take_profit: float = None, stop_pct: float = None):
     # Load-modify-save must be atomic w.r.t. sl_monitor.py, which writes the same file
     # every 5 minutes. required=False: a scan already holding fresh prices should not
     # abandon a trade just because the monitor is mid-write; it waits, then proceeds.
@@ -176,16 +177,25 @@ def record_trade(symbol: str, side: str, price: float, quantity: float):
         if side == "BUY":
             cost = price * quantity
             state["cash"] = round(state["cash"] - cost, 4)
+            # Honour the volatility-sized stop the brain decided. This used to recompute
+            # a fixed % here, silently discarding it — which is what produced stops inside
+            # the coin's noise and the sub-hour churn that cost the whole book.
             sl_pct = PENNY_STOP_LOSS_PCT if _is_penny(symbol) else STOP_LOSS_PCT
             tp_pct = PENNY_TAKE_PROFIT_PCT if _is_penny(symbol) else TAKE_PROFIT_PCT
+            sl = stop_loss if stop_loss else round(price * (1 - sl_pct), 8)
+            tp = take_profit if take_profit else round(price * (1 + tp_pct), 8)
+            # Trail at the same distance the stop was sized to, so a volatile coin isn't
+            # trailed on a hair-trigger either.
+            trail = stop_pct if stop_pct else (price - sl) / price if price else sl_pct
             state["open_positions"][symbol] = {
                 "entry_price": price,
                 "quantity": quantity,
-                "stop_loss": round(price * (1 - sl_pct), 8),
-                "take_profit": round(price * (1 + tp_pct), 8),
+                "stop_loss": sl,
+                "take_profit": tp,
                 "opened_at": datetime.now(timezone.utc).isoformat(),
                 "is_penny": _is_penny(symbol),
                 "peak_price": price,   # seeds the trailing stop's high-water mark
+                "trail_pct": round(max(0.01, min(0.08, trail)), 6),
             }
         elif side == "SELL" and symbol in state["open_positions"]:
             # Proceeds go back to cash — realized P&L is captured automatically

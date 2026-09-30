@@ -94,3 +94,20 @@ def test_sizing_without_confidence_is_full(sandbox):
     full = rm.get_position_size(100.0, "SOLUSDT", confidence=10)
     default = rm.get_position_size(100.0, "SOLUSDT")
     assert default == pytest.approx(full, rel=1e-3)
+
+
+def test_record_trade_honours_the_brains_stop(sandbox):
+    """risk_manager used to recompute a fixed stop here, silently discarding the
+    volatility-sized one — the root cause of the sub-hour churn."""
+    rm.record_trade("SOLUSDT", "BUY", 100.0, 1.0,
+                    stop_loss=95.0, take_profit=115.0, stop_pct=0.05)
+    pos = rm._load_state()["open_positions"]["SOLUSDT"]
+    assert pos["stop_loss"] == 95.0
+    assert pos["take_profit"] == 115.0
+    assert pos["trail_pct"] == 0.05
+
+
+def test_record_trade_falls_back_when_no_stop_given(sandbox):
+    rm.record_trade("SOLUSDT", "BUY", 100.0, 1.0)
+    pos = rm._load_state()["open_positions"]["SOLUSDT"]
+    assert pos["stop_loss"] < 100.0 and pos["take_profit"] > 100.0

@@ -78,7 +78,11 @@ def execute_decision(decision: dict) -> bool:
             return False
 
         value = log_trade(symbol, "BUY", price, quantity, reasoning, confidence, trade_type)
-        risk_manager.record_trade(symbol, "BUY", price, quantity)
+        # Pass the brain's volatility-sized stop through — risk_manager used to discard it.
+        risk_manager.record_trade(symbol, "BUY", price, quantity,
+                                  stop_loss=decision.get("stop_loss"),
+                                  take_profit=decision.get("take_profit"),
+                                  stop_pct=decision.get("stop_pct"))
 
         mode_tag = "[PAPER]" if PAPER_TRADING else "[LIVE]"
         print(f"  {Fore.GREEN}{mode_tag} BUY {symbol} | {quantity} @ ${price:,.4f} = ${value:.2f} | Confidence: {confidence}/10{Style.RESET_ALL}")

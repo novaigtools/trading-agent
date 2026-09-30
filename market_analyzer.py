@@ -105,6 +105,18 @@ def compute_indicators(df: pd.DataFrame) -> dict:
     close = df["close"]
     volume = df["volume"]
 
+    # Average True Range as a % of price = how much this coin normally moves per candle.
+    # A fixed 2% stop is inside a volatile coin's noise and gets tripped before the trade
+    # can breathe; sizing the stop off ATR puts it outside the normal wiggle.
+    try:
+        atr = ta.volatility.AverageTrueRange(
+            high=df["high"], low=df["low"], close=close, window=14).average_true_range()
+        atr_pct = float(atr.iloc[-1]) / float(close.iloc[-1]) * 100
+        if atr_pct != atr_pct or atr_pct <= 0:   # NaN or nonsense
+            atr_pct = 0.0
+    except Exception:
+        atr_pct = 0.0
+
     rsi = ta.momentum.RSIIndicator(close=close, window=14).rsi()
     macd_obj = ta.trend.MACD(close=close, window_fast=12, window_slow=26, window_sign=9)
     bb_obj = ta.volatility.BollingerBands(close=close, window=20, window_dev=2)
@@ -122,6 +134,7 @@ def compute_indicators(df: pd.DataFrame) -> dict:
         "ema_20": _round_price(ema_20.iloc[-1]),
         "ema_50": _round_price(ema_50.iloc[-1]),
         "current_price": _round_price(close.iloc[-1]),
+        "atr_pct": round(atr_pct, 3),
         "volume_avg": round(float(volume.tail(20).mean()), 2),
         "volume_latest": round(float(volume.iloc[-1]), 2),
         "price_change_5": round(float((close.iloc[-1] - close.iloc[-5]) / close.iloc[-5] * 100), 2),

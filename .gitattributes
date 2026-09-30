@@ -1,0 +1,10 @@
+# The bot's state files are machine-written and synced from two places (laptop +
+# GitHub Actions). Git must NEVER write conflict markers into them: on 2026-09-22 a
+# rebase did exactly that, turning risk_state.json into invalid JSON and wedging the
+# bot — scans and the stop-loss monitor both died for 8 days with positions unprotected.
+#
+# -merge        : on conflict keep our version intact; never insert <<<< markers.
+# merge=union   : trades.csv is an append-only log, so keep both sides' rows.
+risk_state.json -merge
+heartbeat.json  -merge
+trades.csv      merge=union

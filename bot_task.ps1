@@ -30,6 +30,26 @@ function Log($msg) {
 
 Log "=== $Mode run started ==="
 
+# SELF-HEAL: a half-finished rebase/merge wedges every future run. On 2026-09-22 one
+# left conflict markers in risk_state.json; scans and the stop-loss monitor then died
+# for 8 days with positions unprotected and nobody watching. Never again: clear it,
+# shout about it, and carry on. The bot rewrites its state from reality each run, so
+# abandoning a half-applied sync costs nothing.
+if ((Test-Path ".git\rebase-merge") -or (Test-Path ".git\rebase-apply")) {
+    Log "*** RECOVERY: a stuck git rebase was blocking the bot - aborting it ***"
+    git rebase --abort 2>&1 | ForEach-Object { Log "  abort: $_" }
+}
+if (Test-Path ".git\MERGE_HEAD") {
+    Log "*** RECOVERY: a stuck git merge was blocking the bot - aborting it ***"
+    git merge --abort 2>&1 | ForEach-Object { Log "  abort: $_" }
+}
+# Corrupt state = invalid JSON the bot cannot load. Restore the last good copy.
+if (Select-String -Path "risk_state.json" -Pattern '^<<<<<<<' -Quiet -ErrorAction SilentlyContinue) {
+    Log "*** RECOVERY: risk_state.json has conflict markers - restoring last good version ***"
+    git checkout --ours -- risk_state.json 2>$null
+    git checkout HEAD -- risk_state.json 2>$null
+}
+
 # Pull latest state (cloud backstop may have committed while laptop was off).
 # Commit any stray local state first so rebase never fails on a dirty tree.
 git add risk_state.json trades.csv 2>$null

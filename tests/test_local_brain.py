@@ -252,3 +252,62 @@ def test_universe_rejects_non_ascii_symbols():
     assert m._SYMBOL_OK.match("1000PEPEUSDT")
     assert not m._SYMBOL_OK.match("\u725b\u6765USDT")   # non-Latin characters
     assert not m._SYMBOL_OK.match("sol-usdt")
+
+
+# ---- volatility-adjusted stops (the sub-hour churn fix, 2026-09-21) ----
+
+def test_volatile_coin_gets_a_wider_stop_than_a_calm_one():
+    """A fixed 2% stop sat inside a twitchy coin's noise and caused the churn that cost
+    the whole book. The stop must scale with the coin's own ATR."""
+    calm = local_brain.stop_and_target(100.0, atr_pct=0.5, is_penny=False, momentum=False)
+    wild = local_brain.stop_and_target(100.0, atr_pct=3.0, is_penny=False, momentum=False)
+    assert wild[0] > calm[0]
+
+
+def test_stop_is_clamped_both_ways():
+    """Never tighter than MIN (churn) nor wider than MAX (one trade can't gut the book)."""
+    from config import MIN_STOP_PCT, MAX_STOP_PCT
+    tiny = local_brain.stop_and_target(100.0, atr_pct=0.01, is_penny=False, momentum=False)[0]
+    huge = local_brain.stop_and_target(100.0, atr_pct=99.0, is_penny=False, momentum=False)[0]
+    assert tiny == MIN_STOP_PCT
+    assert huge == MAX_STOP_PCT
+
+
+def test_target_scales_with_risk_so_asymmetry_survives():
+    """Widening the stop must widen the target too, or the reward:risk silently degrades."""
+    from config import STOP_TP_RATIO
+    sl, tp, _ = local_brain.stop_and_target(100.0, atr_pct=2.0, is_penny=False, momentum=False)
+    assert tp == pytest.approx(sl * STOP_TP_RATIO, rel=1e-6)
+
+
+def test_falls_back_to_fixed_stop_when_atr_missing():
+    from config import STOP_LOSS_PCT, PENNY_STOP_LOSS_PCT
+    assert local_brain.stop_and_target(100.0, 0, False, False)[0] == STOP_LOSS_PCT
+    assert local_brain.stop_and_target(100.0, None, True, False)[0] == PENNY_STOP_LOSS_PCT
+
+
+def test_buy_decision_carries_the_atr_stop_through():
+    """The decision must expose stop_pct so risk_manager can honour it end-to-end."""
+    md = make_market_data(rsi_1h=26.0, vol_latest=2500.0, vol_avg=1000.0)
+    md["indicators_1h"]["atr_pct"] = 3.0        # volatile coin
+    d = local_brain.score_symbol(md, sentiment(), NEUTRAL)
+    assert d["action"] == "BUY"
+    assert d["stop_pct"] > 0.02                  # wider than the old fixed 2%
+    assert d["stop_loss"] == pytest.approx(md["price"] * (1 - d["stop_pct"]), rel=1e-6)
+
+
+def test_unstoppably_volatile_coin_is_skipped():
+    """GUSDT had a 13%/h ATR and a 2% stop — dead in 65 seconds. If no stop fits inside
+    the risk budget, the trade must not be taken at all."""
+    md = make_market_data(symbol="GUSDT", rsi_1h=26.0, vol_latest=2500.0, vol_avg=1000.0)
+    md["indicators_1h"]["atr_pct"] = 13.0
+    d = local_brain.score_symbol(md, sentiment(), NEUTRAL)
+    assert d["action"] == "HOLD"
+    assert "Unstoppable" in d["reasoning"]
+
+
+def test_normally_volatile_coin_is_still_traded():
+    """The guard must only reject the extremes, not ordinary alt volatility."""
+    md = make_market_data(rsi_1h=26.0, vol_latest=2500.0, vol_avg=1000.0)
+    md["indicators_1h"]["atr_pct"] = 2.3      # WLD/SUI-class
+    assert local_brain.score_symbol(md, sentiment(), NEUTRAL)["action"] == "BUY"

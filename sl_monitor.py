@@ -132,8 +132,11 @@ def _run_locked():
             # 1) Ratchet the trailing stop up on new highs (locks in gains).
             is_penny = pos.get("is_penny") or any(m in symbol for m in PENNY_MARKERS)
             if trail_enabled:
+                # Trail at this position's own stop distance when it has one (ATR-sized),
+                # so a volatile coin isn't trailed on a hair-trigger.
+                dist = pos.get("trail_pct") or (trail_penny if is_penny else trail_std)
                 updated = position_rules.update_trailing_stop(
-                    pos, price, trail_activate, trail_penny if is_penny else trail_std)
+                    pos, price, trail_activate, dist)
                 if updated["stop_loss"] != pos["stop_loss"] or \
                         updated.get("peak_price") != pos.get("peak_price"):
                     state["open_positions"][symbol] = updated

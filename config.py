@@ -99,7 +99,24 @@ SCAN_MAX_WORKERS        = 8          # parallel market-data fetch threads (rate-
 # tight stops (2%/3%) and the daily circuit breaker — bigger size, seatbelts on.
 MAX_POSITION_PCT      = 0.15   # back to 15% — the aggressive 22% amplified losses in a flat market
 PENNY_MAX_PCT         = 0.09   # back to 9%  — same reason (autopsy 2026-09-18: 34% win, -$18 net)
-STOP_LOSS_PCT         = 0.02   # 2% stop loss (standard coins)
+# --- Volatility-adjusted stops (2026-09-21) -----------------------------------
+# Autopsy: since Sep 1 the book was -$18.99, and trades stopped out inside 60 min were
+# -$18.97 of it — i.e. ALL of the loss was fast churn (11 of 13 were stop-losses), while
+# everything held >1h was flat-to-positive. Cause: a fixed 2%/3% stop sits inside a
+# volatile coin's normal range, so noise trips it before the setup can work.
+# Fix: stop = ATR(14) x multiplier, clamped, with take-profit at a fixed R:R of that
+# distance. Calm coins keep tight stops; twitchy coins get the room they need.
+USE_ATR_STOPS         = os.getenv("USE_ATR_STOPS", "true").lower() == "true"
+ATR_STOP_MULT         = 1.6    # stop this many ATRs below entry
+MIN_STOP_PCT          = 0.02   # never tighter than 2% (caps churn)
+MAX_STOP_PCT          = 0.06   # never wider than 6% (caps loss per trade)
+STOP_TP_RATIO         = 3.0    # take-profit at 3x the risk — keeps the 2.5:1+ asymmetry
+# If a coin is so volatile that even MAX_STOP_PCT sits inside its normal hourly range,
+# no stop can be placed sensibly within our risk budget — so don't take the trade.
+# GUSDT (13% hourly ATR, stopped out in 65 seconds) is the case this exists for.
+SKIP_IF_UNSTOPPABLE   = True
+
+STOP_LOSS_PCT         = 0.02   # fallback fixed stop when ATR is unavailable
 TAKE_PROFIT_PCT       = 0.06   # 6% take profit (standard coins)
 PENNY_STOP_LOSS_PCT   = 0.03   # 3% SL for memes — wider to avoid noise whipsaws
 PENNY_TAKE_PROFIT_PCT = 0.09   # 9% TP for memes — aim for bigger explosive moves

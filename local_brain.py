@@ -12,7 +12,39 @@ from config import (
     PENNY_PAIRS, NEVER_TRADE, MIN_BUY_CONFIDENCE, HOLD_ALL_AT_POSITIONS,
     STOP_LOSS_PCT, TAKE_PROFIT_PCT, PENNY_STOP_LOSS_PCT, PENNY_TAKE_PROFIT_PCT,
     MOMENTUM_TP_MULTIPLIER, OVEREXTENDED_24H_PCT, OVEREXTENDED_RSI_1H,
+    USE_ATR_STOPS, ATR_STOP_MULT, MIN_STOP_PCT, MAX_STOP_PCT, STOP_TP_RATIO,
+    SKIP_IF_UNSTOPPABLE,
 )
+
+
+def unstoppable(atr_pct) -> bool:
+    """True when the coin's own volatility exceeds what our max stop can contain, so any
+    stop we place would sit inside the noise and be tripped at random."""
+    if not (SKIP_IF_UNSTOPPABLE and USE_ATR_STOPS and atr_pct):
+        return False
+    return (ATR_STOP_MULT * atr_pct / 100.0) > MAX_STOP_PCT
+
+
+def stop_and_target(price: float, atr_pct: float, is_penny: bool, momentum: bool):
+    """
+    Risk geometry for one entry. Returns (stop_pct, tp_pct, note).
+
+    The stop is sized to the coin's own ATR so it sits outside normal noise — a fixed
+    percentage is what produced the sub-hour churn that cost the whole book. The target
+    is a fixed multiple of that risk, so widening the stop widens the reward with it and
+    the asymmetry is preserved.
+    """
+    if USE_ATR_STOPS and atr_pct and atr_pct > 0:
+        stop_pct = max(MIN_STOP_PCT, min(MAX_STOP_PCT, ATR_STOP_MULT * atr_pct / 100.0))
+        note = f"stop {stop_pct:.1%} = {ATR_STOP_MULT}x ATR({atr_pct:.2f}%)"
+    else:
+        stop_pct = PENNY_STOP_LOSS_PCT if is_penny else STOP_LOSS_PCT
+        note = f"stop {stop_pct:.1%} (fixed — no ATR)"
+    tp_pct = stop_pct * STOP_TP_RATIO
+    if momentum:
+        tp_pct *= MOMENTUM_TP_MULTIPLIER
+        note += ", momentum runner TP"
+    return stop_pct, tp_pct, note
 
 # --- Signal weights ----------------------------------------------------------
 # Calibrated so that the two canonical setups in the spec land exactly on the buy bar
@@ -130,6 +162,15 @@ def score_symbol(market_data: dict, sentiment: dict = None, regime: dict = None,
     vol_ratio  = (vol_latest / vol_avg) if vol_avg else 0
     change_24h = market_data.get("change_24h", 0) or 0
 
+    # Too volatile to stop sensibly: any stop we could place sits inside this coin's
+    # normal hourly range, so it would be tripped by noise. Don't take the trade.
+    _atr = i1h.get("atr_pct") or i15.get("atr_pct") or 0
+    if unstoppable(_atr):
+        return _hold(symbol, price,
+                     f"Unstoppable: ATR {_fmt(_atr)}%/h needs a "
+                     f"{ATR_STOP_MULT * _atr / 100:.1%} stop, above the {MAX_STOP_PCT:.0%} cap — "
+                     f"no stop can sit outside the noise, so skipping.")
+
     # Don't chase the blow-off top: a coin already far up on the day AND overbought is a
     # late entry with wide risk and compressed reward. Buy strength early, not late.
     if change_24h >= OVEREXTENDED_24H_PCT and rsi_1h is not None and rsi_1h >= OVEREXTENDED_RSI_1H:
@@ -225,23 +266,20 @@ def score_symbol(market_data: dict, sentiment: dict = None, regime: dict = None,
 
     if score >= MIN_BUY_CONFIDENCE:
         is_penny = symbol in PENNY_PAIRS or symbol in active_trending
-        sl_pct = PENNY_STOP_LOSS_PCT if is_penny else STOP_LOSS_PCT
-        tp_pct = PENNY_TAKE_PROFIT_PCT if is_penny else TAKE_PROFIT_PCT
         tier   = "penny/trending" if is_penny else "standard"
-        # Let proven momentum winners run — the trailing stop protects the downside.
-        runner = ""
-        if momentum_override:
-            tp_pct *= MOMENTUM_TP_MULTIPLIER
-            runner = " [momentum runner: wide TP, trailing stop manages exit]"
+        # Stop sized to THIS coin's volatility, target a fixed multiple of that risk.
+        atr_pct = i1h.get("atr_pct") or i15.get("atr_pct") or 0
+        sl_pct, tp_pct, risk_note = stop_and_target(price, atr_pct, is_penny, momentum_override)
         return {
             "symbol": symbol,
             "action": "BUY",
             "confidence": score,
             "reasoning": f"RULES: {detail}. Score {score}/10 (>= {MIN_BUY_CONFIDENCE}). "
-                         f"Tier {tier}: SL {sl_pct:.0%}, TP {tp_pct:.0%}.{runner}",
+                         f"Tier {tier}: {risk_note}, TP {tp_pct:.1%}.",
             "entry_price": price,
             "stop_loss": round(price * (1 - sl_pct), 8),
             "take_profit": round(price * (1 + tp_pct), 8),
+            "stop_pct": round(sl_pct, 6),
             "trade_type": "intraday",
             "market_price": price,
         }
