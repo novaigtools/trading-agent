@@ -215,3 +215,5 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-26 23:27:38,FETUSDT,SELL,0.2423,406.425722,98.48,Automated TAKE PROFIT triggered,10,intraday,PAPER
 2026-09-26 23:27:39,LINKUSDT,SELL,14.143,5.944115,84.07,Automated TAKE PROFIT triggered,10,intraday,PAPER
 2026-09-26 23:27:39,ADAUSDT,SELL,0.2531,214.186599,54.21,Automated TAKE PROFIT triggered,10,intraday,PAPER
+2026-09-30 07:32:35,SOLUSDT,SELL,118.5,0.658534,78.04,Trailing stop triggered (gains locked),10,intraday,PAPER
+2026-09-30 07:32:35,TAOUSDT,SELL,301.0,0.274385,82.59,Trailing stop triggered (gains locked),10,intraday,PAPER

@@ -1,31 +1,8 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 400.7828,
-  "open_positions": {
-    "SOLUSDT": {
-      "entry_price": 115.04,
-      "quantity": 0.658534,
-      "stop_loss": 119.0798,
-      "take_profit": 121.9424,
-      "opened_at": "2026-09-21T08:40:48.970405+00:00",
-      "is_penny": false,
-      "peak_price": 121.51,
-      "trail_pct": 0.02,
-      "trailing": true
-    },
-    "TAOUSDT": {
-      "entry_price": 276.1,
-      "quantity": 0.274385,
-      "stop_loss": 313.894,
-      "take_profit": 331.2846592,
-      "opened_at": "2026-09-21T08:40:52.376486+00:00",
-      "is_penny": false,
-      "peak_price": 320.3,
-      "trail_pct": 0.033312,
-      "trailing": true
-    }
-  },
+  "cash": 561.409,
+  "open_positions": {},
   "day": {
     "date": "2026-09-30",
     "open_equity": 552.3
