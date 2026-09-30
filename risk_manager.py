@@ -7,6 +7,7 @@ from config import (
     PENNY_PAIRS, PENNY_MAX_PCT, PENNY_STOP_LOSS_PCT, PENNY_TAKE_PROFIT_PCT,
     MAX_PENNY_POSITIONS, COOLDOWN_HOURS_AFTER_SL, DAILY_LOSS_LIMIT_PCT,
     CONVICTION_FULL_SCORE, REDUCED_SIZE_FACTOR,
+    RISK_PER_TRADE_PCT, WEEKLY_DEPOSIT_USD, DEPOSIT_SCHEDULE_START,
 )
 from state_lock import state_lock
 import position_rules
@@ -69,7 +70,8 @@ def _book_equity(state: dict) -> float:
     return state["cash"] + held
 
 
-def get_position_size(price: float, symbol: str = "", confidence: int = None) -> float:
+def get_position_size(price: float, symbol: str = "", confidence: int = None,
+                      stop_pct: float = None) -> float:
     # A bad price (0, negative, or NaN) must never divide-by-zero and crash the whole
     # scan — a micro-cap once rounded to 0.0 and took down a run. No price, no trade.
     if not price or price <= 0 or price != price:
@@ -82,9 +84,18 @@ def get_position_size(price: float, symbol: str = "", confidence: int = None) ->
     if _is_penny(symbol):
         if _penny_positions_open(state) >= MAX_PENNY_POSITIONS:
             return 0.0  # Already at max penny exposure
-        max_trade = equity * PENNY_MAX_PCT
+        cap = equity * PENNY_MAX_PCT
     else:
-        max_trade = equity * MAX_POSITION_PCT
+        cap = equity * MAX_POSITION_PCT
+
+    # Risk-based sizing: size so that hitting THIS trade's stop loses ~RISK_PER_TRADE_PCT
+    # of equity. Tight-stop (calm) coins get bigger positions, wide-stop (wild) ones
+    # smaller — the dollar risk is what's held constant, not the notional. The cap keeps
+    # any one name from dominating the book.
+    if stop_pct and stop_pct > 0:
+        max_trade = min(cap, equity * RISK_PER_TRADE_PCT / stop_pct)
+    else:
+        max_trade = cap
 
     # Conviction-scaled sizing: the trade-history autopsy showed score-10 setups made
     # +$14.54 while score-9 barely broke even. Put more capital behind the best signals.
@@ -222,6 +233,49 @@ def get_open_positions() -> dict:
     return _load_state().get("open_positions", {})
 
 
+def _deposits_due(now: datetime) -> int:
+    """How many weekly top-ups should have landed by `now` (0 before the schedule starts)."""
+    try:
+        start = datetime.strptime(DEPOSIT_SCHEDULE_START, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+    except ValueError:
+        return 0
+    if now < start:
+        return 0
+    return (now - start).days // 7 + 1
+
+
+def apply_weekly_deposits(now: datetime = None, dry_run: bool = False) -> float:
+    """
+    Credit Amal's weekly paper top-up. Idempotent: tracks deposits_applied in state, so it
+    never double-credits (laptop + cloud, or a re-run), and catches up any weeks missed
+    while the bot was offline. Returns the amount credited this call (or that WOULD be,
+    in dry_run). Deposits raise total_deposited as well as cash, so P&L stays honest.
+    """
+    now = now or datetime.now(timezone.utc)
+    with state_lock(wait_sec=10, required=False):
+        state = _load_state()
+        state.setdefault("total_deposited", state.get("starting_balance", STARTING_BALANCE))
+        state.setdefault("deposits_applied", 0)
+        state.setdefault("deposits", [])
+        owed = _deposits_due(now) - state["deposits_applied"]
+        if owed <= 0:
+            return 0.0
+        amount = round(owed * WEEKLY_DEPOSIT_USD, 2)
+        if dry_run:
+            return amount
+        state["cash"] = round(state["cash"] + amount, 4)
+        state["total_deposited"] = round(state["total_deposited"] + amount, 2)
+        state["deposits_applied"] += owed
+        state["deposits"].append({"date": now.strftime("%Y-%m-%d"), "amount": amount})
+        # A deposit is not a gain: lift today's circuit-breaker baseline too, or the
+        # breaker would read the fresh cash as profit and mask a real drawdown.
+        day = state.get("day")
+        if day and day.get("date") == now.strftime("%Y-%m-%d"):
+            day["open_equity"] = round(day.get("open_equity", 0) + amount, 2)
+        _save_state(state)
+    return amount
+
+
 def account_summary(current_prices: dict = None) -> dict:
     """Snapshot of the paper account. Pass live prices for mark-to-market equity."""
     state = _load_state()
@@ -237,13 +291,17 @@ def account_summary(current_prices: dict = None) -> dict:
         held_market = held_book
 
     equity = round(state["cash"] + held_market, 2)
+    # P&L is measured against every dollar Amal has put in (initial + weekly top-ups), so a
+    # deposit never shows up as profit.
+    invested = state.get("total_deposited", state["starting_balance"]) or state["starting_balance"]
     return {
         "experiment_start": state["experiment_start"],
         "starting_balance": state["starting_balance"],
+        "total_deposited": round(invested, 2),
         "cash": round(state["cash"], 2),
         "positions_value": round(held_market, 2),
         "equity": equity,
-        "total_pnl": round(equity - state["starting_balance"], 2),
-        "total_pnl_pct": round((equity - state["starting_balance"]) / state["starting_balance"] * 100, 2),
+        "total_pnl": round(equity - invested, 2),
+        "total_pnl_pct": round((equity - invested) / invested * 100, 2),
         "open_positions": len(positions),
     }

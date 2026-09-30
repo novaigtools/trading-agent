@@ -189,9 +189,9 @@ footer a{color:var(--ink2);border-bottom:1px solid var(--hair2)}
     <div class="cell"><div class="k">Win rate</div><div class="v" id="t-wr">—</div><div class="s" id="t-wr-s">—</div></div>
   </section>
 
-  <section class="sec reveal" style="animation-delay:.4s" aria-label="Equity over time">
-    <div class="sh"><h2>Equity curve</h2><span class="r" id="eq-r">—</span></div>
-    <div class="ribbon"><canvas id="eq" role="img" aria-label="Equity over the experiment"></canvas><div class="shine" aria-hidden="true"></div><div class="tip" id="tip"></div></div>
+  <section class="sec reveal" style="animation-delay:.4s" aria-label="Profit over time">
+    <div class="sh"><h2>Profit over time</h2><span class="r" id="eq-r">—</span></div>
+    <div class="ribbon"><canvas id="eq" role="img" aria-label="Cumulative profit over the experiment"></canvas><div class="shine" aria-hidden="true"></div><div class="tip" id="tip"></div></div>
   </section>
 
   <section class="sec two reveal" style="animation-delay:.52s">
@@ -276,6 +276,8 @@ async function update(){
       getJson(FNG).catch(()=>({data:[{value:50,value_classification:"Neutral"}]}))]);
     const state=JSON.parse(stateRaw), trades=parseCsv(csvRaw);
     const startBal=state.starting_balance||START_BAL, expStart=state.experiment_start||"2026-07-15";
+    // Profit is measured against every dollar put in (initial + weekly top-ups), so a deposit never reads as a gain.
+    const invested=state.total_deposited||startBal;
     const positions=state.open_positions||{};
     const closed=realised(trades.filter(t=>(t.timestamp||"")>=expStart));
     const wins=closed.filter(x=>x.pnl>=0).length, losses=closed.filter(x=>x.pnl<0).length;
@@ -283,14 +285,14 @@ async function update(){
     const prices=await Promise.all(syms.map(s=>fetch(`${BINANCE}?symbol=${s}`).then(r=>r.json()).then(d=>({s,p:+d.price})).catch(()=>({s,p:null}))));
     const pm=Object.fromEntries(prices.map(x=>[x.s,x.p]));
     let posValue=0;for(const s of syms){const c=pm[s]??positions[s].entry_price;posValue+=c*positions[s].quantity;}
-    const equity=(state.cash||0)+posValue, total=equity-startBal;
+    const equity=(state.cash||0)+posValue, total=equity-invested;
     const dayOpen=(state.day&&state.day.open_equity)||equity, today=equity-dayOpen;
 
     odometer($("odo"),`$${equity.toFixed(2)}`);
     const d=$("delta");d.className="delta "+(total>=0?"up":"down");
     d.querySelector(".arrow").textContent=total>=0?"▲":"▼";
-    $("delta-txt").textContent=`${money(total)} · ${pct(total,startBal)}`;
-    $("since").textContent=`since ${expStart}, from $${startBal.toFixed(0)}`;
+    $("delta-txt").textContent=`${money(total)} · ${pct(total,invested)}`;
+    $("since").textContent=`since ${expStart}, on $${invested.toFixed(0)} ${invested>startBal?"deposited":"put in"}`;
     $("state-val").innerHTML=syms.length?`<b>${syms.length}</b> position${syms.length>1?"s":""} open — actively trading`:`Holding cash — waiting for a setup worth taking`;
     $("status").textContent=syms.length?"trading":"watching";$("status").style.color=syms.length?"var(--good)":"var(--amber)";
 
@@ -303,7 +305,7 @@ async function update(){
     const n=wins+losses;$("t-wr").textContent=n?`${(wins/n*100).toFixed(0)}%`:"—";
     $("t-wr-s").textContent=n?`${wins} wins · ${losses} losses`:"no closed trades yet";
 
-    renderEquity(expStart,startBal,closed,equity);
+    renderEquity(expStart,closed,equity-invested);
     renderPositions(positions,pm);
     renderTrades(trades);
     renderFng(+fng.data[0].value,fng.data[0].value_classification);
@@ -312,11 +314,13 @@ async function update(){
 }
 
 /* ================= equity ribbon ================= */
-function renderEquity(expStart,startBal,closed,equity){
-  const labels=[expStart.slice(5)],data=[startBal];let run=startBal;
+function renderEquity(expStart,closed,totalNow){
+  // Profit, not balance: deposits change the balance but not the profit, so this curve stays
+  // honest however many weekly top-ups land. Final point includes open positions (live).
+  const labels=[expStart.slice(5)],data=[0];let run=0;
   for(const c of closed){run+=c.pnl;labels.push(c.ts.slice(5,10));data.push(+run.toFixed(2));}
-  labels.push("now");data.push(+equity.toFixed(2));
-  $("eq-r").textContent=`$${startBal.toFixed(0)} → $${equity.toFixed(2)}`;
+  labels.push("now");data.push(+totalNow.toFixed(2));
+  $("eq-r").textContent=`${money(totalNow)} total`;
   const ctx=$("eq").getContext("2d");
   const g=ctx.createLinearGradient(0,0,0,250);g.addColorStop(0,"rgba(57,135,229,.28)");g.addColorStop(1,"rgba(57,135,229,0)");
   const cfg={type:"line",data:{labels,datasets:[{data,borderColor:"#3987e5",borderWidth:1.6,fill:true,backgroundColor:g,tension:.28,pointRadius:0,
@@ -324,14 +328,14 @@ function renderEquity(expStart,startBal,closed,equity){
     options:{responsive:true,maintainAspectRatio:false,animation:REDUCED?false:{duration:700},interaction:{mode:"index",intersect:false},
       plugins:{legend:{display:false},tooltip:{enabled:false,external:extTip}},
       scales:{x:{grid:{display:false},border:{color:"rgba(255,255,255,.08)"},ticks:{color:"#5A6277",font:{family:"JetBrains Mono",size:10},maxTicksLimit:innerWidth<640?5:9}},
-              y:{grid:{color:"rgba(255,255,255,.05)"},border:{display:false},ticks:{color:"#5A6277",font:{family:"JetBrains Mono",size:10},callback:v=>"$"+v}}}},
-    plugins:[{id:"baseline",afterDatasetsDraw(ch){const y=ch.scales.y.getPixelForValue(startBal);const {left,right}=ch.chartArea;const c=ch.ctx;c.save();
+              y:{grid:{color:"rgba(255,255,255,.05)"},border:{display:false},ticks:{color:"#5A6277",font:{family:"JetBrains Mono",size:10},callback:v=>(v<0?"−$":"$")+Math.abs(v)}}}},
+    plugins:[{id:"baseline",afterDatasetsDraw(ch){const y=ch.scales.y.getPixelForValue(0);const {left,right}=ch.chartArea;const c=ch.ctx;c.save();
       c.strokeStyle="rgba(217,179,104,.45)";c.setLineDash([3,5]);c.lineWidth=1;c.beginPath();c.moveTo(left,y);c.lineTo(right,y);c.stroke();
-      c.fillStyle="#D9B368";c.font="10px JetBrains Mono";c.textAlign="right";c.fillText(`$${startBal.toFixed(0)} start`,right-4,y-5);c.restore();}}]};
+      c.fillStyle="#D9B368";c.font="10px JetBrains Mono";c.textAlign="right";c.fillText("break-even",right-4,y-5);c.restore();}}]};
   if(eqChart){eqChart.data=cfg.data;eqChart.update("none");}else{eqChart=new Chart(ctx,cfg);}
 }
 function extTip(c){const tip=$("tip"),t=c.tooltip;if(!t||t.opacity===0){tip.style.opacity=0;return;}
-  const dp=t.dataPoints&&t.dataPoints[0];if(!dp)return;tip.innerHTML=`<b>${dp.label}</b>&nbsp; $${(+dp.raw).toFixed(2)}`;
+  const dp=t.dataPoints&&t.dataPoints[0];if(!dp)return;tip.innerHTML=`<b>${dp.label}</b>&nbsp; ${money(+dp.raw)} profit`;
   tip.style.left=t.caretX+"px";tip.style.top=t.caretY+"px";tip.style.opacity=1;}
 
 /* ================= positions ================= */

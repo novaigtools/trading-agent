@@ -9,6 +9,13 @@ BINANCE_SECRET_KEY = os.getenv("BINANCE_SECRET_KEY", "")
 
 PAPER_TRADING = os.getenv("PAPER_TRADING", "true").lower() == "true"
 STARTING_BALANCE = float(os.getenv("STARTING_BALANCE", "500"))
+
+# Weekly top-up: Amal adds $500 of paper money every week. Deposits are tracked separately
+# (total_deposited) so P&L = equity - money put in, and a deposit never looks like profit.
+# First top-up lands on DEPOSIT_SCHEDULE_START (a Monday), then every 7 days after. Missed
+# weeks (laptop off) are caught up on the next scan, never double-applied.
+WEEKLY_DEPOSIT_USD     = float(os.getenv("WEEKLY_DEPOSIT_USD", "500"))
+DEPOSIT_SCHEDULE_START = os.getenv("DEPOSIT_SCHEDULE_START", "2026-10-05")
 SCAN_INTERVAL_MINUTES = int(os.getenv("SCAN_INTERVAL_MINUTES", "30"))
 
 # --- Decision engine ---------------------------------------------------------
@@ -97,8 +104,17 @@ SCAN_MAX_WORKERS        = 8          # parallel market-data fetch threads (rate-
 # AGGRESSIVE sizing (2026-09-11, user opted in with eyes open): bigger bets per trade
 # so more of the account works and wins hit harder. Losses are still capped by the same
 # tight stops (2%/3%) and the daily circuit breaker — bigger size, seatbelts on.
-MAX_POSITION_PCT      = 0.15   # back to 15% — the aggressive 22% amplified losses in a flat market
-PENNY_MAX_PCT         = 0.09   # back to 9%  — same reason (autopsy 2026-09-18: 34% win, -$18 net)
+# --- Full-capital, risk-based sizing (2026-09-30) ----------------------------------
+# Amal wants the whole weekly budget working. Old sizing was a flat 15%/9% per trade, so a
+# full 4-position book used ~60% at most (~40% after conviction scaling) and a quiet market
+# left most of the money idle. Now each trade RISKS a fixed slice of equity:
+#     notional = RISK_PER_TRADE_PCT * equity / stop_distance, capped below.
+# A calm coin with a tight ATR stop gets a big position; a twitchy one a small one; the
+# dollar loss if any stop hits stays ~1.5% of the account. Caps let 4-5 positions reach
+# ~100% deployment without any single name dominating.
+RISK_PER_TRADE_PCT    = 0.015  # max 1.5% of equity lost if a trade's stop is hit
+MAX_POSITION_PCT      = 0.30   # cap per standard position (was a flat 15%)
+PENNY_MAX_PCT         = 0.15   # cap per small-cap/penny position (was a flat 9%)
 # --- Volatility-adjusted stops (2026-09-21) -----------------------------------
 # Autopsy: since Sep 1 the book was -$18.99, and trades stopped out inside 60 min were
 # -$18.97 of it — i.e. ALL of the loss was fast churn (11 of 13 were stop-losses), while
@@ -126,7 +142,7 @@ PENNY_TAKE_PROFIT_PCT = 0.09   # 9% TP for memes — aim for bigger explosive mo
 # book creates. Quality bar per position is unchanged (still 8/10).
 MAX_PENNY_POSITIONS   = 3      # moderate — 6/5/4 caps drove over-trading (50 trades in 2.5 wks)
 MAX_OPEN_POSITIONS    = 5      # hard cap across all tiers
-HOLD_ALL_AT_POSITIONS = 4      # stop opening new positions at 4 open
+HOLD_ALL_AT_POSITIONS = 5      # 5 slots x ~20-30% each lets the book reach full deployment
 
 # "Don't chase the blow-off top" guard (research: buying after a coin has already
 # exploded is where momentum bots bleed). Refuse fresh entries that are both far

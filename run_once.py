@@ -58,8 +58,13 @@ def main() -> int:
     print(f"  Mode: {'PAPER' if PAPER_TRADING else 'LIVE'} | Account: ${STARTING_BALANCE} | Brain: {mode}")
     print(f"{'=' * 64}\n")
 
+    # Weekly $500 top-up (idempotent; catches up missed weeks). Dry-run only reports.
+    dep = risk_manager.apply_weekly_deposits(dry_run=dry)
+    if dep:
+        print(f"  {'[dry-run] would credit' if dry else 'Weekly deposit credited:'} ${dep:.2f}")
+
     summary = risk_manager.account_summary()
-    print(f"  Equity: ${summary['equity']} | Cash: ${summary['cash']} | "
+    print(f"  Equity: ${summary['equity']} | Cash: ${summary['cash']} | Deposited: ${summary['total_deposited']} | "
           f"P&L since {summary['experiment_start']}: ${summary['total_pnl']:+.2f} ({summary['total_pnl_pct']:+.2f}%)")
     print(f"  Open Positions: {summary['open_positions']}\n")
 

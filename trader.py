@@ -70,7 +70,8 @@ def execute_decision(decision: dict) -> bool:
             print(f"  {Fore.YELLOW}{symbol}: In cooldown after a recent stop-loss — skipping BUY{Style.RESET_ALL}")
             return False
 
-        quantity = risk_manager.get_position_size(price, symbol, confidence)
+        quantity = risk_manager.get_position_size(price, symbol, confidence,
+                                                  stop_pct=decision.get("stop_pct"))
         if quantity == 0:
             print(f"  {Fore.RED}{symbol}: No position size available — "
                   f"cash ${risk_manager.cash_available():.2f}, or tier position limit reached"
