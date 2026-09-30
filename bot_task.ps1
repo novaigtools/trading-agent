@@ -67,7 +67,7 @@ $script = if ($Mode -eq "scan") { "run_once.py" } else { "sl_monitor.py" }
 & $Python $script 2>&1 | ForEach-Object { Log $_ }
 $exit = $LASTEXITCODE
 if ($exit -ne 0) {
-    # run_once.py exits 1 when every decision call failed — the bot is NOT trading.
+    # run_once.py exits 1 when every decision call failed - the bot is NOT trading.
     # This line is what health_check.py and a human skimming the log will latch onto.
     Log "*** FAILURE: $script exited with code $exit - THE BOT MAY NOT BE TRADING ***"
     Log "*** Check the DEAD/DEGRADED banner above. If an LLM outage is to blame, set BRAIN_MODE=rules in .env ***"
@@ -77,10 +77,21 @@ else {
 }
 
 # Stamp the liveness heartbeat on scan runs so the cloud backstop knows the laptop is
-# awake and handling entries. Only on scan (every 30 min) — not the 5-min monitor.
+# awake and handling entries. Only on scan (every 30 min) - not the 5-min monitor.
+# ONLY on a successful scan. The heartbeat tells the cloud "the laptop has this covered,
+# stand down." Stamping it after a FAILED scan is a lie that silences the backstop: a
+# broken-but-online laptop would keep the cloud idle and nothing would trade or protect
+# positions. During the Sep 22-30 outage the cloud only took over because the git wedge
+# also blocked this push - luck, not design. A failing laptop must let the heartbeat go
+# stale so the cloud takes over.
 if ($Mode -eq "scan") {
-    & $Python heartbeat.py write | Out-Null
-    Log "Heartbeat stamped."
+    if ($exit -eq 0) {
+        & $Python heartbeat.py write | Out-Null
+        Log "Heartbeat stamped."
+    }
+    else {
+        Log "*** Heartbeat NOT stamped (scan failed) - letting it go stale so the cloud backstop takes over ***"
+    }
 }
 
 # Push state changes so dashboard + cloud backstop stay in sync
