@@ -221,3 +221,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-30 10:09:29,OPUSDT,BUY,0.1338,440.567634,58.95,"RULES: vol 3.0x avg (+4); 15M MACD hist +0.0004 (+2); 15M EMA20>EMA50 trend up (+2); BTC regime BULL (+1). Score 9/10 (>= 8). Tier penny/trending: stop 2.6% = 1.6x ATR(1.62%), TP 7.8%.",9,intraday,PAPER
 2026-09-30 10:34:42,DASHUSDT,BUY,61.89,1.360662,84.21,"RULES: vol 2.3x avg (+4); 15M MACD hist +0.133 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); BTC regime BULL (+1). Score 10/10 (>= 8). Tier penny/trending: stop 2.2% = 1.6x ATR(1.40%), TP 6.7%.",10,intraday,PAPER
 2026-09-30 20:14:46,OPUSDT,SELL,0.1293,440.567634,56.97,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-09-30 20:16:05,DASHUSDT,SELL,60.46,1.360662,82.27,Automated STOP LOSS triggered,10,intraday,PAPER
