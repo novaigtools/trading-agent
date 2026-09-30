@@ -1,8 +1,29 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 561.409,
-  "open_positions": {},
+  "cash": 443.5133,
+  "open_positions": {
+    "BCHUSDT": {
+      "entry_price": 310.6,
+      "quantity": 0.189787,
+      "stop_loss": 304.388,
+      "take_profit": 329.236,
+      "opened_at": "2026-09-30T10:09:27.981847+00:00",
+      "is_penny": true,
+      "peak_price": 310.6,
+      "trail_pct": 0.02
+    },
+    "OPUSDT": {
+      "entry_price": 0.1338,
+      "quantity": 440.567634,
+      "stop_loss": 0.1303319,
+      "take_profit": 0.14420429,
+      "opened_at": "2026-09-30T10:09:29.061824+00:00",
+      "is_penny": true,
+      "peak_price": 0.1338,
+      "trail_pct": 0.02592
+    }
+  },
   "day": {
     "date": "2026-09-30",
     "open_equity": 552.3
