@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 443.5133,
+  "cash": 359.3019,
   "open_positions": {
     "BCHUSDT": {
       "entry_price": 310.6,
@@ -22,6 +22,16 @@
       "is_penny": true,
       "peak_price": 0.1338,
       "trail_pct": 0.02592
+    },
+    "DASHUSDT": {
+      "entry_price": 61.89,
+      "quantity": 1.360662,
+      "stop_loss": 60.50564448,
+      "take_profit": 66.04306656,
+      "opened_at": "2026-09-30T10:34:42.479337+00:00",
+      "is_penny": true,
+      "peak_price": 61.89,
+      "trail_pct": 0.022368
     }
   },
   "day": {
