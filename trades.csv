@@ -227,3 +227,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-10-01 01:37:34,AAVEUSDT,BUY,161.39,0.361869,58.4,"RULES: vol 2.5x avg (+4); 15M MACD hist +0.2639 (+2); BB upper breakout w/ volume (+2). Score 8/10 (>= 8). Tier penny/trending: stop 2.4% = 1.6x ATR(1.52%), TP 7.3%.",8,intraday,PAPER
 2026-10-01 02:34:33,TRUMPUSDT,BUY,2.132,39.132918,83.43,"RULES: vol 10.0x avg (+4); 15M MACD hist +0.0052 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2). Score 10/10 (>= 8). Tier penny/trending: stop 2.8% = 1.6x ATR(1.73%), TP 8.3%.",10,intraday,PAPER
 2026-10-01 03:11:04,TRUMPUSDT,SELL,2.168,39.132918,84.84,Trailing stop triggered (gains locked),10,intraday,PAPER
+2026-10-01 23:25:56,ASTERUSDT,SELL,0.7376,76.46238,56.4,Automated STOP LOSS triggered,10,intraday,PAPER
