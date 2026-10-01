@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 355.9738,
+  "cash": 440.814,
   "open_positions": {
     "ASTERUSDT": {
       "entry_price": 0.7638,
@@ -20,19 +20,8 @@
       "take_profit": 173.19600128,
       "opened_at": "2026-10-01T01:37:34.682912+00:00",
       "is_penny": true,
-      "peak_price": 163.54,
+      "peak_price": 164.29,
       "trail_pct": 0.024384
-    },
-    "TRUMPUSDT": {
-      "entry_price": 2.132,
-      "quantity": 39.132918,
-      "stop_loss": 2.18174246,
-      "take_profit": 2.30945062,
-      "opened_at": "2026-10-01T02:34:33.470458+00:00",
-      "is_penny": true,
-      "peak_price": 2.244,
-      "trail_pct": 0.027744,
-      "trailing": true
     }
   },
   "day": {
