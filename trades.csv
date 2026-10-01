@@ -224,3 +224,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-09-30 20:16:05,DASHUSDT,SELL,60.46,1.360662,82.27,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-09-30 22:12:02,BCHUSDT,SELL,303.9,0.189787,57.68,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-09-30 22:13:02,ASTERUSDT,BUY,0.7638,76.46238,58.4,"RULES: vol 2.4x avg (+4); 15M MACD hist +0.001 (+2); 15M EMA20>EMA50 trend up (+2). Score 8/10 (>= 8). Tier penny/trending: stop 2.5% = 1.6x ATR(1.54%), TP 7.4%.",8,intraday,PAPER
+2026-10-01 01:37:34,AAVEUSDT,BUY,161.39,0.361869,58.4,"RULES: vol 2.5x avg (+4); 15M MACD hist +0.2639 (+2); BB upper breakout w/ volume (+2). Score 8/10 (>= 8). Tier penny/trending: stop 2.4% = 1.6x ATR(1.52%), TP 7.3%.",8,intraday,PAPER
