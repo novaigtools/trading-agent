@@ -20,17 +20,17 @@
       "take_profit": 173.19600128,
       "opened_at": "2026-10-01T01:37:34.682912+00:00",
       "is_penny": true,
-      "peak_price": 162.9,
+      "peak_price": 163.37,
       "trail_pct": 0.024384
     },
     "TRUMPUSDT": {
       "entry_price": 2.132,
       "quantity": 39.132918,
-      "stop_loss": 2.15840832,
+      "stop_loss": 2.18174246,
       "take_profit": 2.30945062,
       "opened_at": "2026-10-01T02:34:33.470458+00:00",
       "is_penny": true,
-      "peak_price": 2.22,
+      "peak_price": 2.244,
       "trail_pct": 0.027744,
       "trailing": true
     }
