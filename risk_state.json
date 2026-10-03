@@ -1,22 +1,10 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 497.2127,
-  "open_positions": {
-    "AAVEUSDT": {
-      "entry_price": 161.39,
-      "quantity": 0.361869,
-      "stop_loss": 168.62546944,
-      "take_profit": 173.19600128,
-      "opened_at": "2026-10-01T01:37:34.682912+00:00",
-      "is_penny": true,
-      "peak_price": 172.84,
-      "trail_pct": 0.024384,
-      "trailing": true
-    }
-  },
+  "cash": 559.2316,
+  "open_positions": {},
   "day": {
     "date": "2026-10-03",
-    "open_equity": 555.61
+    "open_equity": 559.23
   }
 }
