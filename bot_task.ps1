@@ -50,22 +50,28 @@ if (Select-String -Path "risk_state.json" -Pattern '^<<<<<<<' -Quiet -ErrorActio
     git checkout HEAD -- risk_state.json 2>$null
 }
 
-# Pull latest state (cloud backstop may have committed while laptop was off).
-# Commit any stray local state first so rebase never fails on a dirty tree.
-git add risk_state.json trades.csv 2>$null
-git diff --staged --quiet
-if ($LASTEXITCODE -ne 0) {
-    git commit -m "Local state snapshot before $Mode run" --quiet
-    Log "Committed stray local state changes."
-}
-git pull --rebase --autostash --quiet 2>&1 | ForEach-Object { Log "pull: $_" }
-
-# Run the bot (UTF-8 so emoji/unicode output can't crash on cp1252 console)
+# UTF-8 so emoji/unicode output can't crash on a cp1252 console
 $env:PYTHONIOENCODING = "utf-8"
 $env:PYTHONUTF8 = "1"
+
+# Reconcile with GitHub BEFORE acting. The old `git pull --rebase` halted on every
+# overnight handoff (the cloud rewrites risk_state.json bookkeeping while the laptop
+# sleeps), so from Oct 2 2026 the laptop never pushed again and laptop + cloud traded
+# separate books. sync_state.py decides whose state is the truth and leaves the branch a
+# clean fast-forward of origin, so the push below cannot conflict.
+& $Python sync_state.py 2>&1 | ForEach-Object { Log $_ }
+$syncExit = $LASTEXITCODE
+
 $script = if ($Mode -eq "scan") { "run_once.py" } else { "sl_monitor.py" }
-& $Python $script 2>&1 | ForEach-Object { Log $_ }
-$exit = $LASTEXITCODE
+if ($syncExit -eq 0) {
+    & $Python $script 2>&1 | ForEach-Object { Log $_ }
+    $exit = $LASTEXITCODE
+}
+else {
+    # Refused (unpushed/uncommitted code) - acting on unreconciled state could double-trade.
+    Log "*** SYNC REFUSED - skipping $script this run; the cloud backstop covers via the stale heartbeat ***"
+    $exit = 2
+}
 if ($exit -ne 0) {
     # run_once.py exits 1 when every decision call failed - the bot is NOT trading.
     # This line is what health_check.py and a human skimming the log will latch onto.
@@ -104,8 +110,10 @@ if ($LASTEXITCODE -ne 0) {
     foreach ($i in 1..3) {
         git push --quiet 2>&1 | Out-Null
         if ($LASTEXITCODE -eq 0) { $pushed = $true; break }
-        Log "Push failed, rebase + retry ($i/3)..."
-        git pull --rebase --autostash --quiet 2>&1 | Out-Null
+        # Someone (the cloud) pushed while we ran. Reconcile the same safe way - never a
+        # bare pull --rebase, which is what wedged the bot - then try again.
+        Log "Push rejected, reconciling + retry ($i/3)..."
+        & $Python sync_state.py 2>&1 | ForEach-Object { Log $_ }
     }
     if ($pushed) { Log "State pushed to GitHub." } else { Log "WARNING: push failed after 3 retries - will sync next run." }
 }
