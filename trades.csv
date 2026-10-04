@@ -232,3 +232,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-10-02 09:37:22,AAVEUSDT,SELL,182.75,0.361869,66.13,Automated TAKE PROFIT triggered,10,intraday,PAPER
 2026-10-02 20:39:08,ONDOUSDT,SELL,0.4872,231.047713,112.57,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-10-03 20:04:40,OPUSDT,BUY,0.1356,433.033319,58.72,"RULES: vol 2.1x avg (+4); 15M EMA20>EMA50 trend up (+2); MOMENTUM OVERRIDE: 24h +8.39% on 2.1x vol (+4); bearish news backdrop (-1). Score 9/10 (>= 8). Tier penny/trending: stop 2.5% = 1.6x ATR(1.58%), momentum runner TP, TP 15.1%.",9,intraday,PAPER
+2026-10-04 00:04:30,ARKUSDT,BUY,0.2325,252.556215,58.72,"RULES: vol 3.6x avg (+4); 15M MACD hist +0.0005 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); bearish news backdrop (-1). Score 9/10 (>= 8). Tier penny/trending: stop 4.8% = 1.6x ATR(3.01%), TP 14.4%.",9,intraday,PAPER
