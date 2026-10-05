@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 379.6136,
+  "cash": 879.6136,
   "open_positions": {
     "OPUSDT": {
       "entry_price": 0.1356,
@@ -25,7 +25,15 @@
     }
   },
   "day": {
-    "date": "2026-10-04",
-    "open_equity": 559.53
-  }
+    "date": "2026-10-05",
+    "open_equity": 1055.54
+  },
+  "total_deposited": 1000.0,
+  "deposits_applied": 1,
+  "deposits": [
+    {
+      "date": "2026-10-05",
+      "amount": 500.0
+    }
+  ]
 }
