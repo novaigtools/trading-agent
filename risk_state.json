@@ -1,18 +1,8 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 879.6136,
+  "cash": 938.2896,
   "open_positions": {
-    "OPUSDT": {
-      "entry_price": 0.1356,
-      "quantity": 433.033319,
-      "stop_loss": 0.13218071,
-      "take_profit": 0.15611574,
-      "opened_at": "2026-10-03T20:04:40.748417+00:00",
-      "is_penny": true,
-      "peak_price": 0.1388,
-      "trail_pct": 0.025216
-    },
     "SOLUSDT": {
       "entry_price": 120.98,
       "quantity": 0.970728,
