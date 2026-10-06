@@ -237,3 +237,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-10-05 23:23:54,ARKUSDT,SELL,0.2188,252.556215,55.26,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-10-06 01:41:04,OPUSDT,SELL,0.1355,433.033319,58.68,Stale exit (held > 48h, not in profit),10,intraday,PAPER
 2026-10-06 08:44:36,SOLUSDT,SELL,120.61,0.970728,117.08,Stale exit (held > 48h, not in profit),10,intraday,PAPER
+2026-10-06 08:45:07,RENDERUSDT,BUY,2.115,149.697745,316.61,"RULES: vol 2.8x avg (+4); 15M MACD hist +0.0046 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); BTC regime BULL (+1). Score 10/10 (>= 8). Tier standard: stop 2.4% = 1.6x ATR(1.53%), TP 7.3%.",10,intraday,PAPER
