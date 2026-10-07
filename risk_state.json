@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 517.1309,
+  "cash": 722.9467,
   "open_positions": {
     "RENDERUSDT": {
       "entry_price": 2.115,
@@ -12,16 +12,6 @@
       "is_penny": false,
       "peak_price": 2.157,
       "trail_pct": 0.024496
-    },
-    "APTUSDT": {
-      "entry_price": 0.8396,
-      "quantity": 263.967982,
-      "stop_loss": 0.81875105,
-      "take_profit": 0.90214684,
-      "opened_at": "2026-10-06T21:04:59.678152+00:00",
-      "is_penny": false,
-      "peak_price": 0.8412,
-      "trail_pct": 0.024832
     }
   },
   "day": {
