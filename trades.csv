@@ -240,3 +240,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-10-06 08:45:07,RENDERUSDT,BUY,2.115,149.697745,316.61,"RULES: vol 2.8x avg (+4); 15M MACD hist +0.0046 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); BTC regime BULL (+1). Score 10/10 (>= 8). Tier standard: stop 2.4% = 1.6x ATR(1.53%), TP 7.3%.",10,intraday,PAPER
 2026-10-06 21:04:59,APTUSDT,BUY,0.8396,263.967982,221.63,"RULES: vol 2.6x avg (+4); 15M MACD hist +0.0006 (+2); 15M EMA20>EMA50 trend up (+2). Score 8/10 (>= 8). Tier standard: stop 2.5% = 1.6x ATR(1.55%), TP 7.4%.",8,intraday,PAPER
 2026-10-07 07:23:01,APTUSDT,SELL,0.7797,263.967982,205.82,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-10-07 09:16:03,RENDERUSDT,SELL,2.062,149.697745,308.68,Automated STOP LOSS triggered,10,intraday,PAPER
