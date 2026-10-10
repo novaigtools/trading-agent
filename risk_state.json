@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 722.1364,
+  "cash": 567.3929,
   "open_positions": {
     "NEARUSDT": {
       "entry_price": 4.938,
@@ -12,6 +12,16 @@
       "is_penny": false,
       "peak_price": 5.027,
       "trail_pct": 0.038336
+    },
+    "FILUSDT": {
+      "entry_price": 1.2051,
+      "quantity": 128.407201,
+      "stop_loss": 1.17037384,
+      "take_profit": 1.41345697,
+      "opened_at": "2026-10-10T04:04:32.119371+00:00",
+      "is_penny": true,
+      "peak_price": 1.2051,
+      "trail_pct": 0.028816
     }
   },
   "day": {
