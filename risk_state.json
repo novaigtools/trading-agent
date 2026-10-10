@@ -6,11 +6,11 @@
     "NEARUSDT": {
       "entry_price": 4.938,
       "quantity": 62.674575,
-      "stop_loss": 4.98815117,
+      "stop_loss": 5.0006528,
       "take_profit": 6.07381901,
       "opened_at": "2026-10-09T22:41:34.717789+00:00",
       "is_penny": false,
-      "peak_price": 5.187,
+      "peak_price": 5.2,
       "trail_pct": 0.038336,
       "trailing": true
     }
