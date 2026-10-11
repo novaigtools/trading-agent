@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 299.8385,
+  "cash": 697.0259,
   "open_positions": {
     "NEARUSDT": {
       "entry_price": 4.938,
@@ -13,26 +13,6 @@
       "peak_price": 5.357,
       "trail_pct": 0.038336,
       "trailing": true
-    },
-    "FETUSDT": {
-      "entry_price": 0.2275,
-      "quantity": 948.04814,
-      "stop_loss": 0.2210936,
-      "take_profit": 0.2467192,
-      "opened_at": "2026-10-10T06:04:35.756675+00:00",
-      "is_penny": false,
-      "peak_price": 0.2305,
-      "trail_pct": 0.02816
-    },
-    "APTUSDT": {
-      "entry_price": 0.8777,
-      "quantity": 220.768486,
-      "stop_loss": 0.85249246,
-      "take_profit": 0.95332263,
-      "opened_at": "2026-10-11T00:13:44.791413+00:00",
-      "is_penny": false,
-      "peak_price": 0.8793,
-      "trail_pct": 0.02872
     }
   },
   "day": {
