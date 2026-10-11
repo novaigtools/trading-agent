@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 591.342,
+  "cash": 691.0612,
   "open_positions": {
     "NEARUSDT": {
       "entry_price": 4.938,
@@ -13,16 +13,6 @@
       "peak_price": 5.357,
       "trail_pct": 0.038336,
       "trailing": true
-    },
-    "MUBARAKUSDT": {
-      "entry_price": 0.07867,
-      "quantity": 1343.381974,
-      "stop_loss": 0.07657801,
-      "take_profit": 0.08494598,
-      "opened_at": "2026-10-11T09:04:30.528752+00:00",
-      "is_penny": true,
-      "peak_price": 0.07867,
-      "trail_pct": 0.026592
     }
   },
   "day": {
