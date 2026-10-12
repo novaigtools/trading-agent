@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 691.0612,
+  "cash": 1191.0612,
   "open_positions": {
     "NEARUSDT": {
       "entry_price": 4.938,
@@ -16,14 +16,18 @@
     }
   },
   "day": {
-    "date": "2026-10-11",
-    "open_equity": 1048.09
+    "date": "2026-10-12",
+    "open_equity": 1500.55
   },
-  "total_deposited": 1000.0,
-  "deposits_applied": 1,
+  "total_deposited": 1500.0,
+  "deposits_applied": 2,
   "deposits": [
     {
       "date": "2026-10-05",
+      "amount": 500.0
+    },
+    {
+      "date": "2026-10-12",
       "amount": 500.0
     }
   ]
