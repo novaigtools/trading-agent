@@ -252,3 +252,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-10-11 03:21:04,APTUSDT,SELL,0.8505,220.768486,187.76,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-10-11 09:04:30,MUBARAKUSDT,BUY,0.07867,1343.381974,105.68,"RULES: vol 2.3x avg (+4); 15M MACD hist +0.0003 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); bearish news backdrop (-1). Score 9/10 (>= 8). Tier penny/trending: stop 2.7% = 1.6x ATR(1.66%), TP 8.0%.",9,intraday,PAPER
 2026-10-11 09:41:03,MUBARAKUSDT,SELL,0.07423,1343.381974,99.72,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-10-12 21:49:31,NEARUSDT,SELL,5.128,62.674575,321.4,Trailing stop triggered (gains locked),10,intraday,PAPER
