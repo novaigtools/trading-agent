@@ -1,18 +1,8 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 0.0,
+  "cash": 1157.1854,
   "open_positions": {
-    "WLDUSDT": {
-      "entry_price": 0.5327,
-      "quantity": 851.7682,
-      "stop_loss": 0.51617352,
-      "take_profit": 0.63185891,
-      "opened_at": "2026-10-16T08:44:05.673196+00:00",
-      "is_penny": false,
-      "peak_price": 0.5466,
-      "trail_pct": 0.031024
-    },
     "RENDERUSDT": {
       "entry_price": 1.961,
       "quantity": 161.966266,
@@ -22,36 +12,6 @@
       "is_penny": false,
       "peak_price": 1.997,
       "trail_pct": 0.025344
-    },
-    "APTUSDT": {
-      "entry_price": 0.8755,
-      "quantity": 518.260354,
-      "stop_loss": 0.8511681,
-      "take_profit": 1.02149138,
-      "opened_at": "2026-10-16T10:54:16.615369+00:00",
-      "is_penny": false,
-      "peak_price": 0.8896,
-      "trail_pct": 0.027792
-    },
-    "BCHUSDT": {
-      "entry_price": 283.2,
-      "quantity": 0.560762,
-      "stop_loss": 277.536,
-      "take_profit": 300.192,
-      "opened_at": "2026-10-16T10:54:18.347772+00:00",
-      "is_penny": true,
-      "peak_price": 283.5,
-      "trail_pct": 0.02
-    },
-    "ONDOUSDT": {
-      "entry_price": 0.4722,
-      "quantity": 272.2554,
-      "stop_loss": 0.46211381,
-      "take_profit": 0.53271715,
-      "opened_at": "2026-10-16T11:21:35.174257+00:00",
-      "is_penny": false,
-      "peak_price": 0.476,
-      "trail_pct": 0.02136
     }
   },
   "day": {

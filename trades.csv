@@ -258,3 +258,7 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-10-16 10:54:16,APTUSDT,BUY,0.8755,518.260354,453.74,"RULES: vol 3.5x avg (+4); 15M MACD hist +0.001 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); MOMENTUM OVERRIDE: 24h +11.6% on 3.5x vol (+4); bearish news backdrop (-1). Score 10/10 (>= 8). Tier standard: stop 2.8% = 1.6x ATR(1.74%), momentum runner TP, TP 16.7%.",10,intraday,PAPER
 2026-10-16 10:54:18,BCHUSDT,BUY,283.2,0.560762,158.81,"RULES: vol 3.0x avg (+4); 15M MACD hist +0.3028 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); bearish news backdrop (-1). Score 9/10 (>= 8). Tier penny/trending: stop 2.0% = 1.6x ATR(1.07%), TP 6.0%.",9,intraday,PAPER
 2026-10-16 11:21:35,ONDOUSDT,BUY,0.4722,272.2554,128.56,"RULES: vol 2.4x avg (+4); 15M EMA20>EMA50 trend up (+2); MOMENTUM OVERRIDE: 24h +10.17% on 2.4x vol (+4). Score 10/10 (>= 8). Tier standard: stop 2.1% = 1.6x ATR(1.33%), momentum runner TP, TP 12.8%.",10,intraday,PAPER
+2026-10-16 23:51:11,WLDUSDT,SELL,0.5156,851.7682,439.17,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-10-16 23:51:11,APTUSDT,SELL,0.847,518.260354,438.97,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-10-16 23:51:11,BCHUSDT,SELL,277.2,0.560762,155.44,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-10-16 23:51:11,ONDOUSDT,SELL,0.454,272.2554,123.6,Automated STOP LOSS triggered,10,intraday,PAPER
