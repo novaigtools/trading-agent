@@ -10,7 +10,7 @@
       "take_profit": 0.63185891,
       "opened_at": "2026-10-16T08:44:05.673196+00:00",
       "is_penny": false,
-      "peak_price": 0.5327,
+      "peak_price": 0.5399,
       "trail_pct": 0.031024
     },
     "RENDERUSDT": {
@@ -20,7 +20,7 @@
       "take_profit": 2.11009875,
       "opened_at": "2026-10-16T08:44:07.310630+00:00",
       "is_penny": false,
-      "peak_price": 1.961,
+      "peak_price": 1.973,
       "trail_pct": 0.025344
     },
     "APTUSDT": {
