@@ -30,7 +30,7 @@
       "take_profit": 1.02149138,
       "opened_at": "2026-10-16T10:54:16.615369+00:00",
       "is_penny": false,
-      "peak_price": 0.8756,
+      "peak_price": 0.8775,
       "trail_pct": 0.027792
     },
     "BCHUSDT": {
@@ -50,7 +50,7 @@
       "take_profit": 0.53271715,
       "opened_at": "2026-10-16T11:21:35.174257+00:00",
       "is_penny": false,
-      "peak_price": 0.475,
+      "peak_price": 0.476,
       "trail_pct": 0.02136
     }
   },
