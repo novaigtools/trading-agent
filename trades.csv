@@ -262,3 +262,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-10-16 23:51:11,APTUSDT,SELL,0.847,518.260354,438.97,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-10-16 23:51:11,BCHUSDT,SELL,277.2,0.560762,155.44,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-10-16 23:51:11,ONDOUSDT,SELL,0.454,272.2554,123.6,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-10-17 01:11:04,RENDERUSDT,SELL,1.91,161.966266,309.36,Automated STOP LOSS triggered,10,intraday,PAPER
