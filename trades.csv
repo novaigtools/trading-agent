@@ -263,3 +263,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-10-16 23:51:11,BCHUSDT,SELL,277.2,0.560762,155.44,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-10-16 23:51:11,ONDOUSDT,SELL,0.454,272.2554,123.6,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-10-17 01:11:04,RENDERUSDT,SELL,1.91,161.966266,309.36,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-10-18 07:04:27,ERAUSDT,BUY,0.0717,3068.077406,219.98,"RULES: vol 2.3x avg (+4); 15M MACD hist +0.0001 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2); MOMENTUM OVERRIDE: 24h +20.07% on 2.3x vol (+4). Score 10/10 (>= 8). Tier penny/trending: stop 5.9% = 1.6x ATR(3.70%), momentum runner TP, TP 35.5%.",10,intraday,PAPER
