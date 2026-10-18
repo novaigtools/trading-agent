@@ -6,12 +6,13 @@
     "ERAUSDT": {
       "entry_price": 0.0717,
       "quantity": 3068.077406,
-      "stop_loss": 0.06745192,
+      "stop_loss": 0.07159123,
       "take_profit": 0.09718849,
       "opened_at": "2026-10-18T07:04:27.698225+00:00",
       "is_penny": true,
-      "peak_price": 0.0737,
-      "trail_pct": 0.059248
+      "peak_price": 0.0761,
+      "trail_pct": 0.059248,
+      "trailing": true
     }
   },
   "day": {
