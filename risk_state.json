@@ -1,8 +1,19 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 1473.2907,
-  "open_positions": {},
+  "cash": 1318.5952,
+  "open_positions": {
+    "UUSDT": {
+      "entry_price": 1.0009,
+      "quantity": 154.556423,
+      "stop_loss": 0.980882,
+      "take_profit": 1.060954,
+      "opened_at": "2026-10-18T11:04:26.973262+00:00",
+      "is_penny": true,
+      "peak_price": 1.0009,
+      "trail_pct": 0.02
+    }
+  },
   "day": {
     "date": "2026-10-18",
     "open_equity": 1466.54
