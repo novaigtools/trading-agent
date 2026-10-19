@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 1318.5952,
+  "cash": 1818.5952,
   "open_positions": {
     "UUSDT": {
       "entry_price": 1.0009,
@@ -15,11 +15,11 @@
     }
   },
   "day": {
-    "date": "2026-10-18",
-    "open_equity": 1466.54
+    "date": "2026-10-19",
+    "open_equity": 1973.28
   },
-  "total_deposited": 1500.0,
-  "deposits_applied": 2,
+  "total_deposited": 2000.0,
+  "deposits_applied": 3,
   "deposits": [
     {
       "date": "2026-10-05",
@@ -27,6 +27,10 @@
     },
     {
       "date": "2026-10-12",
+      "amount": 500.0
+    },
+    {
+      "date": "2026-10-19",
       "amount": 500.0
     }
   ]
