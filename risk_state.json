@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 1611.4017,
+  "cash": 1315.4081,
   "open_positions": {
     "UUSDT": {
       "entry_price": 1.0009,
@@ -22,6 +22,16 @@
       "is_penny": true,
       "peak_price": 4182.77,
       "trail_pct": 0.02
+    },
+    "ZROUSDT": {
+      "entry_price": 1.909,
+      "quantity": 155.051656,
+      "stop_loss": 1.84852288,
+      "take_profit": 2.27186272,
+      "opened_at": "2026-10-19T15:04:30.464276+00:00",
+      "is_penny": true,
+      "peak_price": 1.909,
+      "trail_pct": 0.03168
     }
   },
   "day": {
