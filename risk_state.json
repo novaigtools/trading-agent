@@ -1,14 +1,14 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 1951.131,
+  "cash": 2451.131,
   "open_positions": {},
   "day": {
-    "date": "2026-10-25",
-    "open_equity": 1951.13
+    "date": "2026-10-26",
+    "open_equity": 2451.13
   },
-  "total_deposited": 2000.0,
-  "deposits_applied": 3,
+  "total_deposited": 2500.0,
+  "deposits_applied": 4,
   "deposits": [
     {
       "date": "2026-10-05",
@@ -20,6 +20,10 @@
     },
     {
       "date": "2026-10-19",
+      "amount": 500.0
+    },
+    {
+      "date": "2026-10-26",
       "amount": 500.0
     }
   ]
