@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 1936.3935,
+  "cash": 1201.0542,
   "open_positions": {
     "RENDERUSDT": {
       "entry_price": 1.692,
@@ -11,6 +11,16 @@
       "opened_at": "2026-10-27T18:14:45.318946+00:00",
       "is_penny": false,
       "peak_price": 1.702,
+      "trail_pct": 0.02
+    },
+    "AVAXUSDT": {
+      "entry_price": 8.933,
+      "quantity": 82.317173,
+      "stop_loss": 8.75434,
+      "take_profit": 9.46898,
+      "opened_at": "2026-10-27T22:20:26.840264+00:00",
+      "is_penny": false,
+      "peak_price": 8.933,
       "trail_pct": 0.02
     }
   },
