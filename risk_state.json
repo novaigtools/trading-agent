@@ -1,7 +1,7 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 1201.0542,
+  "cash": 576.0144,
   "open_positions": {
     "RENDERUSDT": {
       "entry_price": 1.692,
@@ -22,11 +22,31 @@
       "is_penny": false,
       "peak_price": 8.949,
       "trail_pct": 0.02
+    },
+    "BCHUSDT": {
+      "entry_price": 296.6,
+      "quantity": 1.239614,
+      "stop_loss": 290.668,
+      "take_profit": 314.396,
+      "opened_at": "2026-10-28T00:12:06.445641+00:00",
+      "is_penny": true,
+      "peak_price": 296.6,
+      "trail_pct": 0.02
+    },
+    "PAXGUSDT": {
+      "entry_price": 4076.12,
+      "quantity": 0.063141,
+      "stop_loss": 3994.5976,
+      "take_profit": 4320.6872,
+      "opened_at": "2026-10-28T00:12:07.577918+00:00",
+      "is_penny": true,
+      "peak_price": 4076.12,
+      "trail_pct": 0.02
     }
   },
   "day": {
-    "date": "2026-10-27",
-    "open_equity": 2451.13
+    "date": "2026-10-28",
+    "open_equity": 2452.75
   },
   "total_deposited": 2500.0,
   "deposits_applied": 4,
