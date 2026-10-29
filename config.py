@@ -123,10 +123,15 @@ PENNY_MAX_PCT         = 0.15   # cap per small-cap/penny position (was a flat 9%
 # Fix: stop = ATR(14) x multiplier, clamped, with take-profit at a fixed R:R of that
 # distance. Calm coins keep tight stops; twitchy coins get the room they need.
 USE_ATR_STOPS         = os.getenv("USE_ATR_STOPS", "true").lower() == "true"
-ATR_STOP_MULT         = 1.6    # stop this many ATRs below entry
-MIN_STOP_PCT          = 0.02   # never tighter than 2% (caps churn)
-MAX_STOP_PCT          = 0.06   # never wider than 6% (caps loss per trade)
-STOP_TP_RATIO         = 3.0    # take-profit at 3x the risk — keeps the 2.5:1+ asymmetry
+# Widened 2026-10-29 after a 90-day replay of the live rules (52 coins, 15m candles,
+# 0.15%/side costs). 1.6x ATR / 2% floor was still inside normal noise: Sep-Oct the
+# live rules lost 18% (38% win rate, losers stopped out in hours). 2.5x ATR / 2.5% floor
+# with a 2R target made money in BOTH halves (+24% Aug-Sep, +21% Sep-Oct) and was the
+# centre of a robust region of the grid, not a lone peak.
+ATR_STOP_MULT         = 2.5    # stop this many ATRs below entry
+MIN_STOP_PCT          = 0.025  # never tighter than 2.5%
+MAX_STOP_PCT          = 0.08   # never wider than 8% (sizing keeps the $ risk at 1.5%)
+STOP_TP_RATIO         = 2.0    # take-profit at 2x the risk — reachable more often than 3x
 # If a coin is so volatile that even MAX_STOP_PCT sits inside its normal hourly range,
 # no stop can be placed sensibly within our risk budget — so don't take the trade.
 # GUSDT (13% hourly ATR, stopped out in 65 seconds) is the case this exists for.
@@ -141,8 +146,16 @@ PENNY_TAKE_PROFIT_PCT = 0.09   # 9% TP for memes — aim for bigger explosive mo
 # trailing stops and BEAR-regime block cap the correlated-drawdown risk that a bigger
 # book creates. Quality bar per position is unchanged (still 8/10).
 MAX_PENNY_POSITIONS   = 3      # moderate — 6/5/4 caps drove over-trading (50 trades in 2.5 wks)
-MAX_OPEN_POSITIONS    = 5      # hard cap across all tiers
-HOLD_ALL_AT_POSITIONS = 5      # 5 slots x ~20-30% each lets the book reach full deployment
+# Cut to 3 on 2026-10-29: altcoins move together, so 5 "different" positions were really
+# one bet — Oct 16 all 5 stopped out the same night. In the replay, 3 slots beat 5 on
+# every robust setting. 3 x up-to-30% still lets ~90% of the account work.
+MAX_OPEN_POSITIONS    = 3      # hard cap across all tiers
+HOLD_ALL_AT_POSITIONS = 3
+
+# Only buy alts when Bitcoin isn't falling. BULL regime = fine; NEUTRAL only if BTC is up
+# over the last 24h; BEAR is already blocked. In the replay this alone lifted Aug-Sep
+# from +23% to +42% and roughly halved the worst drawdown.
+REQUIRE_BTC_UP_IN_NEUTRAL = True
 
 # "Don't chase the blow-off top" guard (research: buying after a coin has already
 # exploded is where momentum bots bleed). Refuse fresh entries that are both far

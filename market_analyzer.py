@@ -186,6 +186,9 @@ def get_btc_market_regime() -> dict:
         # Count consecutive lower lows on 4H (last 6 candles)
         closes_4h = df_4h["close"].tail(6).tolist()
         lower_lows = sum(1 for i in range(1, len(closes_4h)) if closes_4h[i] < closes_4h[i-1])
+        # BTC over the last 24h (6 x 4H candles) — local_brain's NEUTRAL-regime gate.
+        c4 = df_4h["close"]
+        btc_change_24h = round(float(c4.iloc[-1] / c4.iloc[-7] - 1) * 100, 2)
 
         bull_signals = 0
         bear_signals = 0
@@ -223,6 +226,7 @@ def get_btc_market_regime() -> dict:
             "rsi_4h":      rsi_4h,
             "macd_hist_4h": macd_4h,
             "lower_lows":  lower_lows,
+            "btc_change_24h": btc_change_24h,
             "above_ema20_4h": price > ema20_4h,
             "ema_structure": "EMA20>EMA50 (bullish)" if ema20_4h > ema50_4h else "EMA20<EMA50 (bearish)",
         }

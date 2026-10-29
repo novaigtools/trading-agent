@@ -13,7 +13,7 @@ from config import (
     STOP_LOSS_PCT, TAKE_PROFIT_PCT, PENNY_STOP_LOSS_PCT, PENNY_TAKE_PROFIT_PCT,
     MOMENTUM_TP_MULTIPLIER, OVEREXTENDED_24H_PCT, OVEREXTENDED_RSI_1H,
     USE_ATR_STOPS, ATR_STOP_MULT, MIN_STOP_PCT, MAX_STOP_PCT, STOP_TP_RATIO,
-    SKIP_IF_UNSTOPPABLE,
+    SKIP_IF_UNSTOPPABLE, REQUIRE_BTC_UP_IN_NEUTRAL,
 )
 
 
@@ -113,6 +113,14 @@ def score_symbol(market_data: dict, sentiment: dict = None, regime: dict = None,
     regime_str = regime.get("regime", "UNKNOWN")
     if regime_str == "BEAR":
         return _hold(symbol, price, "BEAR regime — no new entries (capital protection).")
+
+    # Alts fall with Bitcoin. In a directionless market, only buy while BTC is up on the
+    # day. Missing data fails open (old regime dicts / API hiccup) — BEAR is still blocked.
+    btc_24h = regime.get("btc_change_24h")
+    if REQUIRE_BTC_UP_IN_NEUTRAL and regime_str == "NEUTRAL" and btc_24h is not None and btc_24h <= 0:
+        return _hold(symbol, price,
+                     f"NEUTRAL regime with BTC {_fmt(btc_24h)}% over 24h — alts follow BTC down, "
+                     f"no new entries until BTC turns up.")
 
     if len(open_positions) >= HOLD_ALL_AT_POSITIONS:
         return _hold(symbol, price,

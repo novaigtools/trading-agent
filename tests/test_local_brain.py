@@ -124,9 +124,9 @@ def test_momentum_override_allows_buy_against_btc_trend():
 
 
 def test_position_cap_holds_everything_when_full():
-    """At the concurrent-position cap (HOLD_ALL_AT_POSITIONS=5), no new entries."""
+    """At the concurrent-position cap (HOLD_ALL_AT_POSITIONS=3), no new entries."""
     md = make_market_data(rsi_1h=22.0, vol_latest=5000.0, vol_avg=1000.0)
-    open_pos = {"SUIUSDT": {}, "NEARUSDT": {}, "DOGEUSDT": {}, "SOLUSDT2": {}, "AVAXUSDT2": {}}
+    open_pos = {"SUIUSDT": {}, "NEARUSDT": {}, "DOGEUSDT": {}}
     d = local_brain.score_symbol(md, sentiment(), BULL, open_positions=open_pos)
     assert d["action"] == "HOLD"
     assert "already open" in d["reasoning"]
@@ -237,10 +237,10 @@ def test_strong_momentum_not_yet_overbought_still_buys():
 
 
 def test_below_position_cap_still_allows_entry():
-    """With HOLD_ALL_AT_POSITIONS=4, three open positions leave room for one more."""
+    """With HOLD_ALL_AT_POSITIONS=3, two open positions leave room for one more."""
     md = make_market_data(rsi_1h=26.0, vol_latest=2500.0, vol_avg=1000.0)
-    three_open = {"AUSDT": {}, "BUSDT2": {}, "CUSDT": {}}
-    d = local_brain.score_symbol(md, sentiment(), NEUTRAL, open_positions=three_open)
+    two_open = {"AUSDT": {}, "BUSDT2": {}}
+    d = local_brain.score_symbol(md, sentiment(), NEUTRAL, open_positions=two_open)
     assert d["action"] == "BUY"
 
 
@@ -311,3 +311,23 @@ def test_normally_volatile_coin_is_still_traded():
     md = make_market_data(rsi_1h=26.0, vol_latest=2500.0, vol_avg=1000.0)
     md["indicators_1h"]["atr_pct"] = 2.3      # WLD/SUI-class
     assert local_brain.score_symbol(md, sentiment(), NEUTRAL)["action"] == "BUY"
+
+
+def test_neutral_regime_with_btc_falling_blocks_entries():
+    """Oct 16 + Oct 29 2026: alts bought while BTC slid, then all stopped out together."""
+    md = make_market_data(rsi_1h=22.0, vol_latest=5000.0, vol_avg=1000.0)
+    d = local_brain.score_symbol(md, sentiment(), dict(NEUTRAL, btc_change_24h=-1.2))
+    assert d["action"] == "HOLD"
+    assert "BTC" in d["reasoning"]
+
+
+def test_neutral_regime_with_btc_rising_still_buys():
+    md = make_market_data(rsi_1h=22.0, vol_latest=5000.0, vol_avg=1000.0)
+    d = local_brain.score_symbol(md, sentiment(), dict(NEUTRAL, btc_change_24h=0.8))
+    assert d["action"] == "BUY"
+
+
+def test_bull_regime_ignores_btc_24h_dip():
+    md = make_market_data(rsi_1h=22.0, vol_latest=5000.0, vol_avg=1000.0)
+    d = local_brain.score_symbol(md, sentiment(), dict(BULL, btc_change_24h=-0.5))
+    assert d["action"] == "BUY"
