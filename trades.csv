@@ -275,3 +275,6 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-10-27 22:20:26,AVAXUSDT,BUY,8.933,82.317173,735.34,"RULES: vol 3.4x avg (+4); 15M MACD hist +0.0027 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2). Score 10/10 (>= 8). Tier standard: stop 2.0% = 1.6x ATR(0.90%), TP 6.0%.",10,intraday,PAPER
 2026-10-28 00:12:06,BCHUSDT,BUY,296.6,1.239614,367.67,"RULES: vol 2.6x avg (+4); 15M MACD hist +0.45 (+2); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2). Score 10/10 (>= 8). Tier penny/trending: stop 2.0% = 1.6x ATR(1.16%), TP 6.0%.",10,intraday,PAPER
 2026-10-28 00:12:07,PAXGUSDT,BUY,4076.12,0.063141,257.37,"RULES: vol 4.5x avg (+4); 15M EMA20>EMA50 trend up (+2); BB upper breakout w/ volume (+2). Score 8/10 (>= 8). Tier penny/trending: stop 2.0% = 1.6x ATR(0.22%), TP 6.0%.",8,intraday,PAPER
+2026-10-29 04:26:09,RENDERUSDT,SELL,1.624,304.218387,494.05,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-10-29 04:26:10,AVAXUSDT,SELL,8.629,82.317173,710.31,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-10-29 04:26:10,BCHUSDT,SELL,279.2,1.239614,346.1,Automated STOP LOSS triggered,10,intraday,PAPER
