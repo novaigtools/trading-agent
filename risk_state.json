@@ -1,19 +1,8 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 2126.4802,
-  "open_positions": {
-    "PAXGUSDT": {
-      "entry_price": 4076.12,
-      "quantity": 0.063141,
-      "stop_loss": 3994.5976,
-      "take_profit": 4320.6872,
-      "opened_at": "2026-10-28T00:12:07.577918+00:00",
-      "is_penny": true,
-      "peak_price": 4076.12,
-      "trail_pct": 0.02
-    }
-  },
+  "cash": 2380.0999,
+  "open_positions": {},
   "day": {
     "date": "2026-10-30",
     "open_equity": 2379.95

@@ -278,3 +278,4 @@ timestamp,symbol,action,price,quantity,value_usd,reason,confidence,trade_type,mo
 2026-10-29 04:26:09,RENDERUSDT,SELL,1.624,304.218387,494.05,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-10-29 04:26:10,AVAXUSDT,SELL,8.629,82.317173,710.31,Automated STOP LOSS triggered,10,intraday,PAPER
 2026-10-29 04:26:10,BCHUSDT,SELL,279.2,1.239614,346.1,Automated STOP LOSS triggered,10,intraday,PAPER
+2026-10-30 00:16:04,PAXGUSDT,SELL,4016.72,0.063141,253.62,Stale exit (held > 48h, not in profit),10,intraday,PAPER
