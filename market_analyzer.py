@@ -3,7 +3,7 @@ import re
 import requests
 import pandas as pd
 import ta
-from config import BINANCE_BASE_URL, TRADING_PAIRS, PENNY_PAIRS, NEVER_TRADE
+from config import BINANCE_BASE_URL, TRADING_PAIRS, PENNY_PAIRS, NEVER_TRADE, EXCLUDED_PAIRS
 
 try:
     from config import SCAN_MAX_WORKERS
@@ -45,7 +45,7 @@ def get_liquid_universe(top_n: int = 100, min_volume_usd: float = 5_000_000) -> 
         # slipped through once, lost $8 in one trade, and corrupted the CSV encoding.
         if not _SYMBOL_OK.match(sym):
             continue
-        if sym in NEVER_TRADE or any(x in sym for x in _UNIVERSE_EXCLUDE):
+        if sym in NEVER_TRADE or sym in EXCLUDED_PAIRS or any(x in sym for x in _UNIVERSE_EXCLUDE):
             continue
         if "UP" in sym or "DOWN" in sym or "BULL" in sym or "BEAR" in sym:
             continue  # leveraged tokens
@@ -239,6 +239,8 @@ def analyze_all_pairs(extra_pairs: list = None) -> list[dict]:
     # De-dup while preserving order (a trending/universe coin may already be listed)
     seen = set()
     all_pairs = [p for p in all_pairs if not (p in seen or seen.add(p))]
+    # Excluded coins can still arrive via the trending feed - drop them here, last.
+    all_pairs = [p for p in all_pairs if p not in EXCLUDED_PAIRS]
 
     # Fetch in parallel — each coin is 3 network calls, so a 100-coin list scans in
     # seconds instead of minutes and stays well inside the staleness guard.

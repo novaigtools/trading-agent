@@ -47,7 +47,6 @@ TRADING_PAIRS = [
 
     # Tier 2 — AI narrative coins (strong theme, real moves)
     "TAOUSDT",    # AI/ML leader, decouples from BTC on AI news
-    "WLDUSDT",    # Worldcoin (Sam Altman), AI identity narrative
     "FETUSDT",    # AI agents narrative
     "RENDERUSDT", # GPU/AI rendering, volatile
 
@@ -66,6 +65,10 @@ TRADING_PAIRS = [
     # Tier 4b — Hot-narrative mid-caps (added 2026-08-31 to widen shot count)
     "ENAUSDT",    # Ethena — yield narrative, high volatility
     "ONDOUSDT",   # RWA (real-world assets) narrative, hot sector
+
+    # Added 2026-11-08 from the market research page: +153% over 90 days, up 7 of the
+    # last 12 weeks, ~$177M/day volume, 1.7%/h range (moves enough to reach our targets).
+    "ZECUSDT",
 ]
 LONG_TERM_PAIRS = []  # No slow large-caps — all positions are swing/intraday
 
@@ -75,9 +78,14 @@ PENNY_PAIRS = [
     "WIFUSDT",    # dogwifhat, SOL meme, 10-30% daily swings
     "FLOKIUSDT",  # classic meme coin
     "BONKUSDT",   # Solana meme, high volume
-    "TRUMPUSDT",  # political meme, liquid
     "PENGUUSDT",  # Pudgy Penguins meme
 ]
+
+# Coins the bot must NOT trade, even if they show up in the liquid universe or trending
+# list. Removed 2026-11-08 after the market research review: both ~-35% over 30 days,
+# up in only 4-5 of the last 12 weeks. Taking them off the watchlist alone wasn't enough -
+# they trade enough volume to re-enter through the top-50 universe as small-cap picks.
+EXCLUDED_PAIRS = ("WLDUSDT", "TRUMPUSDT")
 
 # Tier 6 — Dynamic trending coins.
 # Each scan the bot pulls CoinGecko's trending list and auto-includes any coin

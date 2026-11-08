@@ -331,3 +331,24 @@ def test_bull_regime_ignores_btc_24h_dip():
     md = make_market_data(rsi_1h=22.0, vol_latest=5000.0, vol_avg=1000.0)
     d = local_brain.score_symbol(md, sentiment(), dict(BULL, btc_change_24h=-0.5))
     assert d["action"] == "BUY"
+
+
+def test_excluded_pairs_are_never_scanned(monkeypatch):
+    """WLD/TRUMP were removed 2026-11-08. They must not sneak back in through the
+    liquid universe or the trending feed."""
+    import market_analyzer as m
+    from config import EXCLUDED_PAIRS, TRADING_PAIRS, PENNY_PAIRS
+    assert EXCLUDED_PAIRS and not set(EXCLUDED_PAIRS) & set(TRADING_PAIRS + PENNY_PAIRS)
+    seen = []
+    monkeypatch.setattr(m, "analyze_pair", lambda s: seen.append(s) or {"symbol": s})
+    m.analyze_all_pairs(extra_pairs=list(EXCLUDED_PAIRS) + ["ZECUSDT"])
+    assert not set(seen) & set(EXCLUDED_PAIRS)
+    assert "ZECUSDT" in seen
+
+    class R:
+        def raise_for_status(self): pass
+        def json(self):
+            return [{"symbol": s, "quoteVolume": "9e9"} for s in list(EXCLUDED_PAIRS) + ["ZECUSDT"]]
+    monkeypatch.setattr(m.requests, "get", lambda *a, **k: R())
+    uni = m.get_liquid_universe(50, 1)
+    assert not set(uni) & set(EXCLUDED_PAIRS) and "ZECUSDT" in uni
