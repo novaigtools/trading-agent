@@ -1,0 +1,38 @@
+name: Market research (every 4h - research only, never trades)
+
+# Scans every liquid Binance coin and writes docs/research.json for the dashboard's
+# Research page. Runs whether or not the laptop is awake: it touches no bot state, so
+# there is nothing to hand off. Stdlib-only script, so no pip install.
+on:
+  schedule:
+    - cron: '17 */4 * * *'   # every 4h, off the top of the hour (GitHub throttles :00)
+  workflow_dispatch:
+
+concurrency:
+  group: bot-state
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4.2.2
+
+      - name: Run market analyst
+        run: python3 market_research.py
+
+      - name: Save research to repo
+        run: |
+          git config user.name "Market Research"
+          git config user.email "bot@trading-agent.com"
+          git add docs/research.json docs/research_history.json
+          if git diff --staged --quiet; then exit 0; fi
+          git commit -m "Market research $(date -u '+%Y-%m-%d %H:%M UTC')" --quiet
+          for i in 1 2 3; do
+            git pull --rebase --quiet origin main && git push --quiet && exit 0
+            sleep 10
+          done
+          echo "push failed after 3 tries - next run will catch up"
