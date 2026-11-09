@@ -50,6 +50,13 @@ if (Select-String -Path "risk_state.json" -Pattern '^<<<<<<<' -Quiet -ErrorActio
     git checkout HEAD -- risk_state.json 2>$null
 }
 
+# NEVER let git wait for a login. On 2026-11-08 the stored GitHub login switched to an
+# account without write access; Git Credential Manager then opened a hidden sign-in
+# prompt from this background task and the scan sat waiting on it for 7+ hours, which
+# blocked every later scan. A failed login must fail fast and be logged, not hang.
+$env:GCM_INTERACTIVE = "never"
+$env:GIT_TERMINAL_PROMPT = "0"
+
 # UTF-8 so emoji/unicode output can't crash on a cp1252 console
 $env:PYTHONIOENCODING = "utf-8"
 $env:PYTHONUTF8 = "1"
@@ -108,8 +115,13 @@ if ($LASTEXITCODE -ne 0) {
     git commit -m "Bot state update ($Mode) $stamp" --quiet
     $pushed = $false
     foreach ($i in 1..3) {
-        git push --quiet 2>&1 | Out-Null
+        $pushOut = git push --quiet 2>&1
         if ($LASTEXITCODE -eq 0) { $pushed = $true; break }
+        $pushOut | Select-Object -Last 2 | ForEach-Object { Log "  push: $_" }
+        if ("$pushOut" -match "403|denied|Authentication failed|could not read Username") {
+            Log "*** PUSH BLOCKED: GitHub login has no write access to this repo - fix the stored GitHub login ***"
+            break
+        }
         # Someone (the cloud) pushed while we ran. Reconcile the same safe way - never a
         # bare pull --rebase, which is what wedged the bot - then try again.
         Log "Push rejected, reconciling + retry ($i/3)..."
