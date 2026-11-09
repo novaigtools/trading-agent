@@ -108,7 +108,11 @@ if ($Mode -eq "scan") {
 }
 
 # Push state changes so dashboard + cloud backstop stay in sync
-git add risk_state.json trades.csv heartbeat.json 2>$null
+# One file at a time: `git add a b c` fails ENTIRELY if any file is missing, and
+# practice_trades.csv only appears after the first practice trade closes.
+foreach ($f in "risk_state.json", "trades.csv", "heartbeat.json", "practice_state.json", "practice_trades.csv") {
+    if (Test-Path $f) { git add -- $f 2>$null }
+}
 git diff --staged --quiet
 if ($LASTEXITCODE -ne 0) {
     $stamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd HH:mm 'UTC'")

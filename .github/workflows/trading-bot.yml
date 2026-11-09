@@ -74,6 +74,7 @@ jobs:
           git config user.name "Trading Bot"
           git config user.email "bot@trading-agent.com"
           git add risk_state.json trades.csv
+          git add practice_state.json practice_trades.csv 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No state changes."
             exit 0

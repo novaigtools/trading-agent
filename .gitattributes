@@ -8,3 +8,6 @@
 risk_state.json -merge
 heartbeat.json  -merge
 trades.csv      merge=union
+# Practice account (pretend trades) - same rules as the real files.
+practice_state.json -merge
+practice_trades.csv merge=union

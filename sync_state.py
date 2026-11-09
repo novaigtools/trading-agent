@@ -33,7 +33,8 @@ import os
 import subprocess
 import sys
 
-STATE_FILES = ("risk_state.json", "trades.csv", "heartbeat.json")
+STATE_FILES = ("risk_state.json", "trades.csv", "heartbeat.json",
+               "practice_state.json", "practice_trades.csv")   # practice account (not real trades)
 REMOTE = "origin/main"
 REPO = os.path.dirname(os.path.abspath(__file__))
 
@@ -67,18 +68,19 @@ def _non_state(paths):
 
 
 def sync(log=print) -> int:
+    # Half-edited code must never trade - checked FIRST, even when offline. (On
+    # 2026-11-09 a fetch blip took the offline path below and a scan ran mid-edit.)
+    dirty = _non_state(line[3:] for line in git("status", "--porcelain").splitlines())
+    if dirty:
+        log(f"sync: REFUSED - uncommitted code changes: {dirty}. Not trading this run.")
+        return 2
+
     # Can't reach GitHub = can't coordinate. Carry on with local state; the cloud will
     # cover via the stale heartbeat, and the next online run reconciles.
     if subprocess.run(["git", "fetch", "-q", "origin"], cwd=REPO,
                       capture_output=True, text=True).returncode != 0:
         log("sync: offline (fetch failed) - running on local state")
         return 0
-
-    # Never reset over work we can't recreate.
-    dirty = _non_state(line[3:] for line in git("status", "--porcelain").splitlines())
-    if dirty:
-        log(f"sync: REFUSED - uncommitted code changes: {dirty}. Not trading this run.")
-        return 2
 
     # Bank any loose state from the previous run so it's part of the comparison.
     if git("status", "--porcelain", "--", *STATE_FILES):

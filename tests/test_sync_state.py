@@ -170,3 +170,27 @@ def test_refuses_with_uncommitted_code(world):
         f.write("# wip\n")
     assert sync_state.sync(log=lambda *_: None) == 2
     assert "wip" in open(os.path.join(laptop, "bot.py")).read()
+
+
+def test_refuses_uncommitted_code_even_when_offline(world, monkeypatch):
+    """2026-11-09: a fetch blip took the offline path and a scan ran half-edited code."""
+    origin, laptop, cloud = world
+    run(laptop, "remote", "set-url", "origin", os.path.join(laptop, "no-such-remote"))
+    with open(os.path.join(laptop, "bot.py"), "a") as f:
+        f.write("# wip" + chr(10))
+    assert sync_state.sync(log=lambda *_: None) == 2
+
+
+def test_offline_with_clean_code_still_trades(world):
+    origin, laptop, cloud = world
+    run(laptop, "remote", "set-url", "origin", os.path.join(laptop, "no-such-remote"))
+    assert sync_state.sync(log=lambda *_: None) == 0
+
+
+def test_practice_files_count_as_state_not_code(world):
+    """The practice account writes these every scan; they must never block trading."""
+    origin, laptop, cloud = world
+    for f in ("practice_state.json", "practice_trades.csv"):
+        with open(os.path.join(laptop, f), "w") as fh:
+            fh.write("{}" + chr(10))
+    assert sync_state.sync(log=lambda *_: None) == 0

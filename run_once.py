@@ -189,6 +189,17 @@ def main() -> int:
             if trader.execute_decision(decision):
                 any_trade = True
 
+    # ---- Practice account: pretend trades on what the real bot passed on ----
+    # Separate book (practice_state.json / practice_trades.csv) that never touches the
+    # real account. Any failure here is reported and ignored - it must never stop trading.
+    if _elapsed_min() <= MAX_SCAN_AGE_MIN:
+        try:
+            import practice_book
+            practice_book.run(market_data_list, sentiment, regime, extra_pairs,
+                              real_bought=risk_manager.get_open_positions().keys(), dry=dry)
+        except Exception as e:
+            print(f"  PRACTICE: skipped this scan ({type(e).__name__}: {e})")
+
     # ---- Health verdict: these four states must be impossible to confuse ----
     print(f"\n{'-' * 64}")
     print(f"  BRAIN: mode={result.mode} | symbols evaluated={result.attempted} | "
