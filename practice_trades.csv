@@ -1,0 +1,9 @@
+opened_utc,closed_utc,symbol,cohort,score,regime,btc_24h,entry,exit,stop_pct,tp_pct,pnl_pct,pnl_usd,outcome,hours_held,signals
+2026-11-09 07:14,2026-11-09 16:30,HYPEUSDT,score:6,6,BEAR,-2.73,73.33,74.735732,0.0266,0.0532,1.917,1.92,TRAIL,9.3,1H RSI 22.24 <25 EXTREME (+5); vol 3.4x avg (+4); EMA20<EMA50 on both TFs (-2); bearish news backdrop (-1)
+2026-11-09 07:14,2026-11-10 00:45,XPLUSDT,score:6,6,BEAR,-2.73,0.05067,0.05145104,0.0469,0.0937,1.541,1.54,TRAIL,17.5,1H RSI 22.92 <25 EXTREME (+5); vol 2.2x avg (+4); EMA20<EMA50 on both TFs (-2); bearish news backdrop (-1)
+2026-11-09 07:14,2026-11-09 15:00,SUIUSDT,score:5,5,BEAR,-2.73,0.8097,0.86131837,0.0319,0.0638,6.375,6.37,TARGET,7.8,1H RSI 29.81 <30 oversold (+4); vol 3.2x avg (+4); EMA20<EMA50 on both TFs (-2); bearish news backdrop (-1)
+2026-11-09 07:14,2026-11-10 03:30,RENDERUSDT,score:5,5,BEAR,-2.73,1.521,1.5642099,0.0421,0.0843,2.841,2.84,TRAIL,20.3,vol 2.0x avg (+4); 15M EMA20>EMA50 trend up (+2); bearish news backdrop (-1)
+2026-11-09 07:14,2026-11-10 02:30,INJUSDT,score:5,5,BEAR,-2.73,7.973,7.9651429,0.0397,0.0793,-0.099,-0.1,TRAIL,19.3,vol 2.9x avg (+4); 15M EMA20>EMA50 trend up (+2); bearish news backdrop (-1)
+2026-11-09 07:14,2026-11-09 15:45,ADAUSDT,score:5,5,BEAR,-2.73,0.1718,0.18190184,0.0294,0.0588,5.88,5.88,TARGET,8.5,1H RSI 29.7 <30 oversold (+4); vol 2.4x avg (+4); EMA20<EMA50 on both TFs (-2); bearish news backdrop (-1)
+2026-11-09 07:14,2026-11-09 19:00,PEPEUSDT,score:5,5,BEAR,-2.73,4.95e-06,5.14e-06,0.0481,0.0961,3.838,3.84,TRAIL,11.8,vol 2.8x avg (+4); 15M EMA20>EMA50 trend up (+2); bearish news backdrop (-1)
+2026-11-09 07:14,2026-11-10 03:30,AAVEUSDT,score:5,5,BEAR,-2.73,127.75,130.20102,0.0334,0.0668,1.919,1.92,TRAIL,20.3,vol 2.3x avg (+4); 15M EMA20>EMA50 trend up (+2); bearish news backdrop (-1)
