@@ -1,32 +1,16 @@
 {
  "started_utc": "2026-11-09T07:14:12+00:00",
  "open": {
-  "PAXGUSDT": {
-   "entry_price": 4095.04,
-   "stop_loss": 3992.6639999999998,
-   "take_profit": 4299.792,
-   "peak_price": 4133.99,
-   "trail_pct": 0.025,
-   "stop_pct": 0.025,
-   "tp_pct": 0.05,
-   "opened_at": "2026-11-09T07:14:12+00:00",
-   "checked_ms": 1794379500000,
-   "cohort": "score:5",
-   "score": 5,
-   "regime": "BEAR",
-   "btc_24h": -2.73,
-   "signals": "vol 2.4x avg (+4); 15M EMA20>EMA50 trend up (+2); bearish news backdrop (-1)"
-  },
   "PUMPUSDT": {
    "entry_price": 0.003496,
    "stop_loss": 0.0033344848,
    "take_profit": 0.0038190304000000003,
-   "peak_price": 0.003496,
+   "peak_price": 0.003529,
    "trail_pct": 0.0462,
    "stop_pct": 0.0462,
    "tp_pct": 0.0924,
    "opened_at": "2026-11-11T06:53:15+00:00",
-   "checked_ms": 1794379995255,
+   "checked_ms": 1794382200000,
    "cohort": "score:5",
    "score": 5,
    "regime": "BEAR",
@@ -42,6 +26,7 @@
   "INJUSDT": "2026-11-10T02:30:00+00:00",
   "ADAUSDT": "2026-11-09T15:45:00+00:00",
   "PEPEUSDT": "2026-11-09T19:00:00+00:00",
-  "AAVEUSDT": "2026-11-10T03:30:00+00:00"
+  "AAVEUSDT": "2026-11-10T03:30:00+00:00",
+  "PAXGUSDT": "2026-11-11T07:15:00+00:00"
  }
 }
