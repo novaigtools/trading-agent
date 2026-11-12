@@ -10,12 +10,28 @@
    "stop_pct": 0.0414,
    "tp_pct": 0.0829,
    "opened_at": "2026-11-12T10:08:10+00:00",
-   "checked_ms": 1794479400000,
+   "checked_ms": 1794481200000,
    "cohort": "score:5",
    "score": 5,
    "regime": "BEAR",
    "btc_24h": -0.74,
    "signals": "vol 2.8x avg (+4); 15M MACD hist +0.0027 (+2); bearish news backdrop (-1)"
+  },
+  "XLMUSDT": {
+   "entry_price": 0.1457,
+   "stop_loss": 0.1420575,
+   "take_profit": 0.152985,
+   "peak_price": 0.1457,
+   "trail_pct": 0.025,
+   "stop_pct": 0.025,
+   "tp_pct": 0.05,
+   "opened_at": "2026-11-12T11:04:32+00:00",
+   "checked_ms": 1794481472197,
+   "cohort": "score:5",
+   "score": 5,
+   "regime": "BEAR",
+   "btc_24h": -0.71,
+   "signals": "vol 4.1x avg (+4); 15M MACD hist +0.0001 (+2); bearish news backdrop (-1)"
   }
  },
  "last_closed": {
