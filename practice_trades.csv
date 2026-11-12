@@ -9,3 +9,4 @@ opened_utc,closed_utc,symbol,cohort,score,regime,btc_24h,entry,exit,stop_pct,tp_
 2026-11-09 07:14,2026-11-10 03:30,AAVEUSDT,score:5,5,BEAR,-2.73,127.75,130.20102,0.0334,0.0668,1.919,1.92,TRAIL,20.3,vol 2.3x avg (+4); 15M EMA20>EMA50 trend up (+2); bearish news backdrop (-1)
 2026-11-09 07:14,2026-11-11 07:15,PAXGUSDT,score:5,5,BEAR,-2.73,4095.04,4052.79,0.025,0.05,-1.032,-1.03,STALE,48.0,vol 2.4x avg (+4); 15M EMA20>EMA50 trend up (+2); bearish news backdrop (-1)
 2026-11-11 06:53,2026-11-11 22:45,PUMPUSDT,score:5,5,BEAR,-1.69,0.003496,0.00352143,0.0462,0.0924,0.727,0.73,TRAIL,15.9,vol 4.5x avg (+4); 15M EMA20>EMA50 trend up (+2); bearish news backdrop (-1)
+2026-11-12 11:34,2026-11-12 13:15,APTUSDT,score:5,5,BEAR,-1.13,0.5507,0.53526663,0.028,0.0561,-2.803,-2.8,STOP,1.7,1H RSI 29.14 <30 oversold (+4); vol 3.1x avg (+4); EMA20<EMA50 on both TFs (-2); bearish news backdrop (-1)
