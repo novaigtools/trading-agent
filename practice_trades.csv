@@ -11,3 +11,4 @@ opened_utc,closed_utc,symbol,cohort,score,regime,btc_24h,entry,exit,stop_pct,tp_
 2026-11-11 06:53,2026-11-11 22:45,PUMPUSDT,score:5,5,BEAR,-1.69,0.003496,0.00352143,0.0462,0.0924,0.727,0.73,TRAIL,15.9,vol 4.5x avg (+4); 15M EMA20>EMA50 trend up (+2); bearish news backdrop (-1)
 2026-11-12 11:34,2026-11-12 13:15,APTUSDT,score:5,5,BEAR,-1.13,0.5507,0.53526663,0.028,0.0561,-2.803,-2.8,STOP,1.7,1H RSI 29.14 <30 oversold (+4); vol 3.1x avg (+4); EMA20<EMA50 on both TFs (-2); bearish news backdrop (-1)
 2026-11-12 10:08,2026-11-12 15:45,ZROUSDT,score:5,5,BEAR,-0.74,1.566,1.5010893,0.0414,0.0829,-4.145,-4.14,STOP,5.6,vol 2.8x avg (+4); 15M MACD hist +0.0027 (+2); bearish news backdrop (-1)
+2026-11-12 11:04,2026-11-13 02:15,XLMUSDT,score:5,5,BEAR,-0.71,0.1457,0.1465425,0.025,0.05,0.578,0.58,TRAIL,15.2,vol 4.1x avg (+4); 15M MACD hist +0.0001 (+2); bearish news backdrop (-1)
