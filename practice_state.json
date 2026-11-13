@@ -10,28 +10,12 @@
    "stop_pct": 0.025,
    "tp_pct": 0.05,
    "opened_at": "2026-11-12T13:34:25+00:00",
-   "checked_ms": 1794610800000,
+   "checked_ms": 1794612600000,
    "cohort": "score:6",
    "score": 6,
    "regime": "BEAR",
    "btc_24h": -1.82,
    "signals": "1H RSI 22.03 <25 EXTREME (+5); vol 2.0x avg (+4); EMA20<EMA50 on both TFs (-2); bearish news backdrop (-1)"
-  },
-  "HBARUSDT": {
-   "entry_price": 0.06279,
-   "stop_loss": 0.060912578999999994,
-   "take_profit": 0.066544842,
-   "peak_price": 0.0646,
-   "trail_pct": 0.029899999999999996,
-   "stop_pct": 0.0299,
-   "tp_pct": 0.0598,
-   "opened_at": "2026-11-13T11:26:02+00:00",
-   "checked_ms": 1794610800000,
-   "cohort": "score:5",
-   "score": 5,
-   "regime": "BEAR",
-   "btc_24h": -4.87,
-   "signals": "vol 2.5x avg (+4); 15M MACD hist +0.0001 (+2); BB upper breakout w/ volume (+2); EMA20<EMA50 on both TFs (-2); bearish news backdrop (-1); ExtFear 20 confirmed by green 15M (gate passed)"
   }
  },
  "last_closed": {
@@ -48,6 +32,7 @@
   "APTUSDT": "2026-11-12T13:15:00+00:00",
   "ZROUSDT": "2026-11-12T15:45:00+00:00",
   "XLMUSDT": "2026-11-13T02:15:00+00:00",
-  "ENAUSDT": "2026-11-13T04:00:00+00:00"
+  "ENAUSDT": "2026-11-13T04:00:00+00:00",
+  "HBARUSDT": "2026-11-13T23:15:00+00:00"
  }
 }
