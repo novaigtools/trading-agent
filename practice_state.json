@@ -1,23 +1,6 @@
 {
  "started_utc": "2026-11-09T07:14:12+00:00",
- "open": {
-  "PAXGUSDT": {
-   "entry_price": 3901.03,
-   "stop_loss": 3803.50425,
-   "take_profit": 4096.0815,
-   "peak_price": 3918.05,
-   "trail_pct": 0.025,
-   "stop_pct": 0.025,
-   "tp_pct": 0.05,
-   "opened_at": "2026-11-12T13:34:25+00:00",
-   "checked_ms": 1794652200000,
-   "cohort": "score:6",
-   "score": 6,
-   "regime": "BEAR",
-   "btc_24h": -1.82,
-   "signals": "1H RSI 22.03 <25 EXTREME (+5); vol 2.0x avg (+4); EMA20<EMA50 on both TFs (-2); bearish news backdrop (-1)"
-  }
- },
+ "open": {},
  "last_closed": {
   "HYPEUSDT": "2026-11-09T16:30:00+00:00",
   "XPLUSDT": "2026-11-10T00:45:00+00:00",
@@ -27,7 +10,7 @@
   "ADAUSDT": "2026-11-09T15:45:00+00:00",
   "PEPEUSDT": "2026-11-09T19:00:00+00:00",
   "AAVEUSDT": "2026-11-10T03:30:00+00:00",
-  "PAXGUSDT": "2026-11-11T07:15:00+00:00",
+  "PAXGUSDT": "2026-11-14T13:45:00+00:00",
   "PUMPUSDT": "2026-11-11T22:45:00+00:00",
   "APTUSDT": "2026-11-12T13:15:00+00:00",
   "ZROUSDT": "2026-11-12T15:45:00+00:00",
