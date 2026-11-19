@@ -1,19 +1,8 @@
 {
   "experiment_start": "2026-07-15",
   "starting_balance": 500.0,
-  "cash": 3065.2789,
-  "open_positions": {
-    "LINKUSDT": {
-      "entry_price": 9.273,
-      "quantity": 87.870266,
-      "stop_loss": 9.01173323,
-      "take_profit": 9.79553355,
-      "opened_at": "2026-11-18T05:34:21.009919+00:00",
-      "is_penny": false,
-      "peak_price": 9.273,
-      "trail_pct": 0.028175
-    }
-  },
+  "cash": 3856.9021,
+  "open_positions": {},
   "day": {
     "date": "2026-11-19",
     "open_equity": 3861.65
