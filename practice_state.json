@@ -10,29 +10,12 @@
    "stop_pct": 0.0494,
    "tp_pct": 0.0988,
    "opened_at": "2026-11-14T23:53:17+00:00",
-   "checked_ms": 1795047300000,
+   "checked_ms": 1795052700000,
    "cohort": "score:5",
    "score": 5,
    "regime": "BEAR",
    "btc_24h": -6.14,
    "signals": "1H RSI 24.31 <25 EXTREME (+5); 15M MACD hist +0.0001 (+2); EMA20<EMA50 on both TFs (-2); ExtFear 13 confirmed by green 15M (gate passed)",
-   "trailing": true
-  },
-  "BCHUSDT": {
-   "entry_price": 200.4,
-   "stop_loss": 203.735365,
-   "take_profit": 219.26766,
-   "peak_price": 213.8,
-   "trail_pct": 0.047075,
-   "stop_pct": 0.0471,
-   "tp_pct": 0.0941,
-   "opened_at": "2026-11-14T23:53:17+00:00",
-   "checked_ms": 1795047300000,
-   "cohort": "score:5",
-   "score": 5,
-   "regime": "BEAR",
-   "btc_24h": -6.14,
-   "signals": "1H RSI 24.34 <25 EXTREME (+5); 15M MACD hist +0.0604 (+2); EMA20<EMA50 on both TFs (-2); ExtFear 13 confirmed by green 15M (gate passed)",
    "trailing": true
   },
   "SUIUSDT": {
@@ -44,7 +27,7 @@
    "stop_pct": 0.0565,
    "tp_pct": 0.1129,
    "opened_at": "2026-11-15T01:44:47+00:00",
-   "checked_ms": 1795047300000,
+   "checked_ms": 1795052700000,
    "cohort": "score:5",
    "score": 5,
    "regime": "BEAR",
@@ -61,7 +44,7 @@
    "stop_pct": 0.0614,
    "tp_pct": 0.1229,
    "opened_at": "2026-11-15T01:44:47+00:00",
-   "checked_ms": 1795047300000,
+   "checked_ms": 1795052700000,
    "cohort": "score:5",
    "score": 5,
    "regime": "BEAR",
@@ -78,7 +61,7 @@
    "stop_pct": 0.0627,
    "tp_pct": 0.1255,
    "opened_at": "2026-11-15T01:44:47+00:00",
-   "checked_ms": 1795047300000,
+   "checked_ms": 1795052700000,
    "cohort": "score:5",
    "score": 5,
    "regime": "BEAR",
@@ -107,6 +90,7 @@
   "HYPEUSDT": "2026-11-18T14:45:00+00:00",
   "AAVEUSDT": "2026-11-18T15:45:00+00:00",
   "ADAUSDT": "2026-11-18T23:00:00+00:00",
-  "WIFUSDT": "2026-11-18T23:00:00+00:00"
+  "WIFUSDT": "2026-11-18T23:00:00+00:00",
+  "BCHUSDT": "2026-11-19T01:45:00+00:00"
  }
 }
