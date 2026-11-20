@@ -1,23 +1,6 @@
 {
  "started_utc": "2026-11-09T07:14:12+00:00",
- "open": {
-  "ASTERUSDT": {
-   "entry_price": 0.5126,
-   "stop_loss": 0.49521004499999993,
-   "take_profit": 0.54737991,
-   "peak_price": 0.518,
-   "trail_pct": 0.033925000000000004,
-   "stop_pct": 0.0339,
-   "tp_pct": 0.0679,
-   "opened_at": "2026-11-19T18:22:39+00:00",
-   "checked_ms": 1795163400000,
-   "cohort": "score:7",
-   "score": 7,
-   "regime": "NEUTRAL",
-   "btc_24h": 0.39,
-   "signals": "1H RSI 28.51 <30 oversold (+4); vol 2.4x avg (+4); 15M MACD hist +0.0004 (+2); EMA20<EMA50 on both TFs (-2); bearish news backdrop (-1); ExtFear 10 confirmed by green 15M (gate passed)"
-  }
- },
+ "open": {},
  "last_closed": {
   "RENDERUSDT": "2026-11-17T23:30:00+00:00",
   "PAXGUSDT": "2026-11-14T13:45:00+00:00",
@@ -42,6 +25,7 @@
   "SOLUSDT": "2026-11-19T17:00:00+00:00",
   "DOGEUSDT": "2026-11-19T21:45:00+00:00",
   "SUIUSDT": "2026-11-19T21:30:00+00:00",
-  "TAOUSDT": "2026-11-20T02:00:00+00:00"
+  "TAOUSDT": "2026-11-20T02:00:00+00:00",
+  "ASTERUSDT": "2026-11-20T15:30:00+00:00"
  }
 }
